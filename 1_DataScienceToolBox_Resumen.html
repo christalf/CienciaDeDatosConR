@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Data Science Toolbox</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data Science Toolbox</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introducción." id="toc-introducción."><span
+class="toc-section-number">1</span> Introducción.</a>
+<ul>
+<li><a
+href="#qué-es-la-ciencia-de-datos-el-científico-de-datos-y-los-grandes-datos."
+id="toc-qué-es-la-ciencia-de-datos-el-científico-de-datos-y-los-grandes-datos."><span
+class="toc-section-number">1.1</span> ¿Qué es la ciencia de datos? El
+científico de datos y los grandes datos.</a></li>
+<li><a
+href="#cómo-se-instala-r-rstudio-cómo-se-instalan-paquetes-en-rstudio"
+id="toc-cómo-se-instala-r-rstudio-cómo-se-instalan-paquetes-en-rstudio"><span
+class="toc-section-number">1.2</span> ¿Cómo se instala R, RStudio? ¿Cómo
+se instalan paquetes en RStudio?</a></li>
+</ul></li>
+<li><a href="#installing-packages-from-cran."
+id="toc-installing-packages-from-cran."><span
+class="toc-section-number">2</span> Installing packages from CRAN.</a>
+<ul>
+<li><a href="#the-install.packages-command."
+id="toc-the-install.packages-command."><span
+class="toc-section-number">2.1</span> The
+<code>install.packages()</code> command.</a></li>
+<li><a href="#installing-older-versions-of-a-package."
+id="toc-installing-older-versions-of-a-package."><span
+class="toc-section-number">2.2</span> Installing older versions of a
+package.</a>
+<ul>
+<li><a href="#using-the-install_version-command-from-devtools-package."
+id="toc-using-the-install_version-command-from-devtools-package."><span
+class="toc-section-number">2.2.1</span> Using the
+<code>install_version()</code> command from <code>devtools</code>
+package.</a></li>
+<li><a
+href="#installing-from-source-with-install.packages-command-or-with-r-cmd-install-command-outside-of-r."
+id="toc-installing-from-source-with-install.packages-command-or-with-r-cmd-install-command-outside-of-r."><span
+class="toc-section-number">2.2.2</span> Installing from source with
+<code>install.packages()</code> command or with
+<code>R CMD INSTALL</code> command outside of R.</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#installing-packages-from-bioconductor."
+id="toc-installing-packages-from-bioconductor."><span
+class="toc-section-number">3</span> Installing packages from
+<code>Bioconductor</code>.</a>
+<ul>
+<li><a href="#installing-procedure-for-r-versions-3.5.0."
+id="toc-installing-procedure-for-r-versions-3.5.0."><span
+class="toc-section-number">3.1</span> Installing procedure for R
+versions &lt; 3.5.0.</a></li>
+<li><a href="#installing-procedure-for-r-versions-3.5.0.-1"
+id="toc-installing-procedure-for-r-versions-3.5.0.-1"><span
+class="toc-section-number">3.2</span> Installing procedure for R
+versions &gt; 3.5.0.</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">4</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="introducción." class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introducción.</h1>
+<p>La Caja de Herramientas del Científico de Datos, es el primer curso
+de la serie Especialización en Ciencia de Datos.</p>
+<p>En este curso definimos qué es la ciencia de datos y presentamos las
+herramientas que se utilizarán a lo largo de la serie.</p>
+<div
+id="qué-es-la-ciencia-de-datos-el-científico-de-datos-y-los-grandes-datos."
+class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> ¿Qué es la ciencia de
+datos? El científico de datos y los grandes datos.</h2>
+<p>La primera pregunta que debe responderse en este curso es ¿qué es la
+ciencia de datos?</p>
+<p>En esencia, ciencia de datos es utilizar datos para contestar
+preguntas. Esta es una definición demasiado amplia, precisamente porque
+se trata de un campo muy amplio. La ciencia de datos puede incluir
+estadística, informática, matemáticas, limpieza y formateo de datos y
+visualización de datos.</p>
+<p>A grandes rasgos, las cualidades que caracterizan a un científico de
+datos son las de alguien que combina las habilidades del programador de
+software, el estadístico y el escritor de novelas históricas, para
+extraer fragmentos de oro ocultos bajo montañas de datos.</p>
+<p>Al finalizar los cursos de la especialización, se espera que uno se
+sienta capacitado para hacer precisamente eso.</p>
+<p>Una de las razones del auge de la ciencia de datos en los últimos
+años es la gran cantidad de datos disponibles en la actualidad y los que
+se están generando. No sólo enormes cantidades de datos que se recogen
+acerca de muchos aspectos del mundo y de nuestras vidas, sino que al
+mismo tiempo tenemos el incremento de la computación de bajo costo. Esto
+ha creado una tormenta perfecta en la que creamos más datos y las
+herramientas para analizarlos, mejorando la capacidad de memoria de los
+computadores, mejores procesadores, más software y ahora también más
+científicos de datos calificados que pueden ponerlo en práctica y
+responder preguntas usando estos datos.</p>
+<p>Podemos identificar algunas características esenciales de los grandes
+datos.</p>
+<p>La primera es el volumen. Como dice el nombre, los grandes datos
+implican grandes bases de datos. Estas grandes bases de datos son cada
+vez más una cosa común. Por ejemplo, digamos que queremos responder a
+alguna inquietud o pregunta relativa a los videos en línea. Pues resulta
+que a YouTube se suben aproximadamente 300 horas de video cada minuto.
+Definitivamente, tendríamos un montón de datos disponibles para
+analizar. Y se puede ver que habría una gran dificultad para
+desenmarañar todos esos datos.</p>
+<p>Lo cual nos lleva a la segunda cualidad o característica de los
+grandes datos: la velocidad. Los datos se generan y se recogen ahora más
+rápidamente que nunca antes. En nuestro ejemplo de YouTube, nuevos datos
+llegan a cada minuto.</p>
+<p>La tercera cualidad es la variedad. En el ejemplo de YouTube,
+podríamos analizar video o audio, que es un conjunto de datos muy
+desestructurado, o bien una lista de las longitudes de cada video,
+visitas o comentarios, que es un conjunto de datos mucho más
+estructurado para analizar. Existen entonces distitnos tipos de datos
+que la ciencia de datos estudia.</p>
+<p>Volviendo sobre lo que realmente es un científico de datos, podemos
+decir que la definición más elemental sería que un científico de datos
+es alguien que utiliza datos para contestar preguntas.</p>
+<p>Pero lo más importante es saber lo siguiente: ¿qué destrezas
+representa un científico de datos? En términos de un diagrama de Venn,
+podemos identificar a la ciencia de datos en la intersección de tres
+sectores: conocimientos sustantivos, destrezas de hacking y matemáticas
+y estadística.</p>
+<p>En primer lugar, necesitamos conocimientos suficientes en el área
+sobre la cual preguntamos para poder formular preguntas y para saber qué
+tipos de datos son los apropiados para responder a la pregunta. Cuando
+ya tenemos nuestra pregunta y los datos pertinentes, sabemos, por el
+tipo de datos, cuál ciencia de datos se encuentra involucrada.</p>
+<p>En segundo término, muchas veces los datos deben someterse a limpieza
+y formateo considerables. Para ello, se requieren destrezas de
+programación y de hacking.</p>
+<p>Por último, una vez que obtenemos nuestros datos, tenemos que
+analizarlos. Lo cual requiere conocimientos de matemáticas y
+estadística.</p>
+<p>En esta especialización, concentraremos el esfuerzo en conocimiento
+matemático y estadístico y en destrezas de hacking.</p>
+<p>Para las destrezas de hacking, recurriremos al aprendizaje de dos
+componentes diferentes:</p>
+<ul>
+<li>Programación en R, la cual le permitirá acceder a los datos, jugar
+con ellos, analizarlos y graficarlos.<br />
+</li>
+<li>Además, nos enfocamos en aprender a cómo averiguar y obtener
+respuestas a preguntas de programación.</li>
+</ul>
+<p>Una de las razones por las que los científicos de datos son tan
+requeridos es que la mayoría de las respuestas no están ya descrpitas en
+los libros de texto. Un científico de datos debe ser alguien que sabe
+cómo encontrar respuestas a problemas nuevos.</p>
+<p>Hablando de esa demanda, se necesitan con urgencia personas con
+destrezas en ciencia de datos y no solo ingenieros en machine learning,
+científicos de datos e ingenieros de grandes datos.</p>
+<p>No sólo tenemos más y más datos, y cada vez más herramientas para
+recolectarlos, almacenarlos y analizarlos, sino que la importancia de la
+demanda de científicos de datos cada vez se reconoce más en muchos
+sectores diversos y no solamente en las empresas y universidades.</p>
+<p>Nate Silver es uno de los los científicos de datos o estadísticos más
+famosos. Es fundador, editor, y director de FiveThirtyEight, un sitio
+web que utiliza el análisis estadístico y cifras concretas para contar
+historias acerca de las elecciones, la política, los deportes, la
+ciencia, la economía y estilos de vida. Utiliza grandes cantidades de
+datos públicos totalmente gratis para hacer predicciones acerca de una
+variedad de temas.</p>
+<p>Un gran ejemplo de la ciencia de datos en acción es de 2009, cuando
+los investigadores de Google analizaron 50 millones de términos
+comúnmente buscados en un período de cinco años y los compararon con
+datos de la CDC sobre brotes de gripe. Su objetivo era ver si ciertas
+búsquedas coincidían con brotes de gripe. Uno de los beneficios de la
+ciencia de los datos que utiliza grandes datos está en que puede
+identificar correlaciones. En este caso, se identificaron 45 palabras
+que tenían una marcada correlación con los datos de brote de gripe de
+CDC. Con estos datos, han sido capaces de predecir brotes de gripe
+basados únicamente en búsquedas usuales en Google. Sin estas cantidades
+masivas de datos, estas 45 palabras nunca antes se hubieran
+predecido.</p>
+</div>
+<div id="cómo-se-instala-r-rstudio-cómo-se-instalan-paquetes-en-rstudio"
+class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> ¿Cómo se instala R,
+RStudio? ¿Cómo se instalan paquetes en RStudio?</h2>
+<p>No cubriremos aquí la instalación de R ni de RStudio. Nos remitimos a
+las instrucciones que figuran en los respectivos sitios oficiales.</p>
+<ul>
+<li><p><a href="https://cran.r-project.org/">CRAN - Comprehensive R
+Archive Network</a></p></li>
+<li><p><a href="https://posit.co/">RStudio - Posit</a></p></li>
+</ul>
+<p>En los siguientes apartados, resumimos de manera concreta y
+esquemática, los distintos modos en los que se pueden instalar paquetes
+de software en RStudio.</p>
+<hr />
+</div>
+</div>
+<div id="installing-packages-from-cran." class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Installing packages
+from CRAN.</h1>
+<div id="the-install.packages-command." class="section level2"
+number="2.1">
+<h2><span class="header-section-number">2.1</span> The
+<code>install.packages()</code> command.</h2>
+<p>This is the usual way to install a package from CRAN into R.</p>
+<ul>
+<li><p>We just have to put the <strong>name of the package between
+quotation marks</strong>.</p></li>
+<li><p><code>install.packages("ggplot2")</code></p></li>
+</ul>
+</div>
+<div id="installing-older-versions-of-a-package." class="section level2"
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Installing older
+versions of a package.</h2>
+<p>There’s a nice <a
+href="https://support.rstudio.com/hc/en-us/articles/219949047-Installing-older-versions-of-packages">article
+by Ian Pylvainen</a> that explains this topic in a clear and simple
+way.</p>
+<p>We may need to install an older version of a package due to various
+reasons:</p>
+<ul>
+<li><p>The package might have changed in a way that is incompatible with
+the version of R we have installed, or with our R code.</p></li>
+<li><p>We may be deploying an application to a location such as
+<code>shinyapps.io</code>, <code>Shiny Server</code> or
+<code>RStudio</code> <code>Connect</code> where the environment may not
+allow us to run the latest version of the package.</p></li>
+</ul>
+<p>We’ll see several methods that we can use to compute this task.</p>
+<div id="using-the-install_version-command-from-devtools-package."
+class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Using the
+<code>install_version()</code> command from <code>devtools</code>
+package.</h3>
+<p>The <strong>simplest method</strong> is to use the provided
+<code>install_version()</code> function of the <code>devtools</code>
+package to install the version we need. For instance:</p>
+<pre><code>library(devtools)
+install_version(&quot;ggplot2&quot;, version = &quot;0.9.1&quot;, respos = &quot;http://cran.us.r-project.org&quot;)</code></pre>
+</div>
+<div
+id="installing-from-source-with-install.packages-command-or-with-r-cmd-install-command-outside-of-r."
+class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Installing from
+source with <code>install.packages()</code> command or with
+<code>R CMD INSTALL</code> command outside of R.</h3>
+<p>If we <strong>know the URL to the package version file</strong> we
+need to install, we can install it <strong>from source</strong> via
+<strong><code>install.packages()</code> directed to that
+URL</strong>.</p>
+<ul>
+<li><p>We can look for URL of the package version file in the <a
+href="https://cran.r-project.org/src/contrib/Archive">CRAN Package
+Archive</a>.</p></li>
+<li><p>If we’re on Windows or OS X and looking for a package for an
+older version of R (R 2.1 or below), we can check the <a
+href="https://cran-archive.r-project.org/bin/">CRAN binary
+archive</a>.</p></li>
+</ul>
+<p>For example:</p>
+<pre><code>packageurl &lt;- &quot;http://cran.r-project.org/src/contrib/Archive/ggplot2/ggplot2_0.9.1.tar.gz&quot;
+install.packages(packageurl, repos = NULL, type = &quot;source&quot;)</code></pre>
+<p>Another way to install from source is using the URL via <strong>the
+<code>R CMD INSTALL</code> command line outside</strong> **of R*.</p>
+<p>For instance:</p>
+<pre><code>wget http://cran.r-project.org/src/contrib/Archive/ggplot2/ggplot2_0.9.1.tar.gz
+R CMD INSTALL ggplot2_0.9.1.tar.gz</code></pre>
+<p><strong>NOTICE</strong>: if we are installing from source, we’ll need
+to make sure you <strong>have the necessary toolchain</strong>
+<strong>to build packages from source</strong>.</p>
+<ul>
+<li>On Windows, this may require you to install
+<code>Rtools</code>.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="installing-packages-from-bioconductor." class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Installing packages
+from <code>Bioconductor</code>.</h1>
+<div id="installing-procedure-for-r-versions-3.5.0."
+class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Installing procedure
+for R versions &lt; 3.5.0.</h2>
+<p>The way to install Bioconductor’s packages is <em>sourcing</em> the
+<code>biocLite.R</code> script from Bioconductor’s website, and that
+will load the <code>bioclite()</code> function that we then use to
+download the package we want.</p>
+<p>For example:</p>
+<pre><code>source(&quot;http://bioconductor.org/biocLite.R&quot;)
+biocLite(&quot;rhdf5&quot;)</code></pre>
+</div>
+<div id="installing-procedure-for-r-versions-3.5.0.-1"
+class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Installing procedure
+for R versions &gt; 3.5.0.</h2>
+<p>The new way to install Bioconductor and related packages is
+<strong>through <code>BiocManager</code> package</strong> as documented
+on <a href="https://bioconductor.org/install/">Bioconductor’s install
+page</a>.</p>
+<ul>
+<li><code>biocLite</code> was a <em>function</em> not a package and had
+security risks.</li>
+</ul>
+<p>Since I’m running <code>R v. 3.6.3</code>, I’ve installed
+<code>BiocManager</code> following the oficial instructions:</p>
+<pre><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+        install.packages(&quot;BiocManager&quot;)
+
+BiocManager::install()</code></pre>
+<p>These commands installed <code>Bioconductor 3.10</code>, which has
+been designed expressly for version 3.6 of R (the current last version
+of Bioconductor is 3.11).</p>
+<p>So, to <strong>install specific packages</strong> (like
+“GenomicFeatures” and “AnnotationDbi”), we can use <strong>the
+<code>BiocManager::install()</code> function</strong>:</p>
+<pre><code>BiocManager::install(c(&quot;GenomicFeatures&quot;, &quot;AnnotationDbi&quot;))</code></pre>
+<ul>
+<li><strong>Notice</strong>: this function can be use to
+<strong>also</strong> install packages <strong>from CRAN and
+even</strong> <strong>GitHub</strong>.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Session Info.</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NUMERIC<span class="ot">=</span>C              </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>   </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NAME<span class="ot">=</span>C                 </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>C               LC_TELEPHONE<span class="ot">=</span>C            </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span> LC_IDENTIFICATION<span class="ot">=</span>C       </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] pillar_1.<span class="fl">7.0</span>     compiler_3.<span class="fl">6.3</span>   bslib_0.<span class="fl">3.0</span>      jquerylib_0.<span class="fl">1.4</span> </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] tools_3.<span class="fl">6.3</span>      digest_0.<span class="fl">6.29</span>    jsonlite_1.<span class="fl">7.2</span>   evaluate_0<span class="fl">.19</span>   </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] lifecycle_1.<span class="fl">0.3</span>  tibble_3.<span class="fl">1.8</span>     gtable_0.<span class="fl">3.0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span> </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] pkgconfig_2.<span class="fl">0.3</span>  rlang_1.<span class="fl">0.6</span>      DBI_1.<span class="fl">1.1</span>        cli_3.<span class="fl">6.0</span>       </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] rstudioapi_0<span class="fl">.13</span>  yaml_2.<span class="fl">2.1</span>       xfun_0<span class="fl">.36</span>        fastmap_1.<span class="fl">1.0</span>   </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] stringr_1.<span class="fl">4.0</span>    dplyr_1.<span class="fl">0.8</span>      httr_1.<span class="fl">4.2</span>       knitr_1<span class="fl">.41</span>      </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] sass_0.<span class="fl">4.0</span>       generics_0.<span class="fl">1.2</span>   vctrs_0.<span class="fl">5.2</span>      grid_3.<span class="fl">6.3</span>      </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] tidyselect_1.<span class="fl">2.0</span> glue_1.<span class="fl">6.2</span>       R6_2.<span class="fl">5.1</span>         fansi_1.<span class="fl">0.2</span>     </span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] rmarkdown_2<span class="fl">.11</span>   ggplot2_3.<span class="fl">3.5</span>    magrittr_2.<span class="fl">0.2</span>   scales_1.<span class="fl">1.1</span>    </span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] ellipsis_0.<span class="fl">3.2</span>   htmltools_0.<span class="fl">5.2</span>  assertthat_0.<span class="fl">2.1</span> colorspace_2<span class="fl">.0</span><span class="dv">-3</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] utf8_1.<span class="fl">2.2</span>       stringi_1.<span class="fl">7.6</span>    munsell_0.<span class="fl">5.0</span>    crayon_1.<span class="fl">5.0</span>    </span></code></pre></div>
+<hr />
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

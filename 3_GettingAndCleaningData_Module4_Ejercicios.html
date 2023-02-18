@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Getting and Cleaning Data</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Getting and Cleaning Data</h1>
+<h3 class="subtitle">Módulo 4 - Ejercitación</h3>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#primer-ejercicio---housing"
+id="toc-primer-ejercicio---housing"><span
+class="toc-section-number">1</span> Primer ejercicio - Housing</a>
+<ul>
+<li><a href="#solución" id="toc-solución"><span
+class="toc-section-number">1.1</span> Solución</a></li>
+</ul></li>
+<li><a href="#segundo-ejercicio---gross-domestic-product"
+id="toc-segundo-ejercicio---gross-domestic-product"><span
+class="toc-section-number">2</span> Segundo ejercicio - Gross Domestic
+Product</a>
+<ul>
+<li><a href="#solución-1" id="toc-solución-1"><span
+class="toc-section-number">2.1</span> Solución</a></li>
+</ul></li>
+<li><a href="#tercer-ejercicio---gross-domestic-product"
+id="toc-tercer-ejercicio---gross-domestic-product"><span
+class="toc-section-number">3</span> Tercer ejercicio - Gross Domestic
+Product</a>
+<ul>
+<li><a href="#solución-2" id="toc-solución-2"><span
+class="toc-section-number">3.1</span> Solución</a></li>
+</ul></li>
+<li><a href="#cuarto-ejercicio---gross-domestic-product"
+id="toc-cuarto-ejercicio---gross-domestic-product"><span
+class="toc-section-number">4</span> Cuarto ejercicio - Gross Domestic
+Product</a>
+<ul>
+<li><a href="#solución-3" id="toc-solución-3"><span
+class="toc-section-number">4.1</span> Solución</a></li>
+</ul></li>
+<li><a href="#quinto-ejercicio---nasdaq-and-nyse"
+id="toc-quinto-ejercicio---nasdaq-and-nyse"><span
+class="toc-section-number">5</span> Quinto ejercicio - NASDAQ and
+NYSE</a>
+<ul>
+<li><a href="#solución-4" id="toc-solución-4"><span
+class="toc-section-number">5.1</span> Solución</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">6</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<p>Veamos algunos ejercicios de procesamiento de variables de texto para
+aplicar funciones de los paquetes <code>base</code>,
+<code>stringr</code>, <code>lubridate</code> que hemos estudiado y usar
+expresiones regulares.</p>
+<hr />
+<div id="primer-ejercicio---housing" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Primer ejercicio -
+Housing</h1>
+<p>The American Community Survey distributes downloadable data about
+United States communities. Download the 2006 microdata survey about
+housing for the state of Idaho using <code>download.file()</code> from
+here:</p>
+<p><a
+href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
+class="uri">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv</a></p>
+<p>and load the data into R.</p>
+<p>The code book, describing the variable names is here:</p>
+<p><a
+href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FPUMSDataDict06.pdf"
+class="uri">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FPUMSDataDict06.pdf</a></p>
+<p>and it’s already downloaded and available here:</p>
+<p><embed src="3_data/getdata_data_PUMSDataDict06.pdf"
+style="width:100.0%" height="400" /></p>
+<p>Apply <code>strsplit()</code> to split all the names of the data
+frame on the characters “wgtp”.</p>
+<p>What is the value of the 123 element of the resulting list?</p>
+<ul>
+<li>The <strong>correct answer is:</strong> “” “15”</li>
+</ul>
+<div id="solución" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Solución</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Download the Idaho housing survey file from the web.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The downloading was done and the file stored as &quot;Housing2.csv&quot; in &quot;3_data&quot; folder.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># if(!file.exists(&quot;./3_data&quot;)) {dir.create(&quot;./3_data&quot;)}</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fileUrl1 &lt;- &quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(fileUrl1, destfile = &quot;./3_data/Housing2.csv&quot;, method = &quot;curl&quot;)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>housing <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;./3_data/Housing2.csv&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">### Apply strsplit() to split all the names of the data frame on the characters &quot;wgtp&quot;.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">### What is the value of the 123 element of the resulting list?</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(housing)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] <span class="st">&quot;RT&quot;</span>       <span class="st">&quot;SERIALNO&quot;</span> <span class="st">&quot;DIVISION&quot;</span> <span class="st">&quot;PUMA&quot;</span>     <span class="st">&quot;REGION&quot;</span>   <span class="st">&quot;ST&quot;</span>      </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">7</span>] <span class="st">&quot;ADJUST&quot;</span>   <span class="st">&quot;WGTP&quot;</span>     <span class="st">&quot;NP&quot;</span>       <span class="st">&quot;TYPE&quot;</span>     <span class="st">&quot;ACR&quot;</span>      <span class="st">&quot;AGS&quot;</span>     </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">13</span>] <span class="st">&quot;BDS&quot;</span>      <span class="st">&quot;BLD&quot;</span>      <span class="st">&quot;BUS&quot;</span>      <span class="st">&quot;CONP&quot;</span>     <span class="st">&quot;ELEP&quot;</span>     <span class="st">&quot;FS&quot;</span>      </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">19</span>] <span class="st">&quot;FULP&quot;</span>     <span class="st">&quot;GASP&quot;</span>     <span class="st">&quot;HFL&quot;</span>      <span class="st">&quot;INSP&quot;</span>     <span class="st">&quot;KIT&quot;</span>      <span class="st">&quot;MHP&quot;</span>     </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a> [<span class="dv">25</span>] <span class="st">&quot;MRGI&quot;</span>     <span class="st">&quot;MRGP&quot;</span>     <span class="st">&quot;MRGT&quot;</span>     <span class="st">&quot;MRGX&quot;</span>     <span class="st">&quot;PLM&quot;</span>      <span class="st">&quot;RMS&quot;</span>     </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a> [<span class="dv">31</span>] <span class="st">&quot;RNTM&quot;</span>     <span class="st">&quot;RNTP&quot;</span>     <span class="st">&quot;SMP&quot;</span>      <span class="st">&quot;TEL&quot;</span>      <span class="st">&quot;TEN&quot;</span>      <span class="st">&quot;VACS&quot;</span>    </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a> [<span class="dv">37</span>] <span class="st">&quot;VAL&quot;</span>      <span class="st">&quot;VEH&quot;</span>      <span class="st">&quot;WATP&quot;</span>     <span class="st">&quot;YBL&quot;</span>      <span class="st">&quot;FES&quot;</span>      <span class="st">&quot;FINCP&quot;</span>   </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a> [<span class="dv">43</span>] <span class="st">&quot;FPARC&quot;</span>    <span class="st">&quot;GRNTP&quot;</span>    <span class="st">&quot;GRPIP&quot;</span>    <span class="st">&quot;HHL&quot;</span>      <span class="st">&quot;HHT&quot;</span>      <span class="st">&quot;HINCP&quot;</span>   </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a> [<span class="dv">49</span>] <span class="st">&quot;HUGCL&quot;</span>    <span class="st">&quot;HUPAC&quot;</span>    <span class="st">&quot;HUPAOC&quot;</span>   <span class="st">&quot;HUPARC&quot;</span>   <span class="st">&quot;LNGI&quot;</span>     <span class="st">&quot;MV&quot;</span>      </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a> [<span class="dv">55</span>] <span class="st">&quot;NOC&quot;</span>      <span class="st">&quot;NPF&quot;</span>      <span class="st">&quot;NPP&quot;</span>      <span class="st">&quot;NR&quot;</span>       <span class="st">&quot;NRC&quot;</span>      <span class="st">&quot;OCPIP&quot;</span>   </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">61</span>] <span class="st">&quot;PARTNER&quot;</span>  <span class="st">&quot;PSF&quot;</span>      <span class="st">&quot;R18&quot;</span>      <span class="st">&quot;R60&quot;</span>      <span class="st">&quot;R65&quot;</span>      <span class="st">&quot;RESMODE&quot;</span> </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">67</span>] <span class="st">&quot;SMOCP&quot;</span>    <span class="st">&quot;SMX&quot;</span>      <span class="st">&quot;SRNT&quot;</span>     <span class="st">&quot;SVAL&quot;</span>     <span class="st">&quot;TAXP&quot;</span>     <span class="st">&quot;WIF&quot;</span>     </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">73</span>] <span class="st">&quot;WKEXREL&quot;</span>  <span class="st">&quot;WORKSTAT&quot;</span> <span class="st">&quot;FACRP&quot;</span>    <span class="st">&quot;FAGSP&quot;</span>    <span class="st">&quot;FBDSP&quot;</span>    <span class="st">&quot;FBLDP&quot;</span>   </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a> [<span class="dv">79</span>] <span class="st">&quot;FBUSP&quot;</span>    <span class="st">&quot;FCONP&quot;</span>    <span class="st">&quot;FELEP&quot;</span>    <span class="st">&quot;FFSP&quot;</span>     <span class="st">&quot;FFULP&quot;</span>    <span class="st">&quot;FGASP&quot;</span>   </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a> [<span class="dv">85</span>] <span class="st">&quot;FHFLP&quot;</span>    <span class="st">&quot;FINSP&quot;</span>    <span class="st">&quot;FKITP&quot;</span>    <span class="st">&quot;FMHP&quot;</span>     <span class="st">&quot;FMRGIP&quot;</span>   <span class="st">&quot;FMRGP&quot;</span>   </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a> [<span class="dv">91</span>] <span class="st">&quot;FMRGTP&quot;</span>   <span class="st">&quot;FMRGXP&quot;</span>   <span class="st">&quot;FMVYP&quot;</span>    <span class="st">&quot;FPLMP&quot;</span>    <span class="st">&quot;FRMSP&quot;</span>    <span class="st">&quot;FRNTMP&quot;</span>  </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a> [<span class="dv">97</span>] <span class="st">&quot;FRNTP&quot;</span>    <span class="st">&quot;FSMP&quot;</span>     <span class="st">&quot;FSMXHP&quot;</span>   <span class="st">&quot;FSMXSP&quot;</span>   <span class="st">&quot;FTAXP&quot;</span>    <span class="st">&quot;FTELP&quot;</span>   </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">103</span>] <span class="st">&quot;FTENP&quot;</span>    <span class="st">&quot;FVACSP&quot;</span>   <span class="st">&quot;FVALP&quot;</span>    <span class="st">&quot;FVEHP&quot;</span>    <span class="st">&quot;FWATP&quot;</span>    <span class="st">&quot;FYBLP&quot;</span>   </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">109</span>] <span class="st">&quot;wgtp1&quot;</span>    <span class="st">&quot;wgtp2&quot;</span>    <span class="st">&quot;wgtp3&quot;</span>    <span class="st">&quot;wgtp4&quot;</span>    <span class="st">&quot;wgtp5&quot;</span>    <span class="st">&quot;wgtp6&quot;</span>   </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">115</span>] <span class="st">&quot;wgtp7&quot;</span>    <span class="st">&quot;wgtp8&quot;</span>    <span class="st">&quot;wgtp9&quot;</span>    <span class="st">&quot;wgtp10&quot;</span>   <span class="st">&quot;wgtp11&quot;</span>   <span class="st">&quot;wgtp12&quot;</span>  </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">121</span>] <span class="st">&quot;wgtp13&quot;</span>   <span class="st">&quot;wgtp14&quot;</span>   <span class="st">&quot;wgtp15&quot;</span>   <span class="st">&quot;wgtp16&quot;</span>   <span class="st">&quot;wgtp17&quot;</span>   <span class="st">&quot;wgtp18&quot;</span>  </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">127</span>] <span class="st">&quot;wgtp19&quot;</span>   <span class="st">&quot;wgtp20&quot;</span>   <span class="st">&quot;wgtp21&quot;</span>   <span class="st">&quot;wgtp22&quot;</span>   <span class="st">&quot;wgtp23&quot;</span>   <span class="st">&quot;wgtp24&quot;</span>  </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">133</span>] <span class="st">&quot;wgtp25&quot;</span>   <span class="st">&quot;wgtp26&quot;</span>   <span class="st">&quot;wgtp27&quot;</span>   <span class="st">&quot;wgtp28&quot;</span>   <span class="st">&quot;wgtp29&quot;</span>   <span class="st">&quot;wgtp30&quot;</span>  </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">139</span>] <span class="st">&quot;wgtp31&quot;</span>   <span class="st">&quot;wgtp32&quot;</span>   <span class="st">&quot;wgtp33&quot;</span>   <span class="st">&quot;wgtp34&quot;</span>   <span class="st">&quot;wgtp35&quot;</span>   <span class="st">&quot;wgtp36&quot;</span>  </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">145</span>] <span class="st">&quot;wgtp37&quot;</span>   <span class="st">&quot;wgtp38&quot;</span>   <span class="st">&quot;wgtp39&quot;</span>   <span class="st">&quot;wgtp40&quot;</span>   <span class="st">&quot;wgtp41&quot;</span>   <span class="st">&quot;wgtp42&quot;</span>  </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">151</span>] <span class="st">&quot;wgtp43&quot;</span>   <span class="st">&quot;wgtp44&quot;</span>   <span class="st">&quot;wgtp45&quot;</span>   <span class="st">&quot;wgtp46&quot;</span>   <span class="st">&quot;wgtp47&quot;</span>   <span class="st">&quot;wgtp48&quot;</span>  </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">157</span>] <span class="st">&quot;wgtp49&quot;</span>   <span class="st">&quot;wgtp50&quot;</span>   <span class="st">&quot;wgtp51&quot;</span>   <span class="st">&quot;wgtp52&quot;</span>   <span class="st">&quot;wgtp53&quot;</span>   <span class="st">&quot;wgtp54&quot;</span>  </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">163</span>] <span class="st">&quot;wgtp55&quot;</span>   <span class="st">&quot;wgtp56&quot;</span>   <span class="st">&quot;wgtp57&quot;</span>   <span class="st">&quot;wgtp58&quot;</span>   <span class="st">&quot;wgtp59&quot;</span>   <span class="st">&quot;wgtp60&quot;</span>  </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">169</span>] <span class="st">&quot;wgtp61&quot;</span>   <span class="st">&quot;wgtp62&quot;</span>   <span class="st">&quot;wgtp63&quot;</span>   <span class="st">&quot;wgtp64&quot;</span>   <span class="st">&quot;wgtp65&quot;</span>   <span class="st">&quot;wgtp66&quot;</span>  </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">175</span>] <span class="st">&quot;wgtp67&quot;</span>   <span class="st">&quot;wgtp68&quot;</span>   <span class="st">&quot;wgtp69&quot;</span>   <span class="st">&quot;wgtp70&quot;</span>   <span class="st">&quot;wgtp71&quot;</span>   <span class="st">&quot;wgtp72&quot;</span>  </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">181</span>] <span class="st">&quot;wgtp73&quot;</span>   <span class="st">&quot;wgtp74&quot;</span>   <span class="st">&quot;wgtp75&quot;</span>   <span class="st">&quot;wgtp76&quot;</span>   <span class="st">&quot;wgtp77&quot;</span>   <span class="st">&quot;wgtp78&quot;</span>  </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">187</span>] <span class="st">&quot;wgtp79&quot;</span>   <span class="st">&quot;wgtp80&quot;</span>  </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">strsplit</span>(<span class="fu">names</span>(housing), <span class="st">&quot;wgtp&quot;</span>))</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">188</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">strsplit</span>(<span class="fu">names</span>(housing), <span class="st">&quot;wgtp&quot;</span>))</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>]]</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;RT&quot;</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">2</span>]]</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;SERIALNO&quot;</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">3</span>]]</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;DIVISION&quot;</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">4</span>]]</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;PUMA&quot;</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">5</span>]]</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;REGION&quot;</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">6</span>]]</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;ST&quot;</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(<span class="fu">names</span>(housing), <span class="st">&quot;wgtp&quot;</span>)[<span class="dv">123</span>]</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>]]</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;&quot;</span>   <span class="st">&quot;15&quot;</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="segundo-ejercicio---gross-domestic-product"
+class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Segundo ejercicio -
+Gross Domestic Product</h1>
+<p>Load the Gross Domestic Product data for the 190 ranked countries in
+this data set:</p>
+<p><a
+href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
+class="uri">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv</a></p>
+<p>Remove the commas from the GDP numbers in millions of dollars and
+average them. What is the average?</p>
+<ul>
+<li>The <strong>correct answer is:</strong> 377652.4</li>
+</ul>
+<p>Original data sources:</p>
+<ul>
+<li><a href="http://data.worldbank.org/data-catalog/GDP-ranking-table"
+class="uri">http://data.worldbank.org/data-catalog/GDP-ranking-table</a></li>
+</ul>
+<div id="solución-1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Solución</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the Gross Domestic Product data for the 190 ranked countries.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The downloading was done and the file stored as &quot;gdp-rank.csv&quot; in &quot;3_data&quot; folder.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># if(!file.exists(&quot;./3_data&quot;)) {dir.create(&quot;./3_data&quot;)}</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fileUrl2 &lt;- &quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(fileUrl2, destfile = &quot;./3_data/gdp-rank.csv&quot;, method = &quot;curl&quot;)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Fa schiffo sto file:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## - The column names are incomplete and occupie two lines, the 3rd and 4th</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## - The 5th line is blank.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## - There are 190 ranked countries, then the file contiues with not available data, and</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   we only want to read the 190 ranked countries (from line 5 to line 195, that is,</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   we want to read 190 lines).</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>gdp_rank <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;3_data/gdp-rank.csv&quot;</span>, <span class="at">skip =</span> <span class="dv">4</span>, <span class="at">nrows =</span> <span class="dv">190</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(gdp_rank, class)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        X       X<span class="fl">.1</span>       X<span class="fl">.2</span>       X<span class="fl">.3</span>       X<span class="fl">.4</span>       X<span class="fl">.5</span>       X<span class="fl">.6</span>       X<span class="fl">.7</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a> <span class="st">&quot;factor&quot;</span> <span class="st">&quot;integer&quot;</span> <span class="st">&quot;logical&quot;</span>  <span class="st">&quot;factor&quot;</span>  <span class="st">&quot;factor&quot;</span>  <span class="st">&quot;factor&quot;</span> <span class="st">&quot;logical&quot;</span> <span class="st">&quot;logical&quot;</span> </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      X<span class="fl">.8</span>       X<span class="fl">.9</span> </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;logical&quot;</span> <span class="st">&quot;logical&quot;</span> </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>gdp_rank <span class="ot">&lt;-</span> gdp_rank[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>)]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gdp_rank)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;X&quot;</span>   <span class="st">&quot;X.1&quot;</span> <span class="st">&quot;X.3&quot;</span> <span class="st">&quot;X.4&quot;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gdp_rank) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CountryCode&quot;</span>, <span class="st">&quot;Rank&quot;</span>, <span class="st">&quot;Country&quot;</span>, <span class="st">&quot;Ammount&quot;</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(gdp_rank, class)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>CountryCode        Rank     Country     Ammount </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;factor&quot;</span>   <span class="st">&quot;integer&quot;</span>    <span class="st">&quot;factor&quot;</span>    <span class="st">&quot;factor&quot;</span> </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove the commas from the GDP numbers in millions of dollars and average them.</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="do">## What is the average?</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>gdps <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>, <span class="st">&quot;&quot;</span>, gdp_rank<span class="sc">$</span>Ammount)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>gdps <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(gdps)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(gdps)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">377652.4</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="tercer-ejercicio---gross-domestic-product"
+class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Tercer ejercicio -
+Gross Domestic Product</h1>
+<p>In the data set from Question 2 what is a regular expression that
+would allow you to count the number of countries whose name begins with
+“United”? Assume that the variable with the country names in it is named
+countryNames. How many countries begin with United?</p>
+<ul>
+<li>The <strong>correct answers are:</strong>
+grep(“^United”,countryNames), 3</li>
+</ul>
+<div id="solución-2" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Solución</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(gdp_rank<span class="sc">$</span>Country)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> Factor w<span class="sc">/</span> <span class="dv">190</span> levels <span class="st">&quot;Afghanistan&quot;</span>,..<span class="sc">:</span> <span class="dv">182</span> <span class="dv">38</span> <span class="dv">85</span> <span class="dv">64</span> <span class="dv">60</span> <span class="dv">181</span> <span class="dv">25</span> <span class="dv">141</span> <span class="dv">83</span> <span class="dv">77</span> ...</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>gdp_rank<span class="sc">$</span>Country <span class="ot">&lt;-</span> <span class="fu">as.character</span>(gdp_rank<span class="sc">$</span>Country)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(gdp_rank<span class="sc">$</span>Country)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a> chr [<span class="dv">1</span><span class="sc">:</span><span class="dv">190</span>] <span class="st">&quot;United States&quot;</span> <span class="st">&quot;China&quot;</span> <span class="st">&quot;Japan&quot;</span> <span class="st">&quot;Germany&quot;</span> <span class="st">&quot;France&quot;</span> ...</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">&quot;^United&quot;</span>, gdp_rank<span class="sc">$</span>Country)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">grep</span>(<span class="st">&quot;^United&quot;</span>, gdp_rank<span class="sc">$</span>Country)<span class="sc">:</span> string de entrada <span class="dv">99</span> es inválida</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>en este locale</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">grep</span>(<span class="st">&quot;^United&quot;</span>, gdp_rank<span class="sc">$</span>Country)<span class="sc">:</span> string de entrada <span class="dv">186</span> es inválida</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>en este locale</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="dv">1</span>  <span class="dv">6</span> <span class="dv">32</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>gdp_rank<span class="sc">$</span>Country[<span class="fu">c</span>(<span class="dv">99</span>, <span class="dv">186</span>)]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;C</span><span class="sc">\xf4</span><span class="st">te d&#39;Ivoire&quot;</span>            <span class="st">&quot;S</span><span class="sc">\xe3</span><span class="st">o Tom</span><span class="sc">\xe9</span><span class="st"> and Principe&quot;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">&quot;^United&quot;</span>, gdp_rank<span class="sc">$</span>Country, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">grep</span>(<span class="st">&quot;^United&quot;</span>, gdp_rank<span class="sc">$</span>Country, <span class="at">value =</span> <span class="cn">TRUE</span>)<span class="sc">:</span> string de entrada <span class="dv">99</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>es inválida en este locale</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">grep</span>(<span class="st">&quot;^United&quot;</span>, gdp_rank<span class="sc">$</span>Country, <span class="at">value =</span> <span class="cn">TRUE</span>)<span class="sc">:</span> string de entrada</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="dv">186</span> es inválida en este locale</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;United States&quot;</span>        <span class="st">&quot;United Kingdom&quot;</span>       <span class="st">&quot;United Arab Emirates&quot;</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="cuarto-ejercicio---gross-domestic-product"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Cuarto ejercicio -
+Gross Domestic Product</h1>
+<p>Load the Gross Domestic Product data for the 190 ranked countries in
+this data set:</p>
+<p><a
+href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv"
+class="uri">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv</a></p>
+<p>Load the educational data from this data set:</p>
+<p><a
+href="https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
+class="uri">https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv</a></p>
+<p>Match the data based on the country shortcode. Of the countries for
+which the end of the fiscal year is available, how many end in June?</p>
+<ul>
+<li>The <strong>correct answer is:</strong> 13</li>
+</ul>
+<p>Original data sources:</p>
+<ul>
+<li><a href="http://data.worldbank.org/data-catalog/GDP-ranking-table"
+class="uri">http://data.worldbank.org/data-catalog/GDP-ranking-table</a><br />
+</li>
+<li><a href="http://data.worldbank.org/data-catalog/ed-stats"
+class="uri">http://data.worldbank.org/data-catalog/ed-stats</a></li>
+</ul>
+<div id="solución-3" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Solución</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the Gross Domestic Product data for the 190 ranked countries and the</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## educational data.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">## The downloading of the Gross Domestic Product data was already done.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## The downloading was done and the file stored as &quot;ed-stats.cvs&quot; in &quot;3_data&quot; folder.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># fileUrl &lt;- &quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(fileUrl, destfile = &quot;./3_data/ed-stats.csv&quot;, method = &quot;curl&quot;)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ed_stats <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;3_data/ed-stats.csv&quot;</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Match the data based on the country shortcode. Of the countries for which</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## the end of the fiscal year is available, how many end in June?</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ed_stats)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;CountryCode&quot;</span>                                      </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">2</span>] <span class="st">&quot;Long.Name&quot;</span>                                        </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] <span class="st">&quot;Income.Group&quot;</span>                                     </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] <span class="st">&quot;Region&quot;</span>                                           </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] <span class="st">&quot;Lending.category&quot;</span>                                 </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a> [<span class="dv">6</span>] <span class="st">&quot;Other.groups&quot;</span>                                     </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;Currency.Unit&quot;</span>                                    </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a> [<span class="dv">8</span>] <span class="st">&quot;Latest.population.census&quot;</span>                         </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] <span class="st">&quot;Latest.household.survey&quot;</span>                          </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] <span class="st">&quot;Special.Notes&quot;</span>                                    </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] <span class="st">&quot;National.accounts.base.year&quot;</span>                      </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">12</span>] <span class="st">&quot;National.accounts.reference.year&quot;</span>                 </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;System.of.National.Accounts&quot;</span>                      </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">14</span>] <span class="st">&quot;SNA.price.valuation&quot;</span>                              </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">15</span>] <span class="st">&quot;Alternative.conversion.factor&quot;</span>                    </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] <span class="st">&quot;PPP.survey.year&quot;</span>                                  </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] <span class="st">&quot;Balance.of.Payments.Manual.in.use&quot;</span>                </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">18</span>] <span class="st">&quot;External.debt.Reporting.status&quot;</span>                   </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;System.of.trade&quot;</span>                                  </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">20</span>] <span class="st">&quot;Government.Accounting.concept&quot;</span>                    </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] <span class="st">&quot;IMF.data.dissemination.standard&quot;</span>                  </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] <span class="st">&quot;Source.of.most.recent.Income.and.expenditure.data&quot;</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">23</span>] <span class="st">&quot;Vital.registration.complete&quot;</span>                      </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">24</span>] <span class="st">&quot;Latest.agricultural.census&quot;</span>                       </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;Latest.industrial.data&quot;</span>                           </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">26</span>] <span class="st">&quot;Latest.trade.data&quot;</span>                                </span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">27</span>] <span class="st">&quot;Latest.water.withdrawal.data&quot;</span>                     </span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] <span class="st">&quot;X2.alpha.code&quot;</span>                                    </span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] <span class="st">&quot;WB.2.code&quot;</span>                                        </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">30</span>] <span class="st">&quot;Table.Name&quot;</span>                                       </span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] <span class="st">&quot;Short.Name&quot;</span>                                       </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>mergedData <span class="ot">&lt;-</span> <span class="fu">merge</span>(gdp_rank, ed_stats, <span class="at">by =</span> <span class="st">&quot;CountryCode&quot;</span>)</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>june <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;Fiscal year end: June&quot;</span>, mergedData<span class="sc">$</span>Special.Notes)</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(june)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>june</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span>  <span class="cn">TRUE</span> </span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  <span class="dv">176</span>    <span class="dv">13</span> </span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="quinto-ejercicio---nasdaq-and-nyse" class="section level1"
+number="5">
+<h1><span class="header-section-number">5</span> Quinto ejercicio -
+NASDAQ and NYSE</h1>
+<p>You can use the <a
+href="http://www.quantmod.com/"><code>quantmod</code></a> package to get
+historical stock prices for publicly traded companies on the NASDAQ and
+NYSE.</p>
+<p>Use the following code to download data on Amazon’s stock price and
+get the times the data was sampled.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>amzn <span class="ot">=</span> <span class="fu">getSymbols</span>(<span class="st">&quot;AMZN&quot;</span>, <span class="at">auto.assign=</span><span class="cn">FALSE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sampleTimes <span class="ot">=</span> <span class="fu">index</span>(amzn)</span></code></pre></div>
+<p>How many values were collected in 2012? How many values were
+collected on Mondays in 2012?</p>
+<ul>
+<li>The <strong>correct answers are:</strong> 250, 47</li>
+</ul>
+<div id="solución-4" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Solución</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> xts</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> zoo</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">&#39;zoo&#39;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">&#39;package:base&#39;</span><span class="sc">:</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    as.Date, as.Date.numeric</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">&#39;xts&#39;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">&#39;package:dplyr&#39;</span><span class="sc">:</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    first, last</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">&#39;package:data.table&#39;</span><span class="sc">:</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    first, last</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> TTR</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>Registered S3 method overwritten by <span class="st">&#39;quantmod&#39;</span><span class="sc">:</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  method            from</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  as.zoo.data.frame zoo </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">&#39;quantmod&#39;</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>The following object is masked from <span class="st">&#39;package:Hmisc&#39;</span><span class="sc">:</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    Lag</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>amzn <span class="ot">=</span> <span class="fu">getSymbols</span>(<span class="st">&quot;AMZN&quot;</span>, <span class="at">auto.assign =</span> <span class="cn">FALSE</span>) <span class="co"># warnings = FALSE</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Alternativamente podemos usar getSymbols con el valor de default del</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="do">## parámetro auto.assign que es TRUE.  Luego usar ese valor autoasignado</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="do">## en AMZN para lo que querramos, como ponerlo como dataframe en la</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="do">## variable amzn</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co"># getSymbols(&quot;AMZN&quot;)</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co"># amzn = as.data.frame(AMZN)</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>sampleTimes <span class="ot">=</span> <span class="fu">index</span>(amzn)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="do">## How many values were collected in 2012? How many values were collected on</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="do">## Mondays in 2012?</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">&#39;lubridate&#39;</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">&#39;package:data.table&#39;</span><span class="sc">:</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    hour, isoweek, mday, minute, month, quarter, second, wday, week,</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    yday, year</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">&#39;package:base&#39;</span><span class="sc">:</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    date, intersect, setdiff, union</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sampleTimes)</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a> Date[<span class="dv">1</span><span class="sc">:</span><span class="dv">4061</span>], format<span class="sc">:</span> <span class="st">&quot;2007-01-03&quot;</span> <span class="st">&quot;2007-01-04&quot;</span> <span class="st">&quot;2007-01-05&quot;</span> <span class="st">&quot;2007-01-08&quot;</span> <span class="st">&quot;2007-01-09&quot;</span> ...</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(sampleTimes)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;2023-02-10&quot;</span> <span class="st">&quot;2023-02-13&quot;</span> <span class="st">&quot;2023-02-14&quot;</span> <span class="st">&quot;2023-02-15&quot;</span> <span class="st">&quot;2023-02-16&quot;</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">6</span>] <span class="st">&quot;2023-02-17&quot;</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>amzn_2012 <span class="ot">&lt;-</span> sampleTimes[<span class="fu">grep</span>(<span class="st">&quot;^2012&quot;</span>, sampleTimes)]</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(amzn_2012)</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a> Date[<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>], format<span class="sc">:</span> <span class="st">&quot;2012-01-03&quot;</span> <span class="st">&quot;2012-01-04&quot;</span> <span class="st">&quot;2012-01-05&quot;</span> <span class="st">&quot;2012-01-06&quot;</span> <span class="st">&quot;2012-01-09&quot;</span> ...</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(amzn_2012)                               <span class="co"># 250 values collected in 2012</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">250</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>amzn_2012_wdays <span class="ot">&lt;-</span> <span class="fu">weekdays</span>(amzn_2012)</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(amzn_2012_wdays)</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a> chr [<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>] <span class="st">&quot;martes&quot;</span> <span class="st">&quot;miércoles&quot;</span> <span class="st">&quot;jueves&quot;</span> <span class="st">&quot;viernes&quot;</span> <span class="st">&quot;lunes&quot;</span> <span class="st">&quot;martes&quot;</span> ...</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>mondays_2012 <span class="ot">&lt;-</span> amzn_2012_wdays <span class="sc">==</span> <span class="st">&quot;lunes&quot;</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mondays_2012)                             <span class="co"># 47 mondays in 2012</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>mondays_2012</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span>  <span class="cn">TRUE</span> </span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  <span class="dv">203</span>    <span class="dv">47</span> </span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Session Info.</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] lubridate_1.<span class="fl">9.2</span>   quantmod_0.<span class="fl">4.20</span>   TTR_0.<span class="fl">24.2</span>        xts_0.<span class="fl">12.1</span>       </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] zoo_1<span class="fl">.8</span><span class="dv">-9</span>         readr_2.<span class="fl">0.1</span>       tidyr_1.<span class="fl">2.0</span>       dplyr_1.<span class="fl">0.8</span>      </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] reshape2_1.<span class="fl">4.4</span>    Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>       ggplot2_3.<span class="fl">3.5</span>     Formula_1<span class="fl">.2</span><span class="dv">-3</span>    </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] survival_3<span class="fl">.4</span><span class="dv">-0</span>    lattice_0<span class="fl">.20</span><span class="dv">-45</span>   jpeg_0<span class="fl">.1-8.1</span>      gitignore_0.<span class="fl">1.3</span>  </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] rhdf5_2.<span class="fl">30.1</span>      httr_1.<span class="fl">4.2</span>        httpuv_1.<span class="fl">6.3</span>      sqldf_0<span class="fl">.4</span><span class="dv">-11</span>     </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] RSQLite_2.<span class="fl">2.0</span>     gsubfn_0<span class="fl">.7</span>        proto_1.<span class="fl">0.0</span>       DBI_1.<span class="fl">1.1</span>        </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] data.table_1.<span class="fl">14.0</span> jsonlite_1.<span class="fl">7.2</span>    XML_3<span class="fl">.99-0.3</span>      xlsx_0.<span class="fl">6.3</span>       </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] plyr_1.<span class="fl">8.6</span>       </span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] bit64_4.<span class="fl">0.5</span>         RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span>  tools_3.<span class="fl">6.3</span>        </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] backports_1.<span class="fl">4.1</span>     bslib_0.<span class="fl">3.0</span>         utf8_1.<span class="fl">2.2</span>         </span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] R6_2.<span class="fl">5.1</span>            rpart_4.<span class="fl">1.19</span>        colorspace_2<span class="fl">.0</span><span class="dv">-3</span>   </span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] nnet_7<span class="fl">.3</span><span class="dv">-18</span>         withr_2.<span class="fl">5.0</span>         tidyselect_1.<span class="fl">2.0</span>   </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] gridExtra_2<span class="fl">.3</span>       bit_4.<span class="fl">0.4</span>           curl_4.<span class="fl">3.2</span>         </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] compiler_3.<span class="fl">6.3</span>      chron_2<span class="fl">.3</span><span class="dv">-55</span>        cli_3.<span class="fl">6.0</span>          </span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] formatR_1<span class="fl">.14</span>        htmlTable_2.<span class="fl">0.1</span>     sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] scales_1.<span class="fl">1.1</span>        checkmate_2.<span class="fl">0.0</span>     askpass_1<span class="fl">.1</span>        </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] stringr_1.<span class="fl">4.0</span>       digest_0.<span class="fl">6.29</span>       foreign_0<span class="fl">.8</span><span class="dv">-76</span>     </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] rmarkdown_2<span class="fl">.11</span>      base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     pkgconfig_2.<span class="fl">0.3</span>    </span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] htmltools_0.<span class="fl">5.2</span>     fastmap_1.<span class="fl">1.0</span>       highr_0<span class="fl">.9</span>          </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] htmlwidgets_1.<span class="fl">5.4</span>   rlang_1.<span class="fl">0.6</span>         rstudioapi_0<span class="fl">.13</span>    </span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] jquerylib_0.<span class="fl">1.4</span>     generics_0.<span class="fl">1.2</span>      acepack_1.<span class="fl">4.1</span>      </span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] magrittr_2.<span class="fl">0.2</span>      Matrix_1<span class="fl">.5</span><span class="dv">-1</span>        Rcpp_1.<span class="fl">0.7</span>         </span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] munsell_0.<span class="fl">5.0</span>       Rhdf5lib_1.<span class="fl">8.0</span>      fansi_1.<span class="fl">0.2</span>        </span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] clipr_0.<span class="fl">7.1</span>         lifecycle_1.<span class="fl">0.3</span>     stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] yaml_2.<span class="fl">2.1</span>          grid_3.<span class="fl">6.3</span>          blob_1.<span class="fl">2.2</span>         </span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>    crayon_1.<span class="fl">5.0</span>        splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] xlsxjars_0.<span class="fl">6.1</span>      hms_1.<span class="fl">1.0</span>           knitr_1<span class="fl">.41</span>         </span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] pillar_1.<span class="fl">7.0</span>        tcltk_3.<span class="fl">6.3</span>         glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] evaluate_0<span class="fl">.19</span>       latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           tzdb_0.<span class="fl">3.0</span>          gtable_0.<span class="fl">3.0</span>       </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] openssl_2.<span class="fl">0.5</span>       purrr_0.<span class="fl">3.4</span>         assertthat_0.<span class="fl">2.1</span>   </span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] xfun_0<span class="fl">.36</span>           later_1.<span class="fl">3.0</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] rJava_0<span class="fl">.9</span><span class="dv">-13</span>        memoise_1.<span class="fl">1.0</span>       cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] timechange_0.<span class="fl">2.0</span>    ellipsis_0.<span class="fl">3.2</span>     </span></code></pre></div>
+<hr />
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

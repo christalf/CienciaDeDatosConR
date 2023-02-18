@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Reproducible Research Course - Module 4</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Reproducible Research Course - Module
+4</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#caching-in-literate-statistical-programming."
+id="toc-caching-in-literate-statistical-programming."><span
+class="toc-section-number">1</span> Caching in literate statistical
+programming.</a>
+<ul>
+<li><a href="#the-cacher-package." id="toc-the-cacher-package."><span
+class="toc-section-number">1.1</span> The <code>cacher</code>
+package.</a>
+<ul>
+<li><a href="#the-conceptual-model."
+id="toc-the-conceptual-model."><span
+class="toc-section-number">1.1.1</span> The conceptual model.</a></li>
+<li><a href="#using-cacher-as-an-author."
+id="toc-using-cacher-as-an-author."><span
+class="toc-section-number">1.1.2</span> Using <code>cacher</code> as an
+author.</a>
+<ul>
+<li><a href="#example-a-simple-analysis."
+id="toc-example-a-simple-analysis."><span
+class="toc-section-number">1.1.2.1</span> Example: a simple
+analysis.</a></li>
+</ul></li>
+<li><a href="#using-cacher-as-a-reader-clonecache-function."
+id="toc-using-cacher-as-a-reader-clonecache-function."><span
+class="toc-section-number">1.1.3</span> Using <code>cacher</code> as a
+reader: <code>clonecache()</code> function.</a>
+<ul>
+<li><a
+href="#examining-the-code-code-function.-making-a-graph-of-the-code-graphcode-function."
+id="toc-examining-the-code-code-function.-making-a-graph-of-the-code-graphcode-function."><span
+class="toc-section-number">1.1.3.1</span> Examining the code:
+<code>code()</code> function. Making a graph of the code:
+<code>graphcode()</code> function.</a></li>
+<li><a href="#tracing-code-backwards-objectcode-function."
+id="toc-tracing-code-backwards-objectcode-function."><span
+class="toc-section-number">1.1.3.2</span> Tracing code backwards:
+<code>objectcode()</code> function.</a></li>
+<li><a href="#running-code-runcode-function."
+id="toc-running-code-runcode-function."><span
+class="toc-section-number">1.1.3.3</span> Running code:
+<code>runcode()</code> function.</a></li>
+<li><a
+href="#checking-code-and-objects-checkcode-and-checkobjects-functions."
+id="toc-checking-code-and-objects-checkcode-and-checkobjects-functions."><span
+class="toc-section-number">1.1.3.4</span> Checking code and objects:
+<code>checkcode()</code> and <code>checkobjects()</code>
+functions.</a></li>
+<li><a href="#inspecting-data-objects-loadcache-function."
+id="toc-inspecting-data-objects-loadcache-function."><span
+class="toc-section-number">1.1.3.5</span> Inspecting data objects:
+<code>loadcache()</code> function.</a></li>
+</ul></li>
+<li><a href="#summary." id="toc-summary."><span
+class="toc-section-number">1.1.4</span> Summary.</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#reproducible-research-case-study-air-pollution."
+id="toc-reproducible-research-case-study-air-pollution."><span
+class="toc-section-number">2</span> Reproducible research case study:
+air pollution.</a>
+<ul>
+<li><a href="#what-causes-pm-to-be-toxic"
+id="toc-what-causes-pm-to-be-toxic"><span
+class="toc-section-number">2.1</span> What Causes PM to be
+Toxic?</a></li>
+<li><a href="#nmmaps" id="toc-nmmaps"><span
+class="toc-section-number">2.2</span> NMMAPS</a></li>
+<li><a href="#nmmaps-and-reproducibility"
+id="toc-nmmaps-and-reproducibility"><span
+class="toc-section-number">2.3</span> NMMAPS and
+Reproducibility</a></li>
+<li><a href="#what-causes-particulate-matter-to-be-toxic"
+id="toc-what-causes-particulate-matter-to-be-toxic"><span
+class="toc-section-number">2.4</span> What Causes Particulate Matter to
+be Toxic?</a></li>
+<li><a href="#a-reanalysis-of-the-lippmann-et-al.-study"
+id="toc-a-reanalysis-of-the-lippmann-et-al.-study"><span
+class="toc-section-number">2.5</span> A Reanalysis of the Lippmann
+<em>et al.</em> study</a></li>
+<li><a href="#does-nickel-make-pm-toxic"
+id="toc-does-nickel-make-pm-toxic"><span
+class="toc-section-number">2.6</span> Does Nickel Make PM
+Toxic?</a></li>
+<li><a href="#what-have-we-learned" id="toc-what-have-we-learned"><span
+class="toc-section-number">2.7</span> What Have We Learned?</a></li>
+</ul></li>
+<li><a href="#reproducible-research-case-study-high-throughput-biology."
+id="toc-reproducible-research-case-study-high-throughput-biology."><span
+class="toc-section-number">3</span> Reproducible research case study:
+high-throughput biology.</a></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">4</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="caching-in-literate-statistical-programming."
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Caching in literate
+statistical programming.</h1>
+<p>In the literate statistical program framework, we have the following
+situation:</p>
+<center>
+<img src="5_data/caching_slide18.png" style="width:60.0%" />
+</center>
+<ul>
+<li><p>Our paper has text and code.</p></li>
+<li><p>The code chunks do something with the data and we store the
+results and the code in some central, in some database.</p></li>
+<li><p>We have then the paper the figures and tables generated from the
+materials stored in the database.</p></li>
+</ul>
+<p>There are <strong>some R packages that implement this
+process</strong>.</p>
+<ul>
+<li><p>One is the <code>cacheSweave</code> package which we won’t talk
+about, but it <em>interacts with <code>Sweave</code></em>.</p></li>
+<li><p>Another one is the <code>cacher</code> package, which is <em>a
+stand alone package</em>.</p></li>
+</ul>
+<div id="the-cacher-package." class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> The
+<code>cacher</code> package.</h2>
+<p>This package <strong>assumes that we have some code in an R
+file</strong>. And, basically, it <strong>reads</strong> the code,
+<strong>evaluates</strong> it and <strong>stores the results</strong> in
+a <strong>key-value database</strong>.</p>
+<p>The R expressions are all given <strong>SHA-1 hash values</strong> so
+that changes can be tracked and code can be reevaluated if
+necessary.</p>
+<p>So, <strong>the idea</strong> is that we <em>put everything</em>, the
+code and data, <em>in a package</em> that we could <em>just give to
+someone</em>.</p>
+<ul>
+<li>We call this a <strong>cacher package</strong>.<br />
+</li>
+<li>Other people can <em>clone the analysis</em> and <em>look at
+subsets</em> of code or <em>inspect specific data objects</em>.<br />
+</li>
+<li>One assumption that we make here is that <strong>other people do not
+necessarily have the resources</strong> that we have.
+<ul>
+<li>So they <em>may not want to run the entire Markov chain Monte Carlo
+simulation</em> that we did to get the posterior distribution, or the
+histogram we’ve got at the end.<br />
+</li>
+<li>They might just want to look at specific end products of that.<br />
+</li>
+<li>And then maybe, when they see the end products, they decide to look
+at the whole MCMC.<br />
+</li>
+</ul></li>
+<li>But the idea is that one can kind of peel the onion a little bit
+rather than just go straight to the core.</li>
+</ul>
+<div id="the-conceptual-model." class="section level3" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> The conceptual
+model.</h3>
+<center>
+<img src="5_data/caching_slide20.png" style="width:60.0%" />
+</center>
+<ul>
+<li>We have some code that goes in. There’s data that goes in. And out
+comes results.</li>
+</ul>
+</div>
+<div id="using-cacher-as-an-author." class="section level3"
+number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> Using
+<code>cacher</code> as an author.</h3>
+<p>As author, the idea of cacher is that it <strong>parses the source
+file</strong> as follows:</p>
+<ul>
+<li>It <strong>creates directories and sub-directories</strong> <em>for
+storing things</em>.<br />
+</li>
+<li>Then it <strong>evaluates each expression</strong> and
+<strong>stores</strong> any resulting R objects in the cache database.
+In other words, as it runs expressions, it caches the results in the
+database.
+<ul>
+<li>If we run it multiple times and it happens that an expression hasn’t
+changed, it won’t run it again, it <em>just loads the results back from
+the database</em>.<br />
+</li>
+<li>If an expression does not creat any R objects (i.e., there’s nothing
+to cache), it adds the expression to the <em>list of expressions where
+evaluation needs to be forced</em>.<br />
+</li>
+<li>It also <em>writes out a bunch of metadata</em> for each expression,
+in a metadata file.</li>
+</ul></li>
+</ul>
+<p>Once it has evaluated our whole analysis (this might take a long
+time), all the intermediate results are stored in the database and we
+can <strong>wrap that up into a package</strong>.</p>
+<ul>
+<li>That’s <strong>the <code>cachepackage</code> function</strong> does.
+<ul>
+<li>It creates a cacher pakage, storing:
+<ul>
+<li><em>source file</em><br />
+</li>
+<li><em>cached data objects</em><br />
+</li>
+<li><em>metadata</em><br />
+</li>
+</ul></li>
+<li>The package just <strong>becomes a zip file</strong>, and it can be
+distributed to others.<br />
+</li>
+<li>Readers can unzip the file and immediately investigate its contents
+via <code>cacher</code> package.</li>
+</ul></li>
+</ul>
+<div id="example-a-simple-analysis." class="section level4"
+number="1.1.2.1">
+<h4><span class="header-section-number">1.1.2.1</span> Example: a simple
+analysis.</h4>
+<p>Here’s a very simple analysis.</p>
+<center>
+<img src="5_data/caching_slide23.png" style="width:60.0%" />
+</center>
+<ul>
+<li>Here we’re loading some packages, loading a dataset, fitting some
+simple linear model, then we summarize what the fit was -look at the
+regression coefficients- and finally we make a plot, just plotting some
+diagnostics.<br />
+</li>
+<li>So the idea is that <strong>any expression that does
+something</strong> then the <strong>results of that something</strong>
+are <strong>stored in the database</strong>.
+<ul>
+<li>If an expression doesn’t do anything (like printing something to the
+console) then, then <em>nothing is stored</em>.<br />
+</li>
+<li>An expression does something when it <strong>creates a
+variable</strong> or <strong>modifies a variable</strong>.<br />
+</li>
+<li>In R, if something is created in the <strong>environment</strong>,
+then that is stored.<br />
+</li>
+<li>So <strong>a figure does not count</strong>, <em>we don’t store the
+figure itself</em>.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="using-cacher-as-a-reader-clonecache-function."
+class="section level3" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> Using
+<code>cacher</code> as a reader: <code>clonecache()</code>
+function.</h3>
+<p>The <strong>package</strong> will have <strong>an identifier</strong>
+like the SHA-1 in the following example:</p>
+<center>
+<img src="5_data/caching_slide24.png" style="width:60.0%" />
+</center>
+<ul>
+<li>Everything about the research or article wrote by the author (data
+and code) can be found in the package with that identifier string.<br />
+</li>
+<li>It’s ugly, but <strong>we can just use the first four
+characters</strong>, that’s usually enough to identify the package
+itself.<br />
+</li>
+<li>So if we’re reading something like this in a journal, we could take
+that string and <strong>clone the whole thing</strong> using the
+<code>clonecache()</code> function.
+<ul>
+<li>This way, we can see what files were cached there and go through the
+analysis.</li>
+<li>Some local directories are created.<br />
+</li>
+<li>The <em>source code files</em> and the <em>metadata</em> <strong>are
+downloaded</strong>.
+<ul>
+<li>The <em>data themselves</em>, instead, are <strong>not downloaded
+initially</strong>. It could be a lot!<br />
+</li>
+<li>But <em>references to the various data objects</em> that have been
+created <strong>are loaded</strong>, so that they can be
+<strong>lazy-loaded into the environment on demand</strong>. Once we
+want to look at something, then it gets downloaded onto our
+computer.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div
+id="examining-the-code-code-function.-making-a-graph-of-the-code-graphcode-function."
+class="section level4" number="1.1.3.1">
+<h4><span class="header-section-number">1.1.3.1</span> Examining the
+code: <code>code()</code> function. Making a graph of the code:
+<code>graphcode()</code> function.</h4>
+<p>The reader could <strong>look at the code</strong> in the package
+using <strong>the <code>code()</code> function</strong>.</p>
+<p>Here’s an example of code performing a simple analysis:</p>
+<center>
+<img src="5_data/caching_slide26.png" style="width:60.0%" />
+</center>
+<p>We can also <strong>make a graph</strong> of the code just calling
+<strong>the <code>graphcode()</code> function</strong>.</p>
+<p>And here’s the outcome of the <code>graphcode()</code> function
+(called just like that, without any arguments) in the previous
+example:</p>
+<center>
+<img src="5_data/caching_slide27.png" style="width:60.0%" />
+</center>
+<ul>
+<li>This function takes all the data objects in our simple analysis
+example and it maps or graphs how they’ve kind of come together.<br />
+</li>
+<li>We can see how the three things on the top (the <code>cities</code>
+variable, the <code>classes</code> and the <code>vars</code> thing) came
+together to create the <code>data</code>.<br />
+</li>
+<li>Then the <code>data</code> is combined with the
+<code>quasipoisson</code> function to create
+<code>estimates</code>.<br />
+</li>
+<li>Finally, the <code>estimates</code> are used to create an
+<code>effect</code> and a <code>standard error</code>.</li>
+</ul>
+<p>This give then a <strong>rough graph</strong> of <strong>how the
+analysis worked</strong>.</p>
+<ul>
+<li>Of course the reader will have to do some further reading to figure
+out what exactly is going on here.<br />
+</li>
+<li>And here’s when the following topic comes into play.</li>
+</ul>
+</div>
+<div id="tracing-code-backwards-objectcode-function."
+class="section level4" number="1.1.3.2">
+<h4><span class="header-section-number">1.1.3.2</span> Tracing code
+backwards: <code>objectcode()</code> function.</h4>
+<p>We could for instance be interested in inspecting the
+<code>data</code> object, see what went into the creation of that
+object.</p>
+<p>We use for this <strong>the <code>objectcode()</code>
+function</strong>.</p>
+<center>
+<img src="5_data/caching_slide28.png" style="width:60.0%" />
+</center>
+<ul>
+<li>This funciont shows us the <strong>specific lines of code</strong>
+that were <strong>used to generate that object</strong>.<br />
+</li>
+<li>There may be different types of objects in the analysis. We can hone
+in on some of them and look at the specific coded that generated that
+object.</li>
+</ul>
+</div>
+<div id="running-code-runcode-function." class="section level4"
+number="1.1.3.3">
+<h4><span class="header-section-number">1.1.3.3</span> Running code:
+<code>runcode()</code> function.</h4>
+<p>We can also <strong>execute the code</strong> with <strong>the
+<code>runcode()</code> function</strong>.</p>
+<ul>
+<li>It runs the code, but <strong>in a way that it just loads
+things</strong> from the database <strong>without actually executing
+code by default</strong>.
+<ul>
+<li>Expressions that <em>results</em> in an object being created are
+<em>not</em> run and the resulting objects are <em>lazy-loaded</em> into
+de workspace.<br />
+</li>
+<li>Expressions <em>not resulting</em> in objects <em>are
+evaluated</em>.<br />
+</li>
+</ul></li>
+<li>So if we just want to run and see some results at the end as a first
+cut, then it’s not going to do everything from scratch by default. Thus,
+it’s a lot faster on the first go.<br />
+</li>
+<li>Then, of course, things that aren’t stored in the database will have
+to be generated (for example, a plot isn’t stored in the database and
+it’s still going to have be generated).</li>
+</ul>
+</div>
+<div
+id="checking-code-and-objects-checkcode-and-checkobjects-functions."
+class="section level4" number="1.1.3.4">
+<h4><span class="header-section-number">1.1.3.4</span> Checking code and
+objects: <code>checkcode()</code> and <code>checkobjects()</code>
+functions.</h4>
+<p>We can of course just <strong>force to run everything from
+scratch</strong> and do all the calculations from scratch.</p>
+<p>This is what <strong>the <code>checkcode()</code> function</strong>
+does.</p>
+<ul>
+<li>It evaluates all the expressions <strong>from scratch</strong>. It
+doesn’t load anything from the database, there’s no lazy-loading, it
+runs all straightaway.<br />
+</li>
+<li>Then the <strong>evaluations are checked against stored
+results</strong>.
+<ul>
+<li>If a function creates an object, when the author created the package
+the signature for that object was stored so that if we create the object
+again, it’ll <strong>check the signatures</strong> to see if they
+match.<br />
+</li>
+<li>Of course we’ve got to set things like <strong>random generator
+seeds</strong> for this kind of thing to work.</li>
+</ul></li>
+</ul>
+<p>There’s another function,
+<strong><code>checkobjects()</code></strong>, that verifies the
+<strong>integrity of each individual data object</strong>, checking for
+any possible corruption of data (i.e. in transit).</p>
+<ul>
+<li>It basically checks the signatures.</li>
+</ul>
+</div>
+<div id="inspecting-data-objects-loadcache-function."
+class="section level4" number="1.1.3.5">
+<h4><span class="header-section-number">1.1.3.5</span> Inspecting data
+objects: <code>loadcache()</code> function.</h4>
+<p>We can also load and look at specific data objects, with <strong>the
+<code>loadcache()</code> function</strong>.</p>
+<center>
+<img src="5_data/caching_slide31.png" style="width:60.0%" />
+</center>
+<ul>
+<li>This function just loads <strong>pointers to specific data
+objects</strong> that may be stored on a server or something like
+that.<br />
+</li>
+<li>Once we print something out to the screen or we want to make a plot,
+any time we access the object, it will <strong>transfer it from wherever
+it’s coming from</strong>.<br />
+</li>
+<li>So, in our example, the <code>cities</code> transferring occurs
+<em>from the cache database file</em> (we can see the signature there of
+that object) and then it prints, it shows us what it is.<br />
+</li>
+<li>Once it’s loaded into our system, it’s loaded for good. We don’t
+have to do it every single time, just the first time.</li>
+</ul>
+</div>
+</div>
+<div id="summary." class="section level3" number="1.1.4">
+<h3><span class="header-section-number">1.1.4</span> Summary.</h3>
+<ul>
+<li><p>With the <code>cacher</code> package, <strong>authors</strong>
+can <em>create cache packages</em> from their data analysis <em>for
+distribution</em>.</p></li>
+<li><p>Then readers can use the <code>cacher</code> package to ispect
+others’ data analyses by examining cached computations (download the
+analysis and look at specific objects or maybe rerun the whole
+thing).</p></li>
+<li><p><code>cacher</code> package is <strong>mindful of readers’
+resources</strong>.</p>
+<ul>
+<li><p>It efficiently loads only those data objects that are
+needed.</p></li>
+<li><p>In other words, there’s flexibility in terms of not having to
+recreate the entire environment if it’s a very complicated type of
+thing.</p></li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="reproducible-research-case-study-air-pollution."
+class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Reproducible research
+case study: air pollution.</h1>
+<div id="what-causes-pm-to-be-toxic" class="section level2"
+number="2.1">
+<h2><span class="header-section-number">2.1</span> What Causes PM to be
+Toxic?</h2>
+<ul>
+<li><p>PM is composed of many different chemical elements</p></li>
+<li><p>Some components of PM may be more harmful than others</p></li>
+<li><p>Some sources of PM may be more dangerous than others</p></li>
+<li><p>Identifying harmful chemical constituents may lead us to
+strategies for controlling sources of PM</p></li>
+</ul>
+</div>
+<div id="nmmaps" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> NMMAPS</h2>
+<ul>
+<li><p>The National Morbidity, Mortality, and Air Pollution Study
+(NMMAPS) was a national study of the short-term health effects of
+ambient air pollution</p></li>
+<li><p>Focused primarily on particulate matter (<span
+class="math inline">\(PM_{10}\)</span>) and ozone (<span
+class="math inline">\(O_3\)</span>)</p></li>
+<li><p>Health outcomes included mortality from all causes and
+hospitalizations for cardiovascular and respiratory diseases</p></li>
+<li><p>Key publications</p>
+<ul>
+<li><p><a href="http://www.ncbi.nlm.nih.gov/pubmed/11098531"
+class="uri">http://www.ncbi.nlm.nih.gov/pubmed/11098531</a></p></li>
+<li><p><a href="http://www.ncbi.nlm.nih.gov/pubmed/11354823"
+class="uri">http://www.ncbi.nlm.nih.gov/pubmed/11354823</a></p></li>
+</ul></li>
+<li><p>Funded by the <a href="http://www.healtheffects.org">Health
+Effects Institute</a></p></li>
+</ul>
+</div>
+<div id="nmmaps-and-reproducibility" class="section level2"
+number="2.3">
+<h2><span class="header-section-number">2.3</span> NMMAPS and
+Reproducibility</h2>
+<ul>
+<li><p>Data made available at the Internet-based Health and Air
+Pollution Surveillance System (<a href="http://www.ihapss.jhsph.edu"
+class="uri">http://www.ihapss.jhsph.edu</a>)</p></li>
+<li><p>Research results <strong>and software</strong> also available at
+iHAPSS</p></li>
+<li><p>Many studies (over 67 published) have been conducted based on the
+public data <a href="http://www.ncbi.nlm.nih.gov/pubmed/22475833"
+class="uri">http://www.ncbi.nlm.nih.gov/pubmed/22475833</a></p></li>
+<li><p>Has served as an important test bed for methodological
+development</p></li>
+</ul>
+</div>
+<div id="what-causes-particulate-matter-to-be-toxic"
+class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> What Causes
+Particulate Matter to be Toxic?</h2>
+<p><img src="5_data/lippmann.png" style="width:90.0%" /></p>
+<p><a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1665439/"
+class="uri">http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1665439/</a></p>
+<ul>
+<li><p>Lippmann <em>et al.</em> found strong evidence that Ni modified
+the short-term effect of <span class="math inline">\(PM_{10}\)</span>
+across 60 US communities</p></li>
+<li><p>No other PM chemical constituent seemed to have the same
+modifying effect</p></li>
+<li><p>To simple to be true?</p></li>
+</ul>
+</div>
+<div id="a-reanalysis-of-the-lippmann-et-al.-study"
+class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> A Reanalysis of the
+Lippmann <em>et al.</em> study</h2>
+<p><img src="5_data/dominici.png" style="width:90.0%" /></p>
+<p><a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2137127/"
+class="uri">http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2137127/</a></p>
+<ul>
+<li><p>Reexamine the data from NMMAPS and link with PM chemical
+constituent data</p></li>
+<li><p>Are the findings sensitive to levels of Nickel in New York
+City?</p></li>
+</ul>
+</div>
+<div id="does-nickel-make-pm-toxic" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Does Nickel Make PM
+Toxic?</h2>
+<center>
+<img src="5_data/nickel-beta.png" style="width:55.0%" />
+</center>
+<ul>
+<li><p>Long-term average nickel concentrations appear correlated with PM
+risk</p></li>
+<li><p>There appear to be some outliers on the right-hand side (it turns
+out that they are three counties in New York City - NYC is composed of
+five counties)</p></li>
+</ul>
+<center>
+<img src="5_data/nickel-beta-lm.png" style="width:55.0%" />
+</center>
+<ul>
+<li><p>The positive slope indicates a positive correlation, so that more
+nickel is associated with a greater risk of mortality from PM.</p></li>
+<li><p>And the regression line appears as statistically significant
+(<span class="math inline">\(p &lt; 0.01\)</span>)</p></li>
+<li><p>This was the conclusion of the original paper.</p></li>
+</ul>
+<center>
+<img src="5_data/nickel-beta-lm-no-ny.png" style="width:55.0%" />
+</center>
+<ul>
+<li><p>However, if we just remove the outlying points (in particular the
+points that are in New York City where nickel levels are very high) and
+we redo the regression line (the blue one), we see that <strong>the
+adjusted regression line is no longer statistically significant (<span
+class="math inline">\(p &lt; 0.31\)</span>)</strong>.</p></li>
+<li><p>So those three points to the right we took off, are called
+<strong>high leverage points</strong>. And the regression line <em>can
+be very sensitive to high leverage points</em>.</p></li>
+</ul>
+<center>
+<img src="5_data/ni-leaveout.png" style="width:50.0%" />
+</center>
+<ul>
+<li><p>There were 60 communities in the original study.</p></li>
+<li><p>Here, we went through each one and just redid the analysis by
+removing one community. Just to see if there were any particular
+communities that the analysis was sensitive to.</p></li>
+<li><p>And we can see that all the black dots <strong>represent the
+slopes of the regression line</strong> when we remove a given
+community.</p></li>
+<li><p>Because they’re all clustered around the same value, we can see
+that for the most part the regression line is not sensitive to removing
+any individual community from the dataset.</p></li>
+<li><p>However, the red dot and red line at the very bottom indicates
+the slope estimate and the 95% confidence interval <strong>when we
+remove New York</strong>.</p>
+<ul>
+<li><p>The slope estimate goes down quite a bit and the confidence
+intervals goes up (it gets quite a bit wider than all of the other
+dots).</p></li>
+<li><p>And so, that’s another indication that the slope estimate of that
+regression line is very sensitive high leverage points.</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="what-have-we-learned" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> What Have We
+Learned?</h2>
+<ul>
+<li><p>New York does have very high levels of nickel and vanadium, much
+higher than any other US community</p></li>
+<li><p>There is evidence of a positive relationship between Ni
+concentrations and <span class="math inline">\(PM_{10}\)</span>
+risk</p></li>
+<li><p>The strength of this relationship is highly sensitive to the
+observations from New York City</p></li>
+<li><p>Most of the information in the data is derived from just 3
+observations</p></li>
+<li><p><strong><em>Reproducibility</em></strong> of NMMAPS allowed for a
+secondary analysis (and linking with PM chemical constituent data)
+investigating a novel hypothesis (Lippmann <em>et al.</em>)</p></li>
+<li><p><strong><em>Reproducibility</em></strong> also allowed for a
+critique of that new analysis and some additional new analysis (Dominici
+<em>et al.</em>)</p></li>
+<li><p><strong>Original hypothesis</strong> not necessarily invalidated,
+but evidence <strong>not as strong as originally suggested</strong>
+(more work should be done)</p></li>
+<li><p><strong><em>Reproducibility</em></strong> allows for the
+scientific discussion to occur in a timely and informed manner</p></li>
+<li><p>This is how science works</p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="reproducible-research-case-study-high-throughput-biology."
+class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Reproducible research
+case study: high-throughput biology.</h1>
+<p>This section is a Keith Baggerly lecture, who is a professor in the
+Biostatistics and Bioinformatics Department at the MD Anderson Cancer
+Center, about a case that happened with some researchers at Duke
+University regarding using high dimensional genomic signatures in cancer
+outcomes.</p>
+<p>We can find the lecture at this link:</p>
+<p><a
+href="http://videolectures.net/cancerbioinformatics2010_baggerly_irrh/"
+class="uri">http://videolectures.net/cancerbioinformatics2010_baggerly_irrh/</a></p>
+<ul>
+<li>The data and analysis being dissected relate to the now famous
+<strong>Duke/Potti controversy</strong> described by:
+<ul>
+<li>the <a
+href="http://www.nytimes.com/2011/07/08/health/research/08genes.html">New
+York Times</a><br />
+</li>
+<li>also <a href="http://www.cbsnews.com/video/watch/?id=7398476n">60
+minutes</a><br />
+</li>
+<li>and others.<br />
+</li>
+</ul></li>
+<li>The work of Biostatisticians <strong>Keith Baggerly and Kevin
+Coombes</strong> ultimately <em>led to the retraction of ten papers by
+Potti</em>, and the <em>cancellation of clinical trials</em>.<br />
+</li>
+<li>A recent <a
+href="http://www.nature.com/naturejobs/science/articles/10.1038/nj7396-137a">Nature
+article</a> provides a follow-up and guidance for uncovering research
+misconduct.<br />
+</li>
+<li>This is an interesting case study on:
+<ul>
+<li>the <strong>importance of being able to reproduce complicated
+computational analyses</strong>;<br />
+</li>
+<li>how some very problematic work from an otherwise productive and
+potentially useful area of research (personalized chemotherapy
+prediction) went horribly wrong;<br />
+</li>
+<li>and how we might use this experience to promote transparent, open
+source, and reproducible research in bioinformatics. For example, by
+using things like <code>Sweave</code>. Another approach is to use,
+<code>Rmarkdown</code> and <code>Knitr</code>.</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+<div id="session-info." class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Session Info.</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] xtable_1<span class="fl">.8</span><span class="dv">-4</span>       kernlab_0<span class="fl">.9</span><span class="dv">-29</span>     R.utils_2.<span class="fl">10.1</span>     R.oo_1.<span class="fl">24.0</span>       </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] R.methodsS3_1.<span class="fl">8.1</span>  impute_1.<span class="fl">60.0</span>      RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> maps_3.<span class="fl">3.0</span>        </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] stringr_1.<span class="fl">4.0</span>      lubridate_1.<span class="fl">9.2</span>    quantmod_0.<span class="fl">4.20</span>    TTR_0.<span class="fl">24.2</span>        </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] xts_0.<span class="fl">12.1</span>         zoo_1<span class="fl">.8</span><span class="dv">-9</span>          readr_2.<span class="fl">0.1</span>        tidyr_1.<span class="fl">2.0</span>       </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] dplyr_1.<span class="fl">0.8</span>        reshape2_1.<span class="fl">4.4</span>     Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>        ggplot2_3.<span class="fl">3.5</span>     </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] Formula_1<span class="fl">.2</span><span class="dv">-3</span>      survival_3<span class="fl">.4</span><span class="dv">-0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>    jpeg_0<span class="fl">.1-8.1</span>      </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] gitignore_0.<span class="fl">1.3</span>    rhdf5_2.<span class="fl">30.1</span>       httr_1.<span class="fl">4.2</span>         httpuv_1.<span class="fl">6.3</span>      </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] sqldf_0<span class="fl">.4</span><span class="dv">-11</span>       RSQLite_2.<span class="fl">2.0</span>      gsubfn_0<span class="fl">.7</span>         proto_1.<span class="fl">0.0</span>       </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] DBI_1.<span class="fl">1.1</span>          data.table_1.<span class="fl">14.0</span>  jsonlite_1.<span class="fl">7.2</span>     XML_3<span class="fl">.99-0.3</span>      </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] xlsx_0.<span class="fl">6.3</span>         plyr_1.<span class="fl">8.6</span>        </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    ellipsis_0.<span class="fl">3.2</span>      htmlTable_2.<span class="fl">0.1</span>    </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] bit64_4.<span class="fl">0.5</span>         fansi_1.<span class="fl">0.2</span>         splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] knitr_1<span class="fl">.41</span>          rJava_0<span class="fl">.9</span><span class="dv">-13</span>        cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           clipr_0.<span class="fl">7.1</span>         compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] backports_1.<span class="fl">4.1</span>     assertthat_0.<span class="fl">2.1</span>    Matrix_1<span class="fl">.5</span><span class="dv">-1</span>       </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] fastmap_1.<span class="fl">1.0</span>       cli_3.<span class="fl">6.0</span>           later_1.<span class="fl">3.0</span>        </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] formatR_1<span class="fl">.14</span>        acepack_1.<span class="fl">4.1</span>       htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] tools_3.<span class="fl">6.3</span>         gtable_0.<span class="fl">3.0</span>        glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] Rcpp_1.<span class="fl">0.7</span>          jquerylib_0.<span class="fl">1.4</span>     vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        xfun_0<span class="fl">.36</span>           xlsxjars_0.<span class="fl">6.1</span>     </span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] timechange_0.<span class="fl">2.0</span>    lifecycle_1.<span class="fl">0.3</span>     scales_1.<span class="fl">1.1</span>       </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] vroom_1.<span class="fl">5.5</span>         hms_1.<span class="fl">1.0</span>           promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>   </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] parallel_3.<span class="fl">6.3</span>      yaml_2.<span class="fl">2.1</span>          curl_4.<span class="fl">3.2</span>         </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] memoise_1.<span class="fl">1.0</span>       gridExtra_2<span class="fl">.3</span>       sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] rpart_4.<span class="fl">1.19</span>        latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] highr_0<span class="fl">.9</span>           checkmate_2.<span class="fl">0.0</span>     chron_2<span class="fl">.3</span><span class="dv">-55</span>       </span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] rlang_1.<span class="fl">0.6</span>         pkgconfig_2.<span class="fl">0.3</span>     evaluate_0<span class="fl">.19</span>      </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] purrr_0.<span class="fl">3.4</span>         Rhdf5lib_1.<span class="fl">8.0</span>      htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] labeling_0.<span class="fl">4.2</span>      bit_4.<span class="fl">0.4</span>           tidyselect_1.<span class="fl">2.0</span>   </span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] magrittr_2.<span class="fl">0.2</span>      R6_2.<span class="fl">5.1</span>            generics_0.<span class="fl">1.2</span>     </span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] pillar_1.<span class="fl">7.0</span>        foreign_0<span class="fl">.8</span><span class="dv">-76</span>      withr_2.<span class="fl">5.0</span>        </span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         nnet_7<span class="fl">.3</span><span class="dv">-18</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] crayon_1.<span class="fl">5.0</span>        KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span>  utf8_1.<span class="fl">2.2</span>         </span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] tzdb_0.<span class="fl">3.0</span>          rmarkdown_2<span class="fl">.11</span>      grid_3.<span class="fl">6.3</span>         </span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] blob_1.<span class="fl">2.2</span>          digest_0.<span class="fl">6.29</span>       openssl_2.<span class="fl">0.5</span>      </span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] munsell_0.<span class="fl">5.0</span>       viridisLite_0.<span class="fl">4.0</span>   bslib_0.<span class="fl">3.0</span>        </span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>[<span class="dv">82</span>] tcltk_3.<span class="fl">6.3</span>         askpass_1<span class="fl">.1</span>        </span></code></pre></div>
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

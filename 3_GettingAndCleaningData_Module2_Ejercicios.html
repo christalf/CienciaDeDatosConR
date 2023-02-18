@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Getting and Cleaning Data</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Getting and Cleaning Data</h1>
+<h3 class="subtitle">Módulo 2 - Ejercitación</h3>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#aclaración" id="toc-aclaración"><span
+class="toc-section-number">1</span> Aclaración</a></li>
+<li><a href="#primer-ejercicio---comandos-sql"
+id="toc-primer-ejercicio---comandos-sql"><span
+class="toc-section-number">2</span> Primer ejercicio - Comandos
+SQL</a></li>
+<li><a href="#segundo-ejercicio---github-api"
+id="toc-segundo-ejercicio---github-api"><span
+class="toc-section-number">3</span> Segundo ejercicio - Github
+API</a></li>
+<li><a href="#tercer-ejercicio---files-de-formato-fijo"
+id="toc-tercer-ejercicio---files-de-formato-fijo"><span
+class="toc-section-number">4</span> Tercer ejercicio - Files de formato
+fijo</a></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">5</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="aclaración" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Aclaración</h1>
+<p>Estos ejercicios ya están integrados y desarrollados en los
+correspondientes temas de la página del módulo 2. Se vuelven a poner
+aquí para destacar que estos fueron los ejercicios requeridos por el
+curso en forma separada para evaluar el desempeño.</p>
+<hr />
+</div>
+<div id="primer-ejercicio---comandos-sql" class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Primer ejercicio -
+Comandos SQL</h1>
+<p>Comandos SQL con el paquete <code>sqldf</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the sqldf package to manipulate R data frames with SQL commands.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Remember:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># in order to use `sqldf` package we need to load only that package, it doesn’t</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># need RMySQL or any other like that; if both sqldf and RMySQL are loaded, there</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># could be problems so we should better deattach RMySQL.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="st">&quot;RMySQL&quot;</span> <span class="sc">%in%</span> (<span class="fu">.packages</span>())) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">detach</span>(<span class="st">&quot;package:RMySQL&quot;</span>, <span class="at">unload =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sqldf)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> gsubfn</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> proto</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> RSQLite</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the American Survey data and load it into an R object.</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#acs &lt;- read.csv(&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv&quot;)</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># En las sucesivas ejecuciones de este script, por las dudas el link de descarga no</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># funcione, conviene descargar el file y leerlo en local (pesa 11 MB aprox)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv&quot;,</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#               destfile = &quot;./3_data/acs.csv&quot;, method = &quot;curl&quot;)</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>acs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;3_data/acs.csv&quot;</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(acs)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;data.frame&quot;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(acs)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">14931</span>   <span class="dv">239</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL command to select only the data for the probability weights &quot;pwgtp1&quot;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># with ages less than 50.</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">sqldf</span>(<span class="st">&quot;select pwgtp1 from acs where AGEP &lt; 50&quot;</span>), <span class="dv">30</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>   pwgtp1</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>      <span class="dv">87</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>      <span class="dv">88</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>      <span class="dv">94</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>      <span class="dv">91</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>     <span class="dv">539</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>     <span class="dv">192</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>     <span class="dv">153</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>     <span class="dv">232</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>     <span class="dv">205</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>    <span class="dv">226</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>    <span class="dv">225</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>    <span class="dv">109</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>    <span class="dv">129</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>    <span class="dv">115</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>    <span class="dv">162</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>    <span class="dv">190</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>    <span class="dv">192</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>    <span class="dv">185</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>    <span class="dv">186</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>     <span class="dv">26</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>    <span class="dv">157</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>     <span class="dv">15</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>     <span class="dv">36</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>    <span class="dv">307</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>     <span class="dv">18</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>     <span class="dv">43</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>    <span class="dv">137</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>     <span class="dv">49</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>     <span class="dv">69</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>     <span class="dv">71</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Just checking.</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">sqldf</span>(<span class="st">&quot;select pwgtp1, AGEP from acs where AGEP &lt; 50&quot;</span>), <span class="dv">30</span>)</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>   pwgtp1 AGEP</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>      <span class="dv">87</span>   <span class="dv">43</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>      <span class="dv">88</span>   <span class="dv">42</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>      <span class="dv">94</span>   <span class="dv">16</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>      <span class="dv">91</span>   <span class="dv">14</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>     <span class="dv">539</span>   <span class="dv">29</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>     <span class="dv">192</span>   <span class="dv">40</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>     <span class="dv">153</span>   <span class="dv">15</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>     <span class="dv">232</span>   <span class="dv">28</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>     <span class="dv">205</span>   <span class="dv">30</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>    <span class="dv">226</span>    <span class="dv">4</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>    <span class="dv">225</span>    <span class="dv">1</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>    <span class="dv">109</span>   <span class="dv">40</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>    <span class="dv">129</span>   <span class="dv">42</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>    <span class="dv">115</span>   <span class="dv">18</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>    <span class="dv">162</span>   <span class="dv">16</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>    <span class="dv">190</span>   <span class="dv">37</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>    <span class="dv">192</span>   <span class="dv">39</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>    <span class="dv">185</span>    <span class="dv">4</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>    <span class="dv">186</span>    <span class="dv">3</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>     <span class="dv">26</span>   <span class="dv">28</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>    <span class="dv">157</span>   <span class="dv">49</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>     <span class="dv">15</span>   <span class="dv">45</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>     <span class="dv">36</span>   <span class="dv">37</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>    <span class="dv">307</span>   <span class="dv">15</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>     <span class="dv">18</span>   <span class="dv">39</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>     <span class="dv">43</span>   <span class="dv">40</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>    <span class="dv">137</span>   <span class="dv">39</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>     <span class="dv">49</span>   <span class="dv">35</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>     <span class="dv">69</span>   <span class="dv">12</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>     <span class="dv">71</span>   <span class="dv">49</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(acs<span class="sc">$</span>AGEP)</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>   <span class="fl">0.00</span>   <span class="fl">16.00</span>   <span class="fl">37.00</span>   <span class="fl">37.05</span>   <span class="fl">55.00</span>   <span class="fl">93.00</span> </span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="fu">sqldf</span>(<span class="st">&quot;SELECT count(pwgtp1) FROM acs WHERE AGEP &lt; 50&quot;</span>)</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> namespace <span class="st">&#39;readr&#39;</span> is not available and has been replaced</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>by .GlobalEnv when processing object <span class="st">&#39;name&#39;</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(pwgtp1)</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>         <span class="dv">10093</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">sqldf</span>(<span class="st">&quot;SELECT count(pwgtp1) FROM acs&quot;</span>)</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(pwgtp1)</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>         <span class="dv">14931</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL command equivalent to &quot;unique(acs$AGEP)&quot;.</span></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(acs<span class="sc">$</span>AGEP)</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="dv">43</span> <span class="dv">42</span> <span class="dv">16</span> <span class="dv">14</span> <span class="dv">29</span> <span class="dv">40</span> <span class="dv">15</span> <span class="dv">28</span> <span class="dv">30</span>  <span class="dv">4</span>  <span class="dv">1</span> <span class="dv">18</span> <span class="dv">37</span> <span class="dv">39</span>  <span class="dv">3</span> <span class="dv">87</span> <span class="dv">70</span> <span class="dv">49</span> <span class="dv">45</span> <span class="dv">50</span> <span class="dv">60</span> <span class="dv">59</span> <span class="dv">61</span> <span class="dv">64</span> <span class="dv">35</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>[<span class="dv">26</span>] <span class="dv">12</span> <span class="dv">19</span> <span class="dv">31</span>  <span class="dv">9</span>  <span class="dv">0</span> <span class="dv">33</span> <span class="dv">32</span> <span class="dv">20</span> <span class="dv">88</span> <span class="dv">53</span> <span class="dv">58</span> <span class="dv">69</span> <span class="dv">68</span> <span class="dv">48</span> <span class="dv">24</span> <span class="dv">27</span> <span class="dv">74</span> <span class="dv">56</span> <span class="dv">75</span> <span class="dv">17</span> <span class="dv">38</span> <span class="dv">55</span> <span class="dv">26</span> <span class="dv">23</span> <span class="dv">86</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>[<span class="dv">51</span>] <span class="dv">81</span> <span class="dv">77</span>  <span class="dv">7</span> <span class="dv">51</span> <span class="dv">13</span> <span class="dv">11</span> <span class="dv">82</span> <span class="dv">47</span> <span class="dv">46</span> <span class="dv">80</span> <span class="dv">21</span> <span class="dv">54</span> <span class="dv">78</span> <span class="dv">67</span> <span class="dv">22</span>  <span class="dv">2</span> <span class="dv">76</span>  <span class="dv">6</span> <span class="dv">71</span> <span class="dv">34</span> <span class="dv">10</span>  <span class="dv">5</span> <span class="dv">65</span> <span class="dv">62</span> <span class="dv">63</span></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] <span class="dv">57</span> <span class="dv">52</span> <span class="dv">79</span> <span class="dv">83</span> <span class="dv">66</span> <span class="dv">25</span> <span class="dv">93</span>  <span class="dv">8</span> <span class="dv">36</span> <span class="dv">41</span> <span class="dv">44</span> <span class="dv">84</span> <span class="dv">72</span> <span class="dv">73</span> <span class="dv">85</span> <span class="dv">89</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="fu">sqldf</span>(<span class="st">&quot;SELECT distinct AGEP FROM acs&quot;</span>)</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>   AGEP</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>    <span class="dv">43</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>    <span class="dv">42</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>    <span class="dv">16</span></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>    <span class="dv">14</span></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>    <span class="dv">29</span></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>    <span class="dv">40</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>    <span class="dv">15</span></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>    <span class="dv">28</span></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>    <span class="dv">30</span></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>    <span class="dv">4</span></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>    <span class="dv">1</span></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>   <span class="dv">18</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>   <span class="dv">37</span></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>   <span class="dv">39</span></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>    <span class="dv">3</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>   <span class="dv">87</span></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>   <span class="dv">70</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>   <span class="dv">49</span></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>   <span class="dv">45</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>   <span class="dv">50</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>   <span class="dv">60</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>   <span class="dv">59</span></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>   <span class="dv">61</span></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>   <span class="dv">64</span></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>   <span class="dv">35</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>   <span class="dv">12</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>   <span class="dv">19</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>   <span class="dv">31</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>    <span class="dv">9</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>    <span class="dv">0</span></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>   <span class="dv">33</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>   <span class="dv">32</span></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>   <span class="dv">20</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>   <span class="dv">88</span></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>   <span class="dv">53</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>   <span class="dv">58</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>   <span class="dv">69</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>   <span class="dv">68</span></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>   <span class="dv">48</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="dv">40</span>   <span class="dv">24</span></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="dv">41</span>   <span class="dv">27</span></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span>   <span class="dv">74</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span>   <span class="dv">56</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="dv">44</span>   <span class="dv">75</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="dv">45</span>   <span class="dv">17</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="dv">46</span>   <span class="dv">38</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="dv">47</span>   <span class="dv">55</span></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="dv">48</span>   <span class="dv">26</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="dv">49</span>   <span class="dv">23</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="dv">50</span>   <span class="dv">86</span></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="dv">51</span>   <span class="dv">81</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="dv">52</span>   <span class="dv">77</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="dv">53</span>    <span class="dv">7</span></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="dv">54</span>   <span class="dv">51</span></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="dv">55</span>   <span class="dv">13</span></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="dv">56</span>   <span class="dv">11</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="dv">57</span>   <span class="dv">82</span></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="dv">58</span>   <span class="dv">47</span></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="dv">59</span>   <span class="dv">46</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="dv">60</span>   <span class="dv">80</span></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="dv">61</span>   <span class="dv">21</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="dv">62</span>   <span class="dv">54</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="dv">63</span>   <span class="dv">78</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="dv">64</span>   <span class="dv">67</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="dv">65</span>   <span class="dv">22</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="dv">66</span>    <span class="dv">2</span></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="dv">67</span>   <span class="dv">76</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="dv">68</span>    <span class="dv">6</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="dv">69</span>   <span class="dv">71</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="dv">70</span>   <span class="dv">34</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a><span class="dv">71</span>   <span class="dv">10</span></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="dv">72</span>    <span class="dv">5</span></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="dv">73</span>   <span class="dv">65</span></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="dv">74</span>   <span class="dv">62</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="dv">75</span>   <span class="dv">63</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="dv">76</span>   <span class="dv">57</span></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="dv">77</span>   <span class="dv">52</span></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="dv">78</span>   <span class="dv">79</span></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="dv">79</span>   <span class="dv">83</span></span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a><span class="dv">80</span>   <span class="dv">66</span></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a><span class="dv">81</span>   <span class="dv">25</span></span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a><span class="dv">82</span>   <span class="dv">93</span></span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a><span class="dv">83</span>    <span class="dv">8</span></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a><span class="dv">84</span>   <span class="dv">36</span></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a><span class="dv">85</span>   <span class="dv">41</span></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a><span class="dv">86</span>   <span class="dv">44</span></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="dv">87</span>   <span class="dv">84</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="dv">88</span>   <span class="dv">72</span></span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a><span class="dv">89</span>   <span class="dv">73</span></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="dv">90</span>   <span class="dv">85</span></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="dv">91</span>   <span class="dv">89</span></span></code></pre></div>
+<hr />
+</div>
+<div id="segundo-ejercicio---github-api" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Segundo ejercicio -
+Github API</h1>
+<p>Acceso a la API de Github con el paquete <code>httr</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GitHub API access through &quot;httr&quot; R package (OAuth protocol)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httpuv)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># This function provides some common OAuth endpoints (linkedin, twitter,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># vimeo, google, facebook, github, azure).</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">oauth_endpoints</span>(<span class="st">&quot;github&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>oauth_endpoint<span class="sc">&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a> authorize<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>login<span class="sc">/</span>oauth<span class="sc">/</span>authorize</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a> access<span class="sc">:</span>    https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>login<span class="sc">/</span>oauth<span class="sc">/</span>access_token</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an OAuth app.</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>myapp <span class="ot">&lt;-</span> <span class="fu">oauth_app</span>(<span class="st">&quot;github&quot;</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">key =</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;GITHUB_API_KEY&quot;</span>),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">secret =</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;GITHUB_API_SECRET_KEY&quot;</span>))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Get OAuth credentials.</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># - Esta instrucción abre una página web donde hay que autenticarse para</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   tener acceso a la API de Github.</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>github_token <span class="ot">&lt;-</span> <span class="fu">oauth2.0_token</span>(<span class="fu">oauth_endpoints</span>(<span class="st">&quot;github&quot;</span>), myapp)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the API.</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Get request from Jeff Leek&#39;s repositories.</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>gtoken <span class="ot">&lt;-</span> <span class="fu">config</span>(<span class="at">token =</span> github_token)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>req <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="st">&quot;https://api.github.com/users/jtleek/repos&quot;</span>, gtoken)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>req</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>Response [https<span class="sc">:</span><span class="er">//</span>api.github.com<span class="sc">/</span>users<span class="sc">/</span>jtleek<span class="sc">/</span>repos]</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  Date<span class="sc">:</span> <span class="dv">2023-02-18</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">03</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  Status<span class="sc">:</span> <span class="dv">200</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  Content<span class="sc">-</span>Type<span class="sc">:</span> application<span class="sc">/</span>json; charset<span class="ot">=</span>utf<span class="dv">-8</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  Size<span class="sc">:</span> <span class="dv">169</span> kB</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>[</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="sc">:</span> <span class="dv">155565363</span>,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;node_id&quot;</span><span class="sc">:</span> <span class="st">&quot;MDEwOlJlcG9zaXRvcnkxNTU1NjUzNjM=&quot;</span>,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;name&quot;</span><span class="sc">:</span> <span class="st">&quot;2018&quot;</span>,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;full_name&quot;</span><span class="sc">:</span> <span class="st">&quot;jtleek/2018&quot;</span>,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;private&quot;</span><span class="sc">:</span> false,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;owner&quot;</span><span class="sc">:</span> {</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;login&quot;</span><span class="sc">:</span> <span class="st">&quot;jtleek&quot;</span>,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;id&quot;</span><span class="sc">:</span> <span class="dv">1571674</span>,</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="do">## Convert http errors to R errors or warnings.</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="fu">stop_for_status</span>(req)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract content from the response object.</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>json1 <span class="ot">&lt;-</span> <span class="fu">content</span>(req)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(json1)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;list&quot;</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="do">## Convert it to data.frame.</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>gitdf <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(<span class="fu">toJSON</span>(json1))</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(gitdf)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;data.frame&quot;</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(gitdf)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">30</span> <span class="dv">80</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gitdf)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;id&quot;</span>                          <span class="st">&quot;node_id&quot;</span>                    </span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] <span class="st">&quot;name&quot;</span>                        <span class="st">&quot;full_name&quot;</span>                  </span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] <span class="st">&quot;private&quot;</span>                     <span class="st">&quot;owner&quot;</span>                      </span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;html_url&quot;</span>                    <span class="st">&quot;description&quot;</span>                </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] <span class="st">&quot;fork&quot;</span>                        <span class="st">&quot;url&quot;</span>                        </span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] <span class="st">&quot;forks_url&quot;</span>                   <span class="st">&quot;keys_url&quot;</span>                   </span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;collaborators_url&quot;</span>           <span class="st">&quot;teams_url&quot;</span>                  </span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>[<span class="dv">15</span>] <span class="st">&quot;hooks_url&quot;</span>                   <span class="st">&quot;issue_events_url&quot;</span>           </span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] <span class="st">&quot;events_url&quot;</span>                  <span class="st">&quot;assignees_url&quot;</span>              </span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;branches_url&quot;</span>                <span class="st">&quot;tags_url&quot;</span>                   </span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] <span class="st">&quot;blobs_url&quot;</span>                   <span class="st">&quot;git_tags_url&quot;</span>               </span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>[<span class="dv">23</span>] <span class="st">&quot;git_refs_url&quot;</span>                <span class="st">&quot;trees_url&quot;</span>                  </span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;statuses_url&quot;</span>                <span class="st">&quot;languages_url&quot;</span>              </span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>[<span class="dv">27</span>] <span class="st">&quot;stargazers_url&quot;</span>              <span class="st">&quot;contributors_url&quot;</span>           </span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] <span class="st">&quot;subscribers_url&quot;</span>             <span class="st">&quot;subscription_url&quot;</span>           </span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] <span class="st">&quot;commits_url&quot;</span>                 <span class="st">&quot;git_commits_url&quot;</span>            </span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] <span class="st">&quot;comments_url&quot;</span>                <span class="st">&quot;issue_comment_url&quot;</span>          </span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>[<span class="dv">35</span>] <span class="st">&quot;contents_url&quot;</span>                <span class="st">&quot;compare_url&quot;</span>                </span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] <span class="st">&quot;merges_url&quot;</span>                  <span class="st">&quot;archive_url&quot;</span>                </span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>[<span class="dv">39</span>] <span class="st">&quot;downloads_url&quot;</span>               <span class="st">&quot;issues_url&quot;</span>                 </span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] <span class="st">&quot;pulls_url&quot;</span>                   <span class="st">&quot;milestones_url&quot;</span>             </span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] <span class="st">&quot;notifications_url&quot;</span>           <span class="st">&quot;labels_url&quot;</span>                 </span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>[<span class="dv">45</span>] <span class="st">&quot;releases_url&quot;</span>                <span class="st">&quot;deployments_url&quot;</span>            </span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>[<span class="dv">47</span>] <span class="st">&quot;created_at&quot;</span>                  <span class="st">&quot;updated_at&quot;</span>                 </span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] <span class="st">&quot;pushed_at&quot;</span>                   <span class="st">&quot;git_url&quot;</span>                    </span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>[<span class="dv">51</span>] <span class="st">&quot;ssh_url&quot;</span>                     <span class="st">&quot;clone_url&quot;</span>                  </span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>[<span class="dv">53</span>] <span class="st">&quot;svn_url&quot;</span>                     <span class="st">&quot;homepage&quot;</span>                   </span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] <span class="st">&quot;size&quot;</span>                        <span class="st">&quot;stargazers_count&quot;</span>           </span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>[<span class="dv">57</span>] <span class="st">&quot;watchers_count&quot;</span>              <span class="st">&quot;language&quot;</span>                   </span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>[<span class="dv">59</span>] <span class="st">&quot;has_issues&quot;</span>                  <span class="st">&quot;has_projects&quot;</span>               </span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] <span class="st">&quot;has_downloads&quot;</span>               <span class="st">&quot;has_wiki&quot;</span>                   </span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>[<span class="dv">63</span>] <span class="st">&quot;has_pages&quot;</span>                   <span class="st">&quot;has_discussions&quot;</span>            </span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>[<span class="dv">65</span>] <span class="st">&quot;forks_count&quot;</span>                 <span class="st">&quot;mirror_url&quot;</span>                 </span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] <span class="st">&quot;archived&quot;</span>                    <span class="st">&quot;disabled&quot;</span>                   </span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>[<span class="dv">69</span>] <span class="st">&quot;open_issues_count&quot;</span>           <span class="st">&quot;license&quot;</span>                    </span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>[<span class="dv">71</span>] <span class="st">&quot;allow_forking&quot;</span>               <span class="st">&quot;is_template&quot;</span>                </span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] <span class="st">&quot;web_commit_signoff_required&quot;</span> <span class="st">&quot;topics&quot;</span>                     </span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>[<span class="dv">75</span>] <span class="st">&quot;visibility&quot;</span>                  <span class="st">&quot;forks&quot;</span>                      </span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>[<span class="dv">77</span>] <span class="st">&quot;open_issues&quot;</span>                 <span class="st">&quot;watchers&quot;</span>                   </span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] <span class="st">&quot;default_branch&quot;</span>              <span class="st">&quot;permissions&quot;</span>                </span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="do">## Subsetting datasharing repo and extracting the info we want.</span></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>datasharing_repo <span class="ot">&lt;-</span> gitdf[<span class="fu">which</span>(gitdf<span class="sc">$</span>full_name<span class="sc">==</span><span class="st">&quot;jtleek/datasharing&quot;</span>), ]</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(datasharing_repo, class)</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>                         id                     node_id </span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>                       name                   full_name </span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>                    private                       owner </span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                <span class="st">&quot;data.frame&quot;</span> </span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>                   html_url                 description </span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>                       fork                         url </span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>                  forks_url                    keys_url </span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>          collaborators_url                   teams_url </span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>                  hooks_url            issue_events_url </span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>                 events_url               assignees_url </span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>               branches_url                    tags_url </span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>                  blobs_url                git_tags_url </span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>               git_refs_url                   trees_url </span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>               statuses_url               languages_url </span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>             stargazers_url            contributors_url </span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>            subscribers_url            subscription_url </span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>                commits_url             git_commits_url </span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>               comments_url           issue_comment_url </span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>               contents_url                 compare_url </span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>                 merges_url                 archive_url </span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>              downloads_url                  issues_url </span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>                  pulls_url              milestones_url </span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>          notifications_url                  labels_url </span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>               releases_url             deployments_url </span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>                 created_at                  updated_at </span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>                  pushed_at                     git_url </span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>                    ssh_url                   clone_url </span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a>                    svn_url                    homepage </span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>                       size            stargazers_count </span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a>             watchers_count                    language </span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a>                 has_issues                has_projects </span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a>              has_downloads                    has_wiki </span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a>                  has_pages             has_discussions </span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a>                forks_count                  mirror_url </span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                <span class="st">&quot;data.frame&quot;</span> </span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a>                   archived                    disabled </span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a>          open_issues_count                     license </span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                <span class="st">&quot;data.frame&quot;</span> </span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a>              allow_forking                 is_template </span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a>web_commit_signoff_required                      topics </span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a>                 visibility                       forks </span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a>                open_issues                    watchers </span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                      <span class="st">&quot;list&quot;</span> </span>
+<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a>             default_branch                 permissions </span>
+<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;list&quot;</span>                <span class="st">&quot;data.frame&quot;</span> </span>
+<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a>datasharing_repo<span class="sc">$</span>created_at</span>
+<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>]]</span>
+<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;2013-11-07T13:25:07Z&quot;</span></span></code></pre></div>
+<hr />
+</div>
+<div id="tercer-ejercicio---files-de-formato-fijo"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Tercer ejercicio -
+Files de formato fijo</h1>
+<p>Lectura de files con formato fijo con el paquete de base
+<code>utils</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading fixed-format files.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;utils&quot; R package has functions to read fixed-format files.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For example, the &quot;read.fortran()&quot; function to read fortran files (&quot;.for&quot; extension).</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Or the &quot;read.fwf()&quot; function, to read in general Fixed Width Format files (we&#39;ll use</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this one).</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Both functions returns a &quot;data.frame&quot; object (they internally call read.table() function).</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Using &quot;read.fwf()&quot; function.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># It&#39;s first argument can be the name of the file or a connection (which will be opened if</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># necessary, and if so closed at the end of the function call).</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(read.fwf)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (file, widths, <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>, <span class="at">skip =</span> 0L, row.names, </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    col.names, <span class="at">n =</span> <span class="sc">-</span>1L, <span class="at">buffersize =</span> <span class="dv">2000</span>, <span class="at">fileEncoding =</span> <span class="st">&quot;&quot;</span>, ...)  </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># So, we create a connection to the file (it&#39;s on a webserver) and let&#39;s first read</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># the entire file specifying accordingly the witdths of each column, the white spaces between</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># columns (negative numbers) and the number of initial lines to skip (all this, by looking</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># thoroughly at the file on the web).</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#url &lt;- &quot;https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for&quot;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#fwf_full_Df &lt;- read.fwf(url,</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#                        widths = c(-1, 9,-5, </span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    4, 4, -5, </span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    4, 4, -5,</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    4, 4, -5,</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    4, 4),</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                        skip = 4)</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co"># En las sucesivas ejecuciones de este script, por las dudas el link de descarga no</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># funcione, conviene descargar el file y leerlo en local (pesa 75 B aprox)</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for&quot;,</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#               destfile = &quot;./3_data/fixed.for&quot;, method = &quot;curl&quot;)</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>fwf_full_Df <span class="ot">&lt;-</span> <span class="fu">read.fwf</span>(<span class="st">&quot;3_data/fixed.for&quot;</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>                        <span class="at">widths =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">9</span>,<span class="sc">-</span><span class="dv">5</span>, </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                                    <span class="dv">4</span>, <span class="dv">4</span>, <span class="sc">-</span><span class="dv">5</span>, </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                                    <span class="dv">4</span>, <span class="dv">4</span>, <span class="sc">-</span><span class="dv">5</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                                    <span class="dv">4</span>, <span class="dv">4</span>, <span class="sc">-</span><span class="dv">5</span>,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>                                    <span class="dv">4</span>, <span class="dv">4</span>),</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>                        <span class="at">skip =</span> <span class="dv">4</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fwf_full_Df)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>         V1   V2   V3   V4   V5   V6   V7   V8  V9</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> 03JAN1990 <span class="fl">23.4</span> <span class="sc">-</span><span class="fl">0.4</span> <span class="fl">25.1</span> <span class="sc">-</span><span class="fl">0.3</span> <span class="fl">26.6</span>  <span class="fl">0.0</span> <span class="fl">28.6</span> <span class="fl">0.3</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> 10JAN1990 <span class="fl">23.4</span> <span class="sc">-</span><span class="fl">0.8</span> <span class="fl">25.2</span> <span class="sc">-</span><span class="fl">0.3</span> <span class="fl">26.6</span>  <span class="fl">0.1</span> <span class="fl">28.6</span> <span class="fl">0.3</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> 17JAN1990 <span class="fl">24.2</span> <span class="sc">-</span><span class="fl">0.3</span> <span class="fl">25.3</span> <span class="sc">-</span><span class="fl">0.3</span> <span class="fl">26.5</span> <span class="sc">-</span><span class="fl">0.1</span> <span class="fl">28.6</span> <span class="fl">0.3</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> 24JAN1990 <span class="fl">24.4</span> <span class="sc">-</span><span class="fl">0.5</span> <span class="fl">25.5</span> <span class="sc">-</span><span class="fl">0.4</span> <span class="fl">26.5</span> <span class="sc">-</span><span class="fl">0.1</span> <span class="fl">28.4</span> <span class="fl">0.2</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> 31JAN1990 <span class="fl">25.1</span> <span class="sc">-</span><span class="fl">0.2</span> <span class="fl">25.8</span> <span class="sc">-</span><span class="fl">0.2</span> <span class="fl">26.7</span>  <span class="fl">0.1</span> <span class="fl">28.4</span> <span class="fl">0.2</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span> 07FEB1990 <span class="fl">25.8</span>  <span class="fl">0.2</span> <span class="fl">26.1</span> <span class="sc">-</span><span class="fl">0.1</span> <span class="fl">26.8</span>  <span class="fl">0.1</span> <span class="fl">28.4</span> <span class="fl">0.3</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, let&#39;s read only the fourth column (of the nine columns that the hole file has).</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co"># fwf_4th_Df &lt;- read.fwf(url,</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">#                        widths = c(-28,</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">#                                     4,</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co">#                                   -30),</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co">#                       skip = 4)</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>fwf_4th_Df <span class="ot">&lt;-</span> <span class="fu">read.fwf</span>(<span class="st">&quot;3_data/fixed.for&quot;</span>,</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>                       <span class="at">widths =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">28</span>,</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>                                    <span class="dv">4</span>,</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>                                  <span class="sc">-</span><span class="dv">30</span>),</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>                       <span class="at">skip =</span> <span class="dv">4</span>)</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fwf_4th_Df)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    V1</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="fl">25.1</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="fl">25.2</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="fl">25.3</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="fl">25.5</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="fl">25.8</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span> <span class="fl">26.1</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fwf_4th_Df<span class="sc">$</span>V1)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;numeric&quot;</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fwf_4th_Df<span class="sc">$</span>V1)</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">32426.7</span></span></code></pre></div>
+<hr />
+</div>
+<div id="session-info." class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Session Info.</h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] httr_1.<span class="fl">4.2</span>        httpuv_1.<span class="fl">6.3</span>      sqldf_0<span class="fl">.4</span><span class="dv">-11</span>      RSQLite_2.<span class="fl">2.0</span>    </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] gsubfn_0<span class="fl">.7</span>        proto_1.<span class="fl">0.0</span>       DBI_1.<span class="fl">1.1</span>         data.table_1.<span class="fl">14.0</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] jsonlite_1.<span class="fl">7.2</span>    XML_3<span class="fl">.99-0.3</span>      xlsx_0.<span class="fl">6.3</span>        plyr_1.<span class="fl">8.6</span>       </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] Rcpp_1.<span class="fl">0.7</span>       lattice_0<span class="fl">.20</span><span class="dv">-45</span>  xlsxjars_0.<span class="fl">6.1</span>   assertthat_0.<span class="fl">2.1</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] digest_0.<span class="fl">6.29</span>    utf8_1.<span class="fl">2.2</span>       R6_2.<span class="fl">5.1</span>         chron_2<span class="fl">.3</span><span class="dv">-55</span>    </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] evaluate_0<span class="fl">.19</span>    highr_0<span class="fl">.9</span>        pillar_1.<span class="fl">7.0</span>     rlang_1.<span class="fl">0.6</span>     </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] curl_4.<span class="fl">3.2</span>       rstudioapi_0<span class="fl">.13</span>  jquerylib_0.<span class="fl">1.4</span>  blob_1.<span class="fl">2.2</span>      </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] rmarkdown_2<span class="fl">.11</span>   stringr_1.<span class="fl">4.0</span>    bit_4.<span class="fl">0.4</span>        munsell_0.<span class="fl">5.0</span>   </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] compiler_3.<span class="fl">6.3</span>   xfun_0<span class="fl">.36</span>        pkgconfig_2.<span class="fl">0.3</span>  askpass_1<span class="fl">.1</span>     </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] htmltools_0.<span class="fl">5.2</span>  tcltk_3.<span class="fl">6.3</span>      openssl_2.<span class="fl">0.5</span>    tidyselect_1.<span class="fl">2.0</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] tibble_3.<span class="fl">1.8</span>     fansi_1.<span class="fl">0.2</span>      crayon_1.<span class="fl">5.0</span>     tzdb_0.<span class="fl">3.0</span>      </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] withr_2.<span class="fl">5.0</span>      later_1.<span class="fl">3.0</span>      grid_3.<span class="fl">6.3</span>       gtable_0.<span class="fl">3.0</span>    </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] lifecycle_1.<span class="fl">0.3</span>  magrittr_2.<span class="fl">0.2</span>   formatR_1<span class="fl">.14</span>     scales_1.<span class="fl">1.1</span>    </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] cli_3.<span class="fl">6.0</span>        stringi_1.<span class="fl">7.6</span>    promises_1.<span class="dv">2</span>.<span class="fl">0.1</span> bslib_0.<span class="fl">3.0</span>     </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">45</span>] ellipsis_0.<span class="fl">3.2</span>   generics_0.<span class="fl">1.2</span>   vctrs_0.<span class="fl">5.2</span>      tools_3.<span class="fl">6.3</span>     </span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] bit64_4.<span class="fl">0.5</span>      glue_1.<span class="fl">6.2</span>       hms_1.<span class="fl">1.0</span>        fastmap_1.<span class="fl">1.0</span>   </span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">53</span>] yaml_2.<span class="fl">2.1</span>       colorspace_2<span class="fl">.0</span><span class="dv">-3</span> memoise_1.<span class="fl">1.0</span>    rJava_0<span class="fl">.9</span><span class="dv">-13</span>    </span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">57</span>] knitr_1<span class="fl">.41</span>       sass_0.<span class="fl">4.0</span>      </span></code></pre></div>
+<hr />
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

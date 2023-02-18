@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R Programming - Module 2 - Aside</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">R Programming - Module 2 - Aside</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#better-approach-for-building-data-frames."
+id="toc-better-approach-for-building-data-frames."><span
+class="toc-section-number">1</span> Better approach for building data
+frames.</a>
+<ul>
+<li><a href="#step-one." id="toc-step-one."><span
+class="toc-section-number">1.1</span> Step one.</a></li>
+<li><a href="#step-two." id="toc-step-two."><span
+class="toc-section-number">1.2</span> Step two.</a></li>
+<li><a href="#but-this-is-functionally-the-same-as-lappy."
+id="toc-but-this-is-functionally-the-same-as-lappy."><span
+class="toc-section-number">1.3</span> But this is functionally the same
+as lappy().</a></li>
+<li><a href="#final-step-do.call-function"
+id="toc-final-step-do.call-function"><span
+class="toc-section-number">1.4</span> Final step: do.call()
+function</a></li>
+<li><a href="#conclusion." id="toc-conclusion."><span
+class="toc-section-number">1.5</span> Conclusion.</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">2</span> Session Info.</a></li>
+</ul>
+</div>
+
+<div id="better-approach-for-building-data-frames."
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Better approach for
+building data frames.</h1>
+<p>The approach we’ve seen in Module 2 of R Programming Course for
+building the data frame is <em>submoptimal</em>.</p>
+<p>It works, but generally speaking, you don’t want to build data frames
+or vectors by copying and re-copying them inside of a loop. If you’ve
+got a lot of data it can become very, very slow.</p>
+<p>If you’re interested in learning the better approach, check out
+Hadley Wickam’s excellent material on functionals within R: <a
+href="http://adv-r.had.co.nz/Functionals.html"
+class="uri">http://adv-r.had.co.nz/Functionals.html</a>.</p>
+<ul>
+<li>But if you’re new to both programming and R, I would skip it for now
+as it will just confuse you.<br />
+</li>
+<li>Come back and revisit it (and the rest of this section) once you are
+able to write working functions using the approach above.</li>
+</ul>
+<p>However, for those of you that do want to see a <strong>better way to
+create a dataframe….</strong></p>
+<p>The better approach is to <strong>create an output object of an
+appropriate size and then fill it up</strong>.</p>
+<ul>
+<li>The procedure we are going to see is <em>functionally the same</em>
+as what <em>lapply()</em> function does.</li>
+</ul>
+<div id="step-one." class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Step one.</h2>
+<p>So the <strong>first thing</strong> we do is <strong><em>create an
+empty list that’s the length of our expected output</em></strong>.</p>
+<ul>
+<li>In this case, our <em>input object</em> is going to be
+<code>files_full</code>, and<br />
+</li>
+<li>our <em>empty list</em> is going to be <code>tmp</code>.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>files_full <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;2_TestingFolder&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>files_full</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;2_TestingFolder/Andy.csv&quot;</span>  <span class="st">&quot;2_TestingFolder/David.csv&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>] <span class="st">&quot;2_TestingFolder/John.csv&quot;</span>  <span class="st">&quot;2_TestingFolder/Mike.csv&quot;</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>] <span class="st">&quot;2_TestingFolder/Steve.csv&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(files_full))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tmp)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>     Length Class  Mode</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,] <span class="dv">0</span>      <span class="sc">-</span>none<span class="sc">-</span> <span class="cn">NULL</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,] <span class="dv">0</span>      <span class="sc">-</span>none<span class="sc">-</span> <span class="cn">NULL</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,] <span class="dv">0</span>      <span class="sc">-</span>none<span class="sc">-</span> <span class="cn">NULL</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,] <span class="dv">0</span>      <span class="sc">-</span>none<span class="sc">-</span> <span class="cn">NULL</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,] <span class="dv">0</span>      <span class="sc">-</span>none<span class="sc">-</span> <span class="cn">NULL</span></span></code></pre></div>
+</div>
+<div id="step-two." class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Step two.</h2>
+<p>Now we need to read in those csv files and <strong>drop them into
+<code>tmp</code></strong>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(files_full)) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        tmp[[i]] <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(files_full[i])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tmp)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">5</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;Andy&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> ...</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">140</span> <span class="dv">140</span> <span class="dv">140</span> <span class="dv">139</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> ...</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;David&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> ...</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">210</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">208</span> <span class="dv">208</span> <span class="dv">208</span> ...</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;John&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> ...</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> ...</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;Mike&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> ...</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">188</span> <span class="dv">188</span> <span class="dv">188</span> <span class="dv">188</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> ...</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;Steve&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> ...</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">225</span> <span class="dv">225</span> <span class="dv">225</span> <span class="dv">224</span> <span class="dv">224</span> <span class="dv">224</span> <span class="dv">223</span> <span class="dv">223</span> <span class="dv">223</span> <span class="dv">223</span> ...</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span></code></pre></div>
+<p>What we just did was read in each of the csv files and place them
+inside of our list. Now we have a list of 5 elements called
+<code>tmp</code>, where each element of the list is a data frame
+containing one of the csv files.</p>
+</div>
+<div id="but-this-is-functionally-the-same-as-lappy."
+class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> But this is
+functionally the same as lappy().</h2>
+<p>It <strong>just so happens that</strong> what we just did is
+<strong><em>functionally identical to using
+<code>lapply</code></em></strong>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">lapply</span>(files_full, read.csv))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">5</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;Andy&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> ...</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">140</span> <span class="dv">140</span> <span class="dv">140</span> <span class="dv">139</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> ...</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;David&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> <span class="dv">35</span> ...</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">210</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">209</span> <span class="dv">208</span> <span class="dv">208</span> <span class="dv">208</span> ...</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;John&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> <span class="dv">22</span> ...</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> <span class="dv">175</span> ...</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;Mike&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">40</span> ...</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">188</span> <span class="dv">188</span> <span class="dv">188</span> <span class="dv">188</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> <span class="dv">189</span> ...</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;Steve&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Age         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> <span class="dv">55</span> ...</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Weight      <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">225</span> <span class="dv">225</span> <span class="dv">225</span> <span class="dv">224</span> <span class="dv">224</span> <span class="dv">224</span> <span class="dv">223</span> <span class="dv">223</span> <span class="dv">223</span> <span class="dv">223</span> ...</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day         <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span></code></pre></div>
+<p>This is part of the <strong>power of the apply family of
+functions</strong>.</p>
+<ul>
+<li>All the the work in <em>one line of code</em>.<br />
+</li>
+<li>You don’t have to worry about the “housekeeping” of looping, and
+instead you can focus on the function you’re using.<br />
+</li>
+<li>When you or somebody else comes back weeks later and reads through
+your code, it’s easier to understand what you were doing and why.</li>
+</ul>
+</div>
+<div id="final-step-do.call-function" class="section level2"
+number="1.4">
+<h2><span class="header-section-number">1.4</span> Final step: do.call()
+function</h2>
+<p>Now we still need to <strong>go from a list to a single data
+frame</strong>, although you <em>can</em> manipulate the data within
+this structure:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(tmp[[<span class="dv">1</span>]])</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">30</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">1</span> level <span class="st">&quot;Andy&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Age         <span class="sc">:</span> int  <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> ...</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Weight      <span class="sc">:</span> int  <span class="dv">140</span> <span class="dv">140</span> <span class="dv">140</span> <span class="dv">139</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> ...</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Day         <span class="sc">:</span> int  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tmp[[<span class="dv">1</span>]][,<span class="st">&quot;Day&quot;</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span></span></code></pre></div>
+<p>We can use a function called <code>do.call()</code> to combine
+<code>tmp</code> into a single data frame.</p>
+<p><code>do.call</code> lets you specify a function and then passes a
+list as if each element of the list were an argument to the
+function.</p>
+<p>The syntax is
+<code>do.call(function_you_want_to_use, list_of_arguments)</code>.</p>
+<ul>
+<li>In our case, we want to <code>rbind()</code> our list of data
+frames, <code>tmp</code>.<br />
+</li>
+<li><code>do.call</code> is widely used to assemble lists into simpler
+structures:
+<ul>
+<li>such as data frames (with <code>rbind()</code> and
+<code>cbind()</code>), or<br />
+</li>
+<li>vectors of numbers or characters (with <code>c()</code>).</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, tmp)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(output)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">150</span> obs. of  <span class="dv">4</span> variables<span class="sc">:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Patient.Name<span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">5</span> levels <span class="st">&quot;Andy&quot;</span>,<span class="st">&quot;David&quot;</span>,..<span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Age         <span class="sc">:</span> int  <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> <span class="dv">30</span> ...</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Weight      <span class="sc">:</span> int  <span class="dv">140</span> <span class="dv">140</span> <span class="dv">140</span> <span class="dv">139</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> <span class="dv">138</span> ...</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Day         <span class="sc">:</span> int  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span></code></pre></div>
+</div>
+<div id="conclusion." class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Conclusion.</h2>
+<p>This approach <strong>avoids all of the messy copying and
+recopying</strong> of the data to build the final data frame.</p>
+<p>It’s <strong>much more “R-like” and works quite a bit faster</strong>
+than our other approach.</p>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Session Info.</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NUMERIC<span class="ot">=</span>C              </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>   </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NAME<span class="ot">=</span>C                 </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>C               LC_TELEPHONE<span class="ot">=</span>C            </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span> LC_IDENTIFICATION<span class="ot">=</span>C       </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] plyr_1.<span class="fl">8.6</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] Rcpp_1.<span class="fl">0.7</span>       formatR_1<span class="fl">.14</span>     pillar_1.<span class="fl">7.0</span>     compiler_3.<span class="fl">6.3</span>  </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] bslib_0.<span class="fl">3.0</span>      jquerylib_0.<span class="fl">1.4</span>  tools_3.<span class="fl">6.3</span>      digest_0.<span class="fl">6.29</span>   </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] jsonlite_1.<span class="fl">7.2</span>   evaluate_0<span class="fl">.19</span>    lifecycle_1.<span class="fl">0.3</span>  tibble_3.<span class="fl">1.8</span>    </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] gtable_0.<span class="fl">3.0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>  pkgconfig_2.<span class="fl">0.3</span>  rlang_1.<span class="fl">0.6</span>     </span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] DBI_1.<span class="fl">1.1</span>        cli_3.<span class="fl">6.0</span>        rstudioapi_0<span class="fl">.13</span>  yaml_2.<span class="fl">2.1</span>      </span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] xfun_0<span class="fl">.36</span>        fastmap_1.<span class="fl">1.0</span>    stringr_1.<span class="fl">4.0</span>    dplyr_1.<span class="fl">0.8</span>     </span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] httr_1.<span class="fl">4.2</span>       knitr_1<span class="fl">.41</span>       sass_0.<span class="fl">4.0</span>       generics_0.<span class="fl">1.2</span>  </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] vctrs_0.<span class="fl">5.2</span>      grid_3.<span class="fl">6.3</span>       tidyselect_1.<span class="fl">2.0</span> glue_1.<span class="fl">6.2</span>      </span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] R6_2.<span class="fl">5.1</span>         fansi_1.<span class="fl">0.2</span>      rmarkdown_2<span class="fl">.11</span>   ggplot2_3.<span class="fl">3.5</span>   </span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] magrittr_2.<span class="fl">0.2</span>   scales_1.<span class="fl">1.1</span>     ellipsis_0.<span class="fl">3.2</span>   htmltools_0.<span class="fl">5.2</span> </span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] assertthat_0.<span class="fl">2.1</span> colorspace_2<span class="fl">.0</span><span class="dv">-3</span> utf8_1.<span class="fl">2.2</span>       stringi_1.<span class="fl">7.6</span>   </span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">45</span>] munsell_0.<span class="fl">5.0</span>    crayon_1.<span class="fl">5.0</span>    </span></code></pre></div>
+<hr />
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R Programming</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">R Programming</h1>
+<h3 class="subtitle">Módulo 4 - Práctica de programación final</h3>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#instructions" id="toc-instructions"><span
+class="toc-section-number">1</span> Instructions</a></li>
+<li><a href="#solución-de-los-ejercicios"
+id="toc-solución-de-los-ejercicios"><span
+class="toc-section-number">2</span> Solución de los ejercicios</a>
+<ul>
+<li><a href="#plot-the-30-day-mortality-rates-for-heart-attack"
+id="toc-plot-the-30-day-mortality-rates-for-heart-attack"><span
+class="toc-section-number">2.1</span> Plot the 30-day mortality rates
+for heart attack</a></li>
+<li><a href="#finding-the-best-hospital-in-a-state"
+id="toc-finding-the-best-hospital-in-a-state"><span
+class="toc-section-number">2.2</span> Finding the best hospital in a
+state</a></li>
+<li><a href="#ranking-hospitals-by-outcome-in-a-state"
+id="toc-ranking-hospitals-by-outcome-in-a-state"><span
+class="toc-section-number">2.3</span> Ranking hospitals by outcome in a
+state</a></li>
+<li><a href="#ranking-hospitals-in-all-states"
+id="toc-ranking-hospitals-in-all-states"><span
+class="toc-section-number">2.4</span> Ranking hospitals in all
+states</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">3</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="instructions" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Instructions</h1>
+<p>Este trabajo práctico, es el trabajo final de este primer curso de
+Programación en R.</p>
+<p>Consiste en explorar el archivo
+<code>outcome-of-care-measures.csv</code> proveniente del sitio web del
+Hospital Compare (administrado por el US Department of Health an Human
+Services) y, a partir de los datos allí contenidos acerca de los
+hospitales -públicos y privados- de 54 estados de US, elaborar tres
+funciones:</p>
+<ul>
+<li><p>Una primera función que permita especificar como ingresos las
+iniciales de un estado y un indicador (“heart attack”, “heart failure” o
+“pneumonia”) y que retorne el nombre del mejor hospital (léase el que
+tenga la menor tasa de mortalidad respecto del indicador solicitado)
+dentro del estado peticionado.</p></li>
+<li><p>Una segunda función que, además del estado y del indicador,
+permita también especificar como ingreso un ranking <code>num</code> y
+que, como salida, retorne el nombre del hospital que tiene ese ranking
+dentro del estado peticionado. El ranking <code>num</code> se determina
+como la <code>num</code>-ésima tasa más baja de mortalidad del indicador
+solicitado.</p></li>
+<li><p>Y una tercera función que admita como ingresos un indicador y un
+ranking <code>num</code> y que retorne un data frame conteniendo el
+nombre del hospital en cada uno de los 54 estados que tiene el ranking
+<code>num</code> especificado.</p></li>
+</ul>
+<p>Las instrucciones detalladas pueden leerse en el siguiente pdf:</p>
+<p><embed src="2_data/ProgrammingAssignment3_Instructions.pdf"
+style="width:100.0%" height="400" /></p>
+<hr />
+</div>
+<div id="solución-de-los-ejercicios" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Solución de los
+ejercicios</h1>
+<div id="plot-the-30-day-mortality-rates-for-heart-attack"
+class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Plot the 30-day
+mortality rates for heart attack</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>outcome <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;2_data/outcome-of-care-measures.csv&quot;</span>, <span class="at">colClasses =</span> <span class="st">&quot;character&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(outcome)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">46</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(outcome)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">4706</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(outcome)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;Provider.Number&quot;</span>                                                                      </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> [<span class="dv">2</span>] <span class="st">&quot;Hospital.Name&quot;</span>                                                                        </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] <span class="st">&quot;Address.1&quot;</span>                                                                            </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] <span class="st">&quot;Address.2&quot;</span>                                                                            </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] <span class="st">&quot;Address.3&quot;</span>                                                                            </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">6</span>] <span class="st">&quot;City&quot;</span>                                                                                 </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;State&quot;</span>                                                                                </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">8</span>] <span class="st">&quot;ZIP.Code&quot;</span>                                                                             </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] <span class="st">&quot;County.Name&quot;</span>                                                                          </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] <span class="st">&quot;Phone.Number&quot;</span>                                                                         </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] <span class="st">&quot;Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack&quot;</span>                            </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">12</span>] <span class="st">&quot;Comparison.to.U.S..Rate...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack&quot;</span>  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;Lower.Mortality.Estimate...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack&quot;</span> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>[<span class="dv">14</span>] <span class="st">&quot;Upper.Mortality.Estimate...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack&quot;</span> </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>[<span class="dv">15</span>] <span class="st">&quot;Number.of.Patients...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack&quot;</span>       </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] <span class="st">&quot;Footnote...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack&quot;</span>                 </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] <span class="st">&quot;Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure&quot;</span>                           </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">18</span>] <span class="st">&quot;Comparison.to.U.S..Rate...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure&quot;</span> </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;Lower.Mortality.Estimate...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure&quot;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">20</span>] <span class="st">&quot;Upper.Mortality.Estimate...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure&quot;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] <span class="st">&quot;Number.of.Patients...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure&quot;</span>      </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] <span class="st">&quot;Footnote...Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure&quot;</span>                </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">23</span>] <span class="st">&quot;Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia&quot;</span>                               </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">24</span>] <span class="st">&quot;Comparison.to.U.S..Rate...Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia&quot;</span>     </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;Lower.Mortality.Estimate...Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia&quot;</span>    </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">26</span>] <span class="st">&quot;Upper.Mortality.Estimate...Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia&quot;</span>    </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">27</span>] <span class="st">&quot;Number.of.Patients...Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia&quot;</span>          </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] <span class="st">&quot;Footnote...Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia&quot;</span>                    </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] <span class="st">&quot;Hospital.30.Day.Readmission.Rates.from.Heart.Attack&quot;</span>                                  </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">30</span>] <span class="st">&quot;Comparison.to.U.S..Rate...Hospital.30.Day.Readmission.Rates.from.Heart.Attack&quot;</span>        </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] <span class="st">&quot;Lower.Readmission.Estimate...Hospital.30.Day.Readmission.Rates.from.Heart.Attack&quot;</span>     </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">32</span>] <span class="st">&quot;Upper.Readmission.Estimate...Hospital.30.Day.Readmission.Rates.from.Heart.Attack&quot;</span>     </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] <span class="st">&quot;Number.of.Patients...Hospital.30.Day.Readmission.Rates.from.Heart.Attack&quot;</span>             </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] <span class="st">&quot;Footnote...Hospital.30.Day.Readmission.Rates.from.Heart.Attack&quot;</span>                       </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">35</span>] <span class="st">&quot;Hospital.30.Day.Readmission.Rates.from.Heart.Failure&quot;</span>                                 </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">36</span>] <span class="st">&quot;Comparison.to.U.S..Rate...Hospital.30.Day.Readmission.Rates.from.Heart.Failure&quot;</span>       </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] <span class="st">&quot;Lower.Readmission.Estimate...Hospital.30.Day.Readmission.Rates.from.Heart.Failure&quot;</span>    </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">38</span>] <span class="st">&quot;Upper.Readmission.Estimate...Hospital.30.Day.Readmission.Rates.from.Heart.Failure&quot;</span>    </span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">39</span>] <span class="st">&quot;Number.of.Patients...Hospital.30.Day.Readmission.Rates.from.Heart.Failure&quot;</span>            </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] <span class="st">&quot;Footnote...Hospital.30.Day.Readmission.Rates.from.Heart.Failure&quot;</span>                      </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] <span class="st">&quot;Hospital.30.Day.Readmission.Rates.from.Pneumonia&quot;</span>                                     </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">42</span>] <span class="st">&quot;Comparison.to.U.S..Rate...Hospital.30.Day.Readmission.Rates.from.Pneumonia&quot;</span>           </span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] <span class="st">&quot;Lower.Readmission.Estimate...Hospital.30.Day.Readmission.Rates.from.Pneumonia&quot;</span>        </span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">44</span>] <span class="st">&quot;Upper.Readmission.Estimate...Hospital.30.Day.Readmission.Rates.from.Pneumonia&quot;</span>        </span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">45</span>] <span class="st">&quot;Number.of.Patients...Hospital.30.Day.Readmission.Rates.from.Pneumonia&quot;</span>                </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] <span class="st">&quot;Footnote...Hospital.30.Day.Readmission.Rates.from.Pneumonia&quot;</span>                          </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(outcome[, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  Provider.Number                    Hospital.Name                  Address<span class="fl">.1</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>          <span class="dv">010001</span> SOUTHEAST ALABAMA MEDICAL CENTER     <span class="dv">1108</span> ROSS CLARK CIRCLE</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>          <span class="dv">010005</span>    MARSHALL MEDICAL CENTER SOUTH <span class="dv">2505</span> U S HIGHWAY <span class="dv">431</span> NORTH</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>          <span class="dv">010006</span>   ELIZA COFFEE MEMORIAL HOSPITAL         <span class="dv">205</span> MARENGO STREET</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>          <span class="dv">010007</span>         MIZELL MEMORIAL HOSPITAL              <span class="dv">702</span> N MAIN ST</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>          <span class="dv">010008</span>      CRENSHAW COMMUNITY HOSPITAL        <span class="dv">101</span> HOSPITAL CIRCLE</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>          <span class="dv">010010</span>    MARSHALL MEDICAL CENTER NORTH    <span class="dv">8000</span> ALABAMA HIGHWAY <span class="dv">69</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  Address<span class="fl">.2</span> Address<span class="fl">.3</span>         City State ZIP.Code County.Name Phone.Number</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>                           DOTHAN    AL    <span class="dv">36301</span>     HOUSTON   <span class="dv">3347938701</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>                             BOAZ    AL    <span class="dv">35957</span>    MARSHALL   <span class="dv">2565938310</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>                         FLORENCE    AL    <span class="dv">35631</span>  LAUDERDALE   <span class="dv">2567688400</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>                              OPP    AL    <span class="dv">36467</span>   COVINGTON   <span class="dv">3344933541</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>                          LUVERNE    AL    <span class="dv">36049</span>    CRENSHAW   <span class="dv">3343353374</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>                     GUNTERSVILLE    AL    <span class="dv">35976</span>    MARSHALL   <span class="dv">2565718000</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>outcome[, <span class="dv">11</span>] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(outcome[, <span class="dv">11</span>])</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> NAs introducidos por coerción</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(outcome[, <span class="dv">11</span>])</span></code></pre></div>
+<p><img src="2_R_Module4_ProgAssmt_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="finding-the-best-hospital-in-a-state" class="section level2"
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Finding the best
+hospital in a state</h2>
+<p>Creamos el file <code>best.R</code> y escribimos lo siguiente:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Finding the best hospital in a state.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>best <span class="ot">&lt;-</span> <span class="cf">function</span>(state, outcome) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Read outcome data.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        careMeasuresData <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;2_data/outcome-of-care-measures.csv&quot;</span>, <span class="at">colClasses =</span> <span class="st">&quot;character&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Check that the state and outcome are valid.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        check_state <span class="ot">&lt;-</span> <span class="fu">unique</span>(careMeasuresData<span class="sc">$</span>State) <span class="sc">==</span> state</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="sc">!</span><span class="fu">sum</span>(check_state)) <span class="fu">stop</span>(<span class="st">&quot;invalid state&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        check_outcome <span class="ot">&lt;-</span> <span class="fu">identical</span>(outcome, <span class="st">&quot;heart attack&quot;</span>) <span class="sc">||</span> <span class="fu">identical</span>(outcome, <span class="st">&quot;heart failure&quot;</span>) <span class="sc">||</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">identical</span>(outcome, <span class="st">&quot;pneumonia&quot;</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="sc">!</span>check_outcome) <span class="fu">stop</span>(<span class="st">&quot;invalid outcome&quot;</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Return hospital name in the specified &quot;state&quot; with the lowest 30-day death rate.</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># identifying the &quot;outcome&quot; column by its position in the data frame.</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        col_num_outcome <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;heart attack&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">11</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;heart failure&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">17</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;pneumonia&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">23</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sub-data frame with hospitals and rates in the specified &quot;state&quot; (first select all</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># rows -hospitals- for the specified &quot;state&quot;, then generate a data frame with only the</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># two columns -variables &quot;Hospital.Name&quot; and &quot;Rate&quot;- that we are interested in -instead</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># of carrying arround 46 variables-).</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        state_hospitals <span class="ot">&lt;-</span> careMeasuresData[<span class="fu">which</span>(careMeasuresData<span class="sc">$</span>State <span class="sc">==</span> state), ]</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        state_hospitals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Hospital.Name =</span> state_hospitals<span class="sc">$</span>Hospital.Name,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">Rate =</span> <span class="fu">as.numeric</span>(state_hospitals[, col_num_outcome]),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)   <span class="co"># we want hospitals to remain characters</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                                                                  <span class="co"># (not to be converted into factor).</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sorting data in increasing numerical order (Rate column) and breaking ties alphabetically</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># (Hosplital.Name column), over non-NA elements.</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        data_ordered <span class="ot">&lt;-</span> state_hospitals[<span class="fu">order</span>(state_hospitals<span class="sc">$</span>Rate, state_hospitals<span class="sc">$</span>Hospital.Name,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">na.last =</span> <span class="cn">NA</span>), ]    <span class="co"># removes NAs.        </span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># retuning the hospital with the lowest mortality rate (and alphabetically first in order if</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># there is a tie).</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        the_best <span class="ot">&lt;-</span> data_ordered<span class="sc">$</span>Hospital.Name[<span class="dv">1</span>]</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        the_best</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Probemos la función:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">best</span>(<span class="st">&quot;TX&quot;</span>, <span class="st">&quot;heart attack&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;CYPRESS FAIRBANKS MEDICAL CENTER&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">best</span>(<span class="st">&quot;TX&quot;</span>, <span class="st">&quot;heart failure&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;FORT DUNCAN MEDICAL CENTER&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">best</span>(<span class="st">&quot;MD&quot;</span>, <span class="st">&quot;heart attack&quot;</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;JOHNS HOPKINS HOSPITAL, THE&quot;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">best</span>(<span class="st">&quot;MD&quot;</span>, <span class="st">&quot;pneumonia&quot;</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;GREATER BALTIMORE MEDICAL CENTER&quot;</span></span></code></pre></div>
+<p>Si hacemos por ejemplo las siguientes llamadas de la función, nos da
+el <code>Error: invalid state</code></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">best</span>(<span class="st">&quot;BB&quot;</span>, <span class="st">&quot;heart attack&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">best</span>(<span class="st">&quot;NY&quot;</span>, <span class="st">&quot;hert attack&quot;</span>)</span></code></pre></div>
+</div>
+<div id="ranking-hospitals-by-outcome-in-a-state" class="section level2"
+number="2.3">
+<h2><span class="header-section-number">2.3</span> Ranking hospitals by
+outcome in a state</h2>
+<p>Creamos el file <code>rankhospital.R</code> y escribimos lo
+siguiente:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Ranking hospitals by outcome in a state.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The function reads the &quot;outcome-of-care-measures.csv&quot; file and returns a character vector with the name</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">## of the hospital in the specified &quot;state&quot;, that has the ranking indicated by the &quot;num&quot; argument.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## The &quot;num&quot; argument can take values “best”, “worst”, or an integer indicating the ranking (smaller</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## numbers are better)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>rankhospital <span class="ot">&lt;-</span> <span class="cf">function</span>(state, outcome, <span class="at">num =</span> <span class="st">&quot;best&quot;</span>) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Read outcome data.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        careMeasuresData <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;2_data/outcome-of-care-measures.csv&quot;</span>, <span class="at">colClasses =</span> <span class="st">&quot;character&quot;</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Check that state and outcome are valid.</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        check_state <span class="ot">&lt;-</span> <span class="fu">unique</span>(careMeasuresData<span class="sc">$</span>State) <span class="sc">==</span> state</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="sc">!</span><span class="fu">sum</span>(check_state)) <span class="fu">stop</span>(<span class="st">&quot;invalid state&quot;</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        check_outcome <span class="ot">&lt;-</span> <span class="fu">identical</span>(outcome, <span class="st">&quot;heart attack&quot;</span>) <span class="sc">||</span> <span class="fu">identical</span>(outcome, <span class="st">&quot;heart failure&quot;</span>) <span class="sc">||</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">identical</span>(outcome, <span class="st">&quot;pneumonia&quot;</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="sc">!</span>check_outcome) <span class="fu">stop</span>(<span class="st">&quot;invalid outcome&quot;</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Return hospital name in that state with the given rank 30-day death rate.</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># identify the &quot;outcome&quot; column by its position in the data frame.</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        col_num_outcome <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;heart attack&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">11</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;heart failure&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">17</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;pneumonia&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">23</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sub-data frame with hospitals and rates in the specified &quot;state&quot; (first select all</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># rows -hospitals- for the specified &quot;state&quot;, then generate a data frame with only the</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># two columns -variables &quot;Hospital.Name&quot; and &quot;Rate&quot;- that we are interested in -instead</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># of carrying arround 46 variables-).</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        state_hospitals <span class="ot">&lt;-</span> careMeasuresData[<span class="fu">which</span>(careMeasuresData<span class="sc">$</span>State <span class="sc">==</span> state), ]</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        state_hospitals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Hospital.Name =</span> state_hospitals<span class="sc">$</span>Hospital.Name,</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">Rate =</span> <span class="fu">as.numeric</span>(state_hospitals[, col_num_outcome]),</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)   <span class="co"># we want hospitals to remain characters</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>                                                                  <span class="co"># (not to be converted into factor).</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sorting data in increasing numerical order (Rate column) and breaking ties alphabetically</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># (Hosplital.Name column), over non-NA elements.</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        data_ordered <span class="ot">&lt;-</span> state_hospitals[<span class="fu">order</span>(state_hospitals<span class="sc">$</span>Rate, state_hospitals<span class="sc">$</span>Hospital.Name,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">na.last =</span> <span class="cn">NA</span>), ]    <span class="co"># removes NAs.</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># adding Rank column.</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        data_ordered <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_ordered, <span class="at">Rank =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data_ordered))</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># returning the hospital with the required &quot;num&quot; rank.</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>        output <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(num, <span class="st">&quot;best&quot;</span>))</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>                output <span class="ot">&lt;-</span> data_ordered<span class="sc">$</span>Hospital.Name[<span class="dv">1</span>]</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">identical</span>(num, <span class="st">&quot;worst&quot;</span>))</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>                output <span class="ot">&lt;-</span> data_ordered<span class="sc">$</span>Hospital.Name[<span class="fu">nrow</span>(data_ordered)]</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cf">if</span>(num <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> num <span class="sc">&lt;=</span> <span class="fu">nrow</span>(data_ordered))</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>                output <span class="ot">&lt;-</span> data_ordered<span class="sc">$</span>Hospital.Name[num]       <span class="co"># &#39;num&#39; (Rank) matches the row order.</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>                output <span class="ot">&lt;-</span> <span class="cn">NA</span>                                    <span class="co"># NA for all other cases.</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>        output</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Probemos la función.</p>
+<p>The name of the hospital in MD with the 5th lowest 30-day death rate
+for heart failure, is:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rankhospital</span>(<span class="st">&quot;MD&quot;</span>, <span class="st">&quot;heart failure&quot;</span>, <span class="dv">5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;SAINT AGNES HOSPITAL&quot;</span></span></code></pre></div>
+<p>Other examples:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rankhospital</span>(<span class="st">&quot;TX&quot;</span>, <span class="st">&quot;heart failure&quot;</span>, <span class="dv">4</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;DETAR HOSPITAL NAVARRO&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rankhospital</span>(<span class="st">&quot;MD&quot;</span>, <span class="st">&quot;heart attack&quot;</span>, <span class="st">&quot;worst&quot;</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;HARFORD MEMORIAL HOSPITAL&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rankhospital</span>(<span class="st">&quot;MN&quot;</span>, <span class="st">&quot;heart attack&quot;</span>, <span class="dv">5000</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">NA</span></span></code></pre></div>
+</div>
+<div id="ranking-hospitals-in-all-states" class="section level2"
+number="2.4">
+<h2><span class="header-section-number">2.4</span> Ranking hospitals in
+all states</h2>
+<p>Creamos el file <code>rankall.R</code> y escribimos lo siguiente:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Ranking hospitals in all states.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The function reads the &quot;outcome-of-care-measures.csv&quot; file and returns a 2-column data frame containing</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">## the hospital in each state that has the ranking specified by the &quot;num&quot; argument. The first column is</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">## named &quot;hospital&quot; (containing the name of the hospitals) and the second, &quot;state&quot; (containing the 2-character</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## abbreviation for the state name).</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>rankall <span class="ot">&lt;-</span> <span class="cf">function</span>(outcome, <span class="at">num =</span> <span class="st">&quot;best&quot;</span>) {</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">#1# Read outcome data.</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        careMeasuresData <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;2_data/outcome-of-care-measures.csv&quot;</span>, <span class="at">colClasses =</span> <span class="st">&quot;character&quot;</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">#2# Check validity of outcome.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        check_outcome <span class="ot">&lt;-</span> <span class="fu">identical</span>(outcome, <span class="st">&quot;heart attack&quot;</span>) <span class="sc">||</span> <span class="fu">identical</span>(outcome, <span class="st">&quot;heart failure&quot;</span>) <span class="sc">||</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                <span class="fu">identical</span>(outcome, <span class="st">&quot;pneumonia&quot;</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="sc">!</span>check_outcome) <span class="fu">stop</span>(<span class="st">&quot;invalid outcome&quot;</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">#3# For each state, find the hospital with the given rank.</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">#3.a# identify the &quot;outcome&quot; column by its position in the data frame.</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        col_num_outcome <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;heart attack&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">11</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;heart failure&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">17</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(outcome, <span class="st">&quot;pneumonia&quot;</span>)) col_num_outcome <span class="ot">&lt;-</span> <span class="dv">23</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">#3.b# sub-data frame with only the three columns -variables &quot;hospital&quot;, &quot;state&quot; and &quot;rate&quot;- that we</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     are interested in -instead of carrying arround 46 variables-.</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        outcome_hospitals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hospital =</span> careMeasuresData<span class="sc">$</span>Hospital.Name,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">state =</span> careMeasuresData<span class="sc">$</span>State,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">rate =</span> <span class="fu">as.numeric</span>(careMeasuresData[, col_num_outcome]),</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)   <span class="co"># we want strings to remain characters</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>                                                                    <span class="co"># (not to be converted into factor).</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">#3.c# group hospitals by state.</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        hospitals_by_state_lst <span class="ot">&lt;-</span> <span class="fu">split</span>(outcome_hospitals, outcome_hospitals<span class="sc">$</span>state)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        <span class="co">#3.d# order by rate and hospital name each group, eliminating missing values; then add a &quot;rank&quot;</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     column to each group.</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        data_ordered_lst <span class="ot">&lt;-</span> <span class="fu">lapply</span>(hospitals_by_state_lst, </span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>                                   <span class="cf">function</span>(hbs) {</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>                                           <span class="co"># order and remove NAs.</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>                                           hbs[<span class="fu">order</span>(hbs<span class="sc">$</span>rate, hbs<span class="sc">$</span>hospital, <span class="at">na.last =</span> <span class="cn">NA</span>), ]</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>                                   })</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        data_ordered_lst <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_ordered_lst,</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>                                   <span class="cf">function</span>(dol) {</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>                                           <span class="co"># add rank column</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">cbind</span>(dol, <span class="at">rank =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dol))</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>                                   })</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        <span class="co">#4# Return the data frame with the ranked hospitals of each state.</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        <span class="co">#4.a# Select from each state/group the hospital with the required rank (if there&#39;s no</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     hospital in a state with the required rank, return NA for that state).</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">identical</span>(num, <span class="st">&quot;best&quot;</span>)) {</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>                data_selection_lst <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_ordered_lst,</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>                                             <span class="cf">function</span>(dol) {</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>                                                     dol[<span class="fu">which</span>(dol<span class="sc">$</span>rank <span class="sc">==</span> <span class="dv">1</span>), ]</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>                                             })</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">identical</span>(num, <span class="st">&quot;worst&quot;</span>)) {</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>                data_selection_lst <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_ordered_lst,</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>                                             <span class="cf">function</span>(dol) {</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>                                                     dol[<span class="fu">which</span>(dol<span class="sc">$</span>rank <span class="sc">==</span> <span class="fu">nrow</span>(dol)), ]</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>                                             })</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>                data_selection_lst <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_ordered_lst,</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>                                             <span class="cf">function</span>(dol) {</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>                                                     <span class="cf">if</span>(num <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> num <span class="sc">&lt;=</span> <span class="fu">nrow</span>(dol)) {</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>                                                             dol[<span class="fu">which</span>(dol<span class="sc">$</span>rank <span class="sc">==</span> num), ]</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>                                                     } <span class="cf">else</span> {</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>                                                             df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hospital =</span> <span class="cn">NA</span>,</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>                                                                              <span class="at">state =</span> dol<span class="sc">$</span>state,</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>                                                                              <span class="at">rate =</span> <span class="cn">NA</span>,</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>                                                                              <span class="at">rank =</span> <span class="cn">NA</span>,</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>                                                                              <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>                                                             <span class="fu">return</span>(df[<span class="dv">1</span>, ])</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>                                                     }</span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>                                             })</span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>        <span class="co">#4.b# Create a single data frame from the list of data frames returned by &quot;lapply&quot; (this data frame</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     will have 54 observations -rows- and 4 variables -columns-, because each element of the 54</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     elements of the list -there are 54 states- is a data frame with 1 observation and 4 variables).</span></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>        data_selection_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, data_selection_lst)</span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>        <span class="co">#4.c# Create the required output data frame. We use &quot;cbind&quot;, so we first have to create an empty data</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     frame with the correct number of rows to put as first argument of &quot;cbind&quot; (using &quot;data.frame&quot;</span></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     function with no variables but just specifying the &quot;row.names&quot; parameter as the same length</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     -and content- as the row.names attribute of the original data frame -data_selection_df-, we</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     obtain the empty data frame with the correct number of rows that we want).</span></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>        output_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names =</span> <span class="fu">row.names</span>(data_selection_df))</span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>        output_df <span class="ot">&lt;-</span> <span class="fu">cbind</span>(output_df, data_selection_df<span class="sc">$</span>hospital, data_selection_df<span class="sc">$</span>state)</span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>        <span class="fu">colnames</span>(output_df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;hospital&quot;</span>, <span class="st">&quot;state&quot;</span>)</span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>        output_df</span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Probemos la función:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rankall</span>(<span class="st">&quot;heart attack&quot;</span>, <span class="dv">20</span>), <span class="dv">10</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                              hospital state</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>AK                                <span class="sc">&lt;</span><span class="cn">NA</span><span class="sc">&gt;</span>    AK</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>AL      D W MCMILLAN MEMORIAL HOSPITAL    AL</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>AR   ARKANSAS METHODIST MEDICAL CENTER    AR</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>AZ JOHN C LINCOLN DEER VALLEY HOSPITAL    AZ</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>CA               SHERMAN OAKS HOSPITAL    CA</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>CO            SKY RIDGE MEDICAL CENTER    CO</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>CT             MIDSTATE MEDICAL CENTER    CT</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>DC                                <span class="sc">&lt;</span><span class="cn">NA</span><span class="sc">&gt;</span>    DC</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>DE                                <span class="sc">&lt;</span><span class="cn">NA</span><span class="sc">&gt;</span>    DE</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>FL      SOUTH FLORIDA BAPTIST HOSPITAL    FL</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">rankall</span>(<span class="st">&quot;pneumonia&quot;</span>, <span class="st">&quot;worst&quot;</span>), <span class="dv">3</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                                     hospital state</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>WI MAYO CLINIC HEALTH SYSTEM <span class="sc">-</span> NORTHLAND, INC    WI</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>WV                     PLATEAU MEDICAL CENTER    WV</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>WY           NORTH BIG HORN HOSPITAL DISTRICT    WY</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">rankall</span>(<span class="st">&quot;heart failure&quot;</span>), <span class="dv">10</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>                                                            hospital state</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>TN                         WELLMONT HAWKINS COUNTY MEMORIAL HOSPITAL    TN</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>TX                                        FORT DUNCAN MEDICAL CENTER    TX</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>UT VA SALT LAKE CITY HEALTHCARE <span class="sc">-</span> GEORGE E. WAHLEN VA MEDICAL CENTER    UT</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>VA                                          SENTARA POTOMAC HOSPITAL    VA</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>VI                            GOV JUAN F LUIS HOSPITAL <span class="sc">&amp;</span> MEDICAL CTR    VI</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>VT                                              SPRINGFIELD HOSPITAL    VT</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>WA                                         HARBORVIEW MEDICAL CENTER    WA</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>WI                                    AURORA ST LUKES MEDICAL CENTER    WI</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>WV                                         FAIRMONT GENERAL HOSPITAL    WV</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>WY                                        CHEYENNE VA MEDICAL CENTER    WY</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Session Info.</h1>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NUMERIC<span class="ot">=</span>C              </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>   </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NAME<span class="ot">=</span>C                 </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>C               LC_TELEPHONE<span class="ot">=</span>C            </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span> LC_IDENTIFICATION<span class="ot">=</span>C       </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] plyr_1.<span class="fl">8.6</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] Rcpp_1.<span class="fl">0.7</span>       highr_0<span class="fl">.9</span>        formatR_1<span class="fl">.14</span>     pillar_1.<span class="fl">7.0</span>    </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] compiler_3.<span class="fl">6.3</span>   bslib_0.<span class="fl">3.0</span>      jquerylib_0.<span class="fl">1.4</span>  tools_3.<span class="fl">6.3</span>     </span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] digest_0.<span class="fl">6.29</span>    jsonlite_1.<span class="fl">7.2</span>   evaluate_0<span class="fl">.19</span>    lifecycle_1.<span class="fl">0.3</span> </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] tibble_3.<span class="fl">1.8</span>     gtable_0.<span class="fl">3.0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>  pkgconfig_2.<span class="fl">0.3</span> </span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] rlang_1.<span class="fl">0.6</span>      DBI_1.<span class="fl">1.1</span>        cli_3.<span class="fl">6.0</span>        rstudioapi_0<span class="fl">.13</span> </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] yaml_2.<span class="fl">2.1</span>       xfun_0<span class="fl">.36</span>        fastmap_1.<span class="fl">1.0</span>    withr_2.<span class="fl">5.0</span>     </span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] stringr_1.<span class="fl">4.0</span>    httr_1.<span class="fl">4.2</span>       knitr_1<span class="fl">.41</span>       hms_1.<span class="fl">1.0</span>       </span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] sass_0.<span class="fl">4.0</span>       generics_0.<span class="fl">1.2</span>   vctrs_0.<span class="fl">5.2</span>      grid_3.<span class="fl">6.3</span>      </span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] tidyselect_1.<span class="fl">2.0</span> glue_1.<span class="fl">6.2</span>       R6_2.<span class="fl">5.1</span>         fansi_1.<span class="fl">0.2</span>     </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] rmarkdown_2<span class="fl">.11</span>   tzdb_0.<span class="fl">3.0</span>       magrittr_2.<span class="fl">0.2</span>   scales_1.<span class="fl">1.1</span>    </span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] ellipsis_0.<span class="fl">3.2</span>   htmltools_0.<span class="fl">5.2</span>  assertthat_0.<span class="fl">2.1</span> colorspace_2<span class="fl">.0</span><span class="dv">-3</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">45</span>] utf8_1.<span class="fl">2.2</span>       stringi_1.<span class="fl">7.6</span>    munsell_0.<span class="fl">5.0</span>    crayon_1.<span class="fl">5.0</span>    </span></code></pre></div>
+<hr />
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

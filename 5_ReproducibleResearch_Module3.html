@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Reproducible Research Course - Module 3</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Reproducible Research Course - Module
+3</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#communicating-results."
+id="toc-communicating-results."><span
+class="toc-section-number">1</span> Communicating results.</a>
+<ul>
+<li><a
+href="#typical-first-presentation-e-mail-with-info-well-organized-in-a-hierarchy."
+id="toc-typical-first-presentation-e-mail-with-info-well-organized-in-a-hierarchy."><span
+class="toc-section-number">1.1</span> Typical first presentation:
+e-mail, with info well organized in a hierarchy.</a></li>
+<li><a href="#hierarchy-of-a-research-paper."
+id="toc-hierarchy-of-a-research-paper."><span
+class="toc-section-number">1.2</span> Hierarchy of a <strong>research
+paper</strong>.</a></li>
+<li><a href="#hierachy-of-an-e-mail."
+id="toc-hierachy-of-an-e-mail."><span
+class="toc-section-number">1.3</span> Hierachy of an
+<strong>e-mail</strong>.</a></li>
+</ul></li>
+<li><a href="#reproducibility-check-list."
+id="toc-reproducibility-check-list."><span
+class="toc-section-number">2</span> Reproducibility check list.</a>
+<ul>
+<li><a href="#start-with-good-science-garbage-in-garbage-out."
+id="toc-start-with-good-science-garbage-in-garbage-out."><span
+class="toc-section-number">2.1</span> Start with good science:
+<em>garbage in, garbage out</em>.</a></li>
+<li><a href="#dont-do-things-by-hand."
+id="toc-dont-do-things-by-hand."><span
+class="toc-section-number">2.2</span> Don’t do things by hand.</a></li>
+<li><a href="#dont-point-and-click."
+id="toc-dont-point-and-click."><span
+class="toc-section-number">2.3</span> Don’t point and click.</a></li>
+<li><a href="#teach-a-computer." id="toc-teach-a-computer."><span
+class="toc-section-number">2.4</span> Teach a computer.</a>
+<ul>
+<li><a href="#example-downloading-data."
+id="toc-example-downloading-data."><span
+class="toc-section-number">2.4.1</span> Example: downloading
+data.</a></li>
+</ul></li>
+<li><a href="#use-some-version-control."
+id="toc-use-some-version-control."><span
+class="toc-section-number">2.5</span> Use some version control.</a></li>
+<li><a href="#keep-track-of-your-software-environment."
+id="toc-keep-track-of-your-software-environment."><span
+class="toc-section-number">2.6</span> Keep track of your software
+environment.</a></li>
+<li><a href="#dont-save-output." id="toc-dont-save-output."><span
+class="toc-section-number">2.7</span> Don’t save output.</a>
+<ul>
+<li><a href="#the-one-exception." id="toc-the-one-exception."><span
+class="toc-section-number">2.7.1</span> The one exception.</a></li>
+</ul></li>
+<li><a href="#set-your-seed." id="toc-set-your-seed."><span
+class="toc-section-number">2.8</span> Set your seed.</a></li>
+<li><a href="#think-about-the-entire-pipeline."
+id="toc-think-about-the-entire-pipeline."><span
+class="toc-section-number">2.9</span> Think about the entire
+pipeline.</a></li>
+<li><a href="#summary-the-checklist."
+id="toc-summary-the-checklist."><span
+class="toc-section-number">2.10</span> Summary: the checklist.</a></li>
+</ul></li>
+<li><a href="#evidence-based-data-analysis."
+id="toc-evidence-based-data-analysis."><span
+class="toc-section-number">3</span> Evidence-based data analysis.</a>
+<ul>
+<li><a href="#what-problem-does-reproducibility-solve"
+id="toc-what-problem-does-reproducibility-solve"><span
+class="toc-section-number">3.1</span> What problem does reproducibility
+solve?</a></li>
+<li><a href="#prevention-vs.-medication."
+id="toc-prevention-vs.-medication."><span
+class="toc-section-number">3.2</span> Prevention
+vs. Medication.</a></li>
+<li><a href="#moving-upstream." id="toc-moving-upstream."><span
+class="toc-section-number">3.3</span> Moving upstream.</a></li>
+<li><a href="#what-then" id="toc-what-then"><span
+class="toc-section-number">3.4</span> What then?</a></li>
+<li><a href="#towards-evidence-based-data-analysis-two-problems."
+id="toc-towards-evidence-based-data-analysis-two-problems."><span
+class="toc-section-number">3.5</span> Towards evidence-based data
+analysis: two problems.</a></li>
+<li><a href="#regarding-the-fisrt-problem-open-source-science"
+id="toc-regarding-the-fisrt-problem-open-source-science"><span
+class="toc-section-number">3.6</span> Regarding the fisrt problem: open
+source science?</a></li>
+<li><a href="#regarding-the-second-problem-first-do-no-harm."
+id="toc-regarding-the-second-problem-first-do-no-harm."><span
+class="toc-section-number">3.7</span> Regarding the second problem:
+first do no harm.</a></li>
+<li><a href="#evidence-based-data-analysis.-1"
+id="toc-evidence-based-data-analysis.-1"><span
+class="toc-section-number">3.8</span> Evidence-based data analysis.</a>
+<ul>
+<li><a href="#a-a-simple-example-evidence-based-histograms."
+id="toc-a-a-simple-example-evidence-based-histograms."><span
+class="toc-section-number">3.8.1</span> A a simple example:
+evidence-based histograms.</a></li>
+<li><a href="#evidence-based-reproducible-research."
+id="toc-evidence-based-reproducible-research."><span
+class="toc-section-number">3.8.2</span> Evidence-based reproducible
+research.</a></li>
+<li><a href="#evidence-based-data-analysis-in-practice."
+id="toc-evidence-based-data-analysis-in-practice."><span
+class="toc-section-number">3.8.3</span> Evidence-based data analysis in
+practice.</a></li>
+<li><a href="#in-summary." id="toc-in-summary."><span
+class="toc-section-number">3.8.4</span> In summary.</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#public-reproducibility-resoruces."
+id="toc-public-reproducibility-resoruces."><span
+class="toc-section-number">4</span> Public reproducibility
+resoruces.</a>
+<ul>
+<li><a href="#code-repositories." id="toc-code-repositories."><span
+class="toc-section-number">4.1</span> Code repositories.</a></li>
+<li><a href="#data-repositories." id="toc-data-repositories."><span
+class="toc-section-number">4.2</span> Data repositories.</a></li>
+<li><a href="#publication-repositories."
+id="toc-publication-repositories."><span
+class="toc-section-number">4.3</span> Publication repositories.</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">5</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="communicating-results." class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Communicating
+results.</h1>
+<p>A substantial and important part of any good data analysis involves
+communicating the results to others.</p>
+<p>This section is not so much about reproducibility <em>per se</em>.
+It’s more about <strong>how we can communicate our results</strong> in a
+way that people can <strong>understand them</strong> and can
+<strong>check or challenge</strong> our results, if they need to.</p>
+<div
+id="typical-first-presentation-e-mail-with-info-well-organized-in-a-hierarchy."
+class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Typical first
+presentation: e-mail, with info well organized in a hierarchy.</h2>
+<p>While communication may involve writing a report, publishing a paper,
+or making an oral presentation, in many settings the initial
+“presentation” is <strong>through e-mail or something
+similar</strong>.</p>
+<p>In these cases, it certaintly useful to <strong>structure the
+presentation as a hierarchy</strong>, with <em>key high-level</em>
+information <strong>up front</strong> and <em>supporting details or
+evidence</em> in the <strong>background</strong>.</p>
+<ul>
+<li><p>In fact, when we’re working on a <strong>large data
+analysis</strong>, or a <strong>complex project</strong>, and we do our
+work in a reproducible manner, we’re going to generate a lot of content,
+files, output, and data. These <strong>outputs cannot all be presented
+at once</strong> without any structure.</p></li>
+<li><p>The bottom line is that most people these days are <a
+href="http://simplystatistics.org/2011/09/23/getting-email-responses-from-busy-people/">very
+busy</a>, so they are more likely to accept and digest content that you
+present in a streamlined and hierarchical order.</p></li>
+<li><p>So, it’s useful to <strong>break down the results</strong> of an
+analysis into <strong><em>different levels of specificity or
+granularity</em></strong>.</p></li>
+<li><p>That’s what we’re going to talk about in this section.</p></li>
+</ul>
+</div>
+<div id="hierarchy-of-a-research-paper." class="section level2"
+number="1.2">
+<h2><span class="header-section-number">1.2</span> Hierarchy of a
+<strong>research paper</strong>.</h2>
+<p>A typical research paper has a hierarchy of information built into
+it.</p>
+<p>There’s typically a range of things presented in a resarch paper,
+from <strong>least specific</strong> to <strong>most
+specific</strong>.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Title and Author list</strong>:
+<ul>
+<li>The <em>first level</em> is going to be the <strong>title</strong>,
+which is descriptive of what the paper’s about.<br />
+</li>
+<li>Hopefully it’s interesting, it tells us a little bit about what’s
+going on, but there’s really no detail in it, just the the topic that’s
+covered.<br />
+</li>
+<li>Also, we can learn who is responsible for the work from the
+<strong>author list</strong>.</li>
+</ul></li>
+<li><strong>Abstract</strong>:
+<ul>
+<li>The next will be the abstract, usually a <em>couple hundred
+words</em>, describing:
+<ul>
+<li>what the paper’s <em>about</em>;<br />
+</li>
+<li>what <em>motivated the problem</em>, and<br />
+</li>
+<li>what was <em>done to solve the problem</em>.<br />
+</li>
+</ul></li>
+</ul></li>
+<li><strong>Body and Results</strong>:
+<ul>
+<li>Then, of course, we have the paper itself.<br />
+</li>
+<li>The <strong>body</strong> of the paper will have the methods and
+more details about what we really did.<br />
+</li>
+<li>The more detailed <strong>results</strong> will include any
+sensitivity analyses and a much longer discussion of the implications of
+the results.<br />
+</li>
+</ul></li>
+<li><strong>Supplementary materials (gory details - detalles
+morbosos)</strong>:
+<ul>
+<li>Of course, even the written paper, for a complex data analysis,
+doesn’t specify all the details that are needed to reproduce the
+findings.<br />
+</li>
+<li>Typically, we might have some supplementary materials which have a
+lot more of the details about what was done.<br />
+</li>
+</ul></li>
+<li><strong>Code and data (really gory details)</strong>:
+<ul>
+<li>If we really want to do what was done to a level of precision that
+is useful, we probably need to get the code, the data and all the gory
+details of what happened.</li>
+</ul></li>
+</ol>
+</div>
+<div id="hierachy-of-an-e-mail." class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Hierachy of an
+<strong>e-mail</strong>.</h2>
+<p>Not everyone is writing a research paper, but <em>there is an
+analog</em>: e-mail.</p>
+<p>If we’re going to be <strong>e-mailing results</strong> either a
+colleague or a manager, then it’s a good idea to follow a basic
+structure.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Subject Line and Sender Information</strong>:
+<ul>
+<li>First line of information is the <strong>subject</strong> of the
+e-mail, which <em>becomes like the title</em>.<br />
+</li>
+<li>It should be concise, we want to be descriptive, and at a minimum,
+we want to have one. So don’t send an e-mail without a subject.<br />
+</li>
+<li>If we can summarize what we’ve done in one sentence, it may be
+useful put that in the subject (that way people can get a sense of
+what’s happening and maybe even make a decision based on that
+alone).<br />
+</li>
+</ul></li>
+<li><strong>E-mail Body</strong>:
+<ul>
+<li>The next level of information is the e-mail body.<br />
+</li>
+<li>Even though there’s no technical limit on the size of the e-mail
+body, we don’t want to go too crazy with this.</li>
+<li>We need to provide a <em>brief description of the problem</em> (the
+recipient may not know or remember what the problem is or precisely what
+we’re working on).<br />
+</li>
+<li>Give them a <em>little context</em>, give them a <em>little
+description</em>.<br />
+</li>
+<li>Recall if there was a dsicussion previously. Talk about what was
+proposed and what we actually did.<br />
+</li>
+<li><em>Summarize some of our findings</em> and our results for one to
+two paragraphs.<br />
+</li>
+<li>If we need the person to take some sort of action based on the
+results of this presentation, try to <em>suggest some options</em> that
+and make them as concrete as possible.<br />
+</li>
+<li>If there are questions that need to be addressed, it’s best to make
+them <em>yes/no questions</em>, or as simple as possible.<br />
+</li>
+</ul></li>
+<li><strong>Attachments</strong>:
+<ul>
+<li>After the e-mail body you might attach something that’s quite a bit
+longer, a PDF file or another type of document.<br />
+</li>
+<li>This can be a <em>report containing more detailed analyses</em>,
+figures, tables, things like that.<br />
+</li>
+<li>This can be derived from an <code>R markdown</code> file. We can use
+something we create with <code>knitr</code> (the recipient knows that
+our code is available because if we use something like knitr then
+obviously, we have to put the code in with the results, but <em>we don’t
+necessarily have to present it all in the report</em>, be concise and
+don’t spit out pages and pages of code and tables and results).<br />
+</li>
+</ul></li>
+<li><strong>Supplementary Materials</strong>:
+<ul>
+<li>If someone really wants to look at what we did precisely, we can
+give them a link to a <strong>repository</strong>, like GitHub, a
+project website that would have all of the details, or all our code
+files, all our data sets, our software environment, things like
+that.</li>
+</ul></li>
+</ol>
+<p>So, we want to present people with these different levels of detail
+so <strong>they can choose the level that they are most interested
+in</strong>.</p>
+<hr />
+</div>
+</div>
+<div id="reproducibility-check-list." class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Reproducibility check
+list.</h1>
+<p>We’re going to present a <strong>few rules of thumb</strong> that
+might be useful for <em>at least encouraging reproducibility</em>, if
+not guaranteeing it, under the form a <strong>simple “check
+list”</strong>.</p>
+<div id="start-with-good-science-garbage-in-garbage-out."
+class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Start with good
+science: <em>garbage in, garbage out</em>.</h2>
+<p>Good science, generally speaking, or a good question, is the key to
+any worthwhile investigation.</p>
+<p>The <strong>general rule of “garbage in, garbage out”</strong>
+applies here.</p>
+<ul>
+<li>If we do not start with a <strong><em>meaningful
+question</em></strong>, then no amount of data analysis or statistical
+machinery will be able to make the results interesting to us.<br />
+</li>
+<li>If the question and the results are <strong>not interesting</strong>
+to us or our colleagues, there will be relatively little motivation to
+make the results reproducible.<br />
+</li>
+<li>Having a <strong>coherent, focused question</strong> simplifies many
+problems and will make it easier to determine whether we are on the
+right track or if an error has occurred.<br />
+</li>
+<li><strong>Vague and broadly defined questions</strong> can fit many
+different scenarios and are more likely to encourage sloppiness and
+unclear thinking.</li>
+</ul>
+<p>Related to working on a problem that interests us is <strong>working
+with good collaborators</strong>.</p>
+<ul>
+<li>Collaborators that we work well with will reinforce good practices
+and will encourage us to do the best work.<br />
+</li>
+<li>Ultimately, if we are uncomfortable with the people we are working
+with, or more seriously, if we do not completely trust the people we are
+working with, then there will be breakdowns in communication and things
+will get lost.<br />
+</li>
+<li>If we don’t feel comfortable (politely) challenging a colleague’s
+work when needed, then bad work will make it through, which can lead to
+non-reproducible results.<br />
+</li>
+<li>Working with the right people is an important, but often
+unmentioned, aspect of making work reproducible.</li>
+</ul>
+</div>
+<div id="dont-do-things-by-hand." class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Don’t do things by
+hand.</h2>
+<p>If we could boil down the hole topic we’re dealing with to one rule,
+it might be <em>“Don’t do things by hand”</em>.</p>
+<p>Here are a few examples that are common, but are <strong>bad
+practice</strong>:</p>
+<ul>
+<li><strong>Editing spreadsheets of data to “clean it up”</strong>.
+<ul>
+<li>Often this is done to remove outliers, do quality assurance or
+quality control checks (QA/QC), or validating individual data
+entries.<br />
+</li>
+</ul></li>
+<li><strong>Editing tables or figures</strong> (e.g. rounding,
+formatting) to make then look better.<br />
+</li>
+<li><strong>Downloading data from a web site using a web
+browser</strong>.<br />
+</li>
+<li><strong>Moving data around our computer</strong>.<br />
+</li>
+<li><strong>Splitting or reformatting data files</strong>.</li>
+</ul>
+<p>Often, the <strong>motiviation for doing all of the above
+things</strong> is that <em>“We’re just going to do this once”.</em></p>
+<ul>
+<li>The thinking is that if the activity is only going to be done once,
+it doesn’t need to be automated (i.e. programmed into a computer).<br />
+</li>
+<li>But <strong>programming a procedure</strong> into a computer is
+<strong>not necessarily about automation</strong>, it’s <strong>also
+about documentation</strong>.</li>
+</ul>
+<p>The problem with <strong>things that are done by hand</strong>, is
+that they <strong>need to be precisely documented</strong> (this is
+<strong>harder than it sounds</strong>).</p>
+<ul>
+<li>Often, it can very difficult to communicate to someone what was done
+after the fact.<br />
+</li>
+<li>It can be easy to miss a step that “isn’t important” when in fact it
+is.</li>
+</ul>
+</div>
+<div id="dont-point-and-click." class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Don’t point and
+click.</h2>
+<p>Pointing and clicking is <strong>obviously related to doing things by
+hand</strong>.</p>
+<p>Most modern <strong>operating systems</strong> have a
+<strong>windowing interface</strong> that allow you to click on menus
+that can lead to automated built-in routines.</p>
+<p>Many <strong>data processing and statistical analysis
+packages</strong> have <strong>graphical user interfaces</strong> (GUIs)
+that simplify the use of the program, but the actions we take with a GUI
+can be difficult for others to reproduce because there’s not necessarily
+a log of what was clicked.</p>
+<ul>
+<li><strong>Some</strong> GUIs for statistical analysis packages
+<strong>produce a log file or script</strong> which includes
+<strong>equivalent commands for reproducing the behavior of the
+GUI</strong>, <strong><em>but this is by no means the
+standard</em></strong>.</li>
+</ul>
+<p><strong>In general</strong>, be <strong>careful with data analysis
+software</strong> that is <strong>highly interactive</strong>.</p>
+<ul>
+<li>There is <em>often a trade-off</em> between the ease of use of a
+software package and the tendency to lead to non-reproducible
+results.<br />
+</li>
+<li>Of course, some software has to be interactive, like text editors or
+word processors, and that’s fine.<br />
+</li>
+<li>It’s just <em>when the software must be used to conduct data
+analysis</em>, we must be careful not to be seduced by the ease-of-use
+of an interactive interface.</li>
+</ul>
+</div>
+<div id="teach-a-computer." class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Teach a
+computer.</h2>
+<p>The <strong>opposite of doing things by hand</strong> is teaching a
+computer to do something.</p>
+<p>Computers need very precise instructions to accomplish a task so
+there’s <strong>no room for ambiguity</strong>.</p>
+<ul>
+<li>This is <em>a Good Thing</em> if our goal is to make our procedures
+and processes reproducible.<br />
+</li>
+<li>If something needs to be done as part of our analysis or
+investigation, try to teach our computer to do it, <strong>even if we
+only need to do it once</strong>.<br />
+</li>
+<li>In the end, teaching a computer to do something <strong>almost
+guarantees reproducibilty</strong>.</li>
+</ul>
+<div id="example-downloading-data." class="section level3"
+number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Example:
+downloading data.</h3>
+<p>Downloadling datasets is something data scientists are constantly
+doing.</p>
+<p>But <strong>if we’re using a web browser</strong> to download data,
+we’re probably <strong>not downloading data in a reproducible
+way</strong>.</p>
+<ul>
+<li>Normally, the interactive nature of the web browser is a great
+feature, but not when we need to download a dataset that is important to
+our analysis.</li>
+</ul>
+<p>Suppose we wanted to obtain a <em>dataset</em> to analyze <em>from
+the <code>UCI Machine Learning Repository</code></em>.</p>
+<p><strong>One way to do that</strong> would be to:</p>
+<ol style="list-style-type: decimal">
+<li>Go to the UCI Machine Learning Repository at <a
+href="http://archive.ics.uci.edu/ml/datasets"
+class="uri">http://archive.ics.uci.edu/ml/datasets</a><br />
+</li>
+<li>Download the <a
+href="http://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset">Bike
+Sharing Dataset</a> by:<br />
+- clicking on the link to the <a
+href="http://archive.ics.uci.edu/ml/machine-learning-databases/00275/">Data
+Folder</a>;<br />
+- then clicking on the <a
+href="http://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip">link
+to the zip file of dataset</a>;<br />
+- then choosing “Save Linked File As…” and then saving it to a folder on
+our computer.</li>
+</ol>
+<p>But <strong>this involves doing things by hand!</strong>.</p>
+<p><strong>Another way</strong> to accomplish this task is to
+<strong>teach our computer</strong> to do the same thing using R:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">&quot;http://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip&quot;</span>, <span class="st">&quot;5_data/Bike-Sharing-Dataset.zip&quot;</span>)</span></code></pre></div>
+<p><strong>Notice</strong> here that:</p>
+<ul>
+<li>The <strong>full URL</strong> to the dataset file <em>is
+specified</em>.
+<ul>
+<li><em>No clicking through a series of links</em>.<br />
+</li>
+</ul></li>
+<li>The <strong>name of the file saved</strong> to our local computer
+<em>is specified</em>.<br />
+</li>
+<li>The <strong>directory</strong> in which the file was saved <em>is
+specified</em>.<br />
+</li>
+<li>The code can always be executed in R (as long as link is
+available).</li>
+</ul>
+<p>Now that you’ve taught a computer to do this task, it is <strong>far
+more reproducible than writing down a series of instructions directing
+someone to use a web browser</strong>.</p>
+<ul>
+<li>In fact, the R code is a far more compact representation of this
+task.</li>
+</ul>
+</div>
+</div>
+<div id="use-some-version-control." class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Use some version
+control.</h2>
+<p>As we know, version control systems are software systems designed to
+help us keep track of changes to a set of code files in a given
+project.</p>
+<p>They are primarily designed for software projects where code files
+are typically reasonably small text files, but <em>they can also be
+applied to data analysis projects</em>.</p>
+<p><strong>Examples</strong> of popular version control systems these
+days are:</p>
+<ul>
+<li><a href="http://git-scm.com/">git</a><br />
+</li>
+<li><a href="http://subversion.apache.org/">subversion (svn)</a></li>
+<li><a href="https://mercurial.selenic.com/">mercurial (hg)</a></li>
+</ul>
+<p>If there’s <strong>one reason for using a version control
+system</strong> to track the changes to your data analysis project, it
+is that:</p>
+<ul>
+<li>The version control system <strong><em>can help to slow things
+down</em></strong>.<br />
+</li>
+<li>In many instances with data analyses, it’s tempting to zoom ahead
+and start plowing into the data to find something interesting.<br />
+</li>
+<li>This excitement is good, of course, but not at the expense of
+keeping track of what’s happening.<br />
+</li>
+<li>Version control systems can be helpful for reminding us that changes
+need to be tracked and notes need to be taken.</li>
+</ul>
+<p>Version control systems have <strong>many benefits</strong>, such
+as:</p>
+<ul>
+<li>Being able to <strong>track snapshots</strong> of a project and to
+<strong>mark/tag major milestones</strong>.<br />
+</li>
+<li>Also, they allow for <strong>simple collaboration</strong> across
+networks (internal or external) and for <strong>publishing our
+work</strong>.
+<ul>
+<li>With complementary web sites like <a
+href="https://github.com/">GitHub</a>, <a
+href="https://bitbucket.org/">BitBucket</a> and <a
+href="http://sourceforge.net/">SourceForge</a>, it is now
+<em>straightforward to publish</em> our projects so that anyone can view
+our work.</li>
+</ul></li>
+</ul>
+</div>
+<div id="keep-track-of-your-software-environment."
+class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Keep track of your
+software environment.</h2>
+<p>If we work on a complex project involving many tools and datasets,
+the software and computing environment can play a <strong>critical
+role</strong> in determining whether our analysis is reproducible.</p>
+<ul>
+<li>In the <strong>extreme case</strong>, if our analysis depends on
+<em>some custom proprietary software or hardware</em> that only we
+possess, then obviously no one else will be able to reproduce our
+analysis.<br />
+</li>
+<li>However, <strong>there are many cases</strong> where the software
+and hardware environment in which a data analysis was conducted, can be
+important for reproducibility.</li>
+</ul>
+<p>Here are a <strong>few things that we should keep in mind</strong> as
+we keep track of our environment.</p>
+<ul>
+<li><strong>Computer architecture</strong>:
+<ul>
+<li>What kind of CPU does our computer use? Intel, AMD, ARM, etc.<br />
+</li>
+<li>Are we using graphical processing units (GPUs)?<br />
+</li>
+</ul></li>
+<li><strong>Operating system</strong>:
+<ul>
+<li>Are we using Windows, Mac OS, Linux / Unix, something else?<br />
+</li>
+<li>The more obscure our operating system, the more difficult it might
+be to reproduce our work unless we do things in a cross-platform
+manner.<br />
+</li>
+</ul></li>
+<li><strong>Software toolchain</strong>:
+<ul>
+<li>This includes things like compilers, interpreters, the command
+shell, programming languages (C, Perl, Python, etc.), database backends,
+and any data analysis software.<br />
+</li>
+</ul></li>
+<li><strong>Supporting software and infrastructure</strong>:
+<ul>
+<li>Software libraries, R packages, software dependencies.<br />
+</li>
+</ul></li>
+<li><strong>External dependencies</strong>:
+<ul>
+<li>Our data analysis is likely to depend on things outside of our
+computer, like web sites, data repositories, remote databases and
+software repositories.<br />
+</li>
+</ul></li>
+<li><strong>Version numbers</strong>:
+<ul>
+<li>Ideally, we should keep track of the version numbers for everything
+we use, if possible.<br />
+</li>
+<li>This is particularly important for software and libraries because
+often certain versions of software do not work with other versions of
+software, so a mismatch in version numbers may prevent another person
+from reproducible our work.<br />
+</li>
+<li>Communicating the appropriate version numbers to others can improve
+the chances of them reproducing what we’ve done.</li>
+</ul></li>
+</ul>
+<p>One <strong>important function in R</strong> that can be useful for
+documenting our R environment is the <code>sessionInfo()</code>
+function.</p>
+<ul>
+<li>It displays various details about our R environment like the search
+path, which packages are loaded, the version number of R, the locale,
+and the operating system of our computer.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] xtable_1<span class="fl">.8</span><span class="dv">-4</span>       kernlab_0<span class="fl">.9</span><span class="dv">-29</span>     R.utils_2.<span class="fl">10.1</span>     R.oo_1.<span class="fl">24.0</span>       </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] R.methodsS3_1.<span class="fl">8.1</span>  impute_1.<span class="fl">60.0</span>      RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> maps_3.<span class="fl">3.0</span>        </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] stringr_1.<span class="fl">4.0</span>      lubridate_1.<span class="fl">9.2</span>    quantmod_0.<span class="fl">4.20</span>    TTR_0.<span class="fl">24.2</span>        </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] xts_0.<span class="fl">12.1</span>         zoo_1<span class="fl">.8</span><span class="dv">-9</span>          readr_2.<span class="fl">0.1</span>        tidyr_1.<span class="fl">2.0</span>       </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] dplyr_1.<span class="fl">0.8</span>        reshape2_1.<span class="fl">4.4</span>     Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>        ggplot2_3.<span class="fl">3.5</span>     </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] Formula_1<span class="fl">.2</span><span class="dv">-3</span>      survival_3<span class="fl">.4</span><span class="dv">-0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>    jpeg_0<span class="fl">.1-8.1</span>      </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] gitignore_0.<span class="fl">1.3</span>    rhdf5_2.<span class="fl">30.1</span>       httr_1.<span class="fl">4.2</span>         httpuv_1.<span class="fl">6.3</span>      </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] sqldf_0<span class="fl">.4</span><span class="dv">-11</span>       RSQLite_2.<span class="fl">2.0</span>      gsubfn_0<span class="fl">.7</span>         proto_1.<span class="fl">0.0</span>       </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] DBI_1.<span class="fl">1.1</span>          data.table_1.<span class="fl">14.0</span>  jsonlite_1.<span class="fl">7.2</span>     XML_3<span class="fl">.99-0.3</span>      </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] xlsx_0.<span class="fl">6.3</span>         plyr_1.<span class="fl">8.6</span>        </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    ellipsis_0.<span class="fl">3.2</span>      htmlTable_2.<span class="fl">0.1</span>    </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] bit64_4.<span class="fl">0.5</span>         fansi_1.<span class="fl">0.2</span>         splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] knitr_1<span class="fl">.41</span>          rJava_0<span class="fl">.9</span><span class="dv">-13</span>        cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           clipr_0.<span class="fl">7.1</span>         compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] backports_1.<span class="fl">4.1</span>     assertthat_0.<span class="fl">2.1</span>    Matrix_1<span class="fl">.5</span><span class="dv">-1</span>       </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] fastmap_1.<span class="fl">1.0</span>       cli_3.<span class="fl">6.0</span>           later_1.<span class="fl">3.0</span>        </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] formatR_1<span class="fl">.14</span>        acepack_1.<span class="fl">4.1</span>       htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] tools_3.<span class="fl">6.3</span>         gtable_0.<span class="fl">3.0</span>        glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] Rcpp_1.<span class="fl">0.7</span>          jquerylib_0.<span class="fl">1.4</span>     vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        xfun_0<span class="fl">.36</span>           xlsxjars_0.<span class="fl">6.1</span>     </span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] timechange_0.<span class="fl">2.0</span>    lifecycle_1.<span class="fl">0.3</span>     scales_1.<span class="fl">1.1</span>       </span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] vroom_1.<span class="fl">5.5</span>         hms_1.<span class="fl">1.0</span>           promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>   </span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] parallel_3.<span class="fl">6.3</span>      yaml_2.<span class="fl">2.1</span>          curl_4.<span class="fl">3.2</span>         </span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] memoise_1.<span class="fl">1.0</span>       gridExtra_2<span class="fl">.3</span>       sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] rpart_4.<span class="fl">1.19</span>        latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] highr_0<span class="fl">.9</span>           checkmate_2.<span class="fl">0.0</span>     chron_2<span class="fl">.3</span><span class="dv">-55</span>       </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] rlang_1.<span class="fl">0.6</span>         pkgconfig_2.<span class="fl">0.3</span>     evaluate_0<span class="fl">.19</span>      </span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] purrr_0.<span class="fl">3.4</span>         Rhdf5lib_1.<span class="fl">8.0</span>      htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] labeling_0.<span class="fl">4.2</span>      bit_4.<span class="fl">0.4</span>           tidyselect_1.<span class="fl">2.0</span>   </span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] magrittr_2.<span class="fl">0.2</span>      R6_2.<span class="fl">5.1</span>            generics_0.<span class="fl">1.2</span>     </span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] pillar_1.<span class="fl">7.0</span>        foreign_0<span class="fl">.8</span><span class="dv">-76</span>      withr_2.<span class="fl">5.0</span>        </span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         nnet_7<span class="fl">.3</span><span class="dv">-18</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] crayon_1.<span class="fl">5.0</span>        KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span>  utf8_1.<span class="fl">2.2</span>         </span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] tzdb_0.<span class="fl">3.0</span>          rmarkdown_2<span class="fl">.11</span>      grid_3.<span class="fl">6.3</span>         </span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] blob_1.<span class="fl">2.2</span>          digest_0.<span class="fl">6.29</span>       openssl_2.<span class="fl">0.5</span>      </span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] munsell_0.<span class="fl">5.0</span>       viridisLite_0.<span class="fl">4.0</span>   bslib_0.<span class="fl">3.0</span>        </span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>[<span class="dv">82</span>] tcltk_3.<span class="fl">6.3</span>         askpass_1<span class="fl">.1</span>        </span></code></pre></div>
+<ul>
+<li>Including a call to <code>sessionInfo()</code> <strong>at the end of
+each report</strong> written in R (perhaps with markdown or knitr) can
+be useful for communicating to the reader what type of environment is
+needed to reproduce the contents of the report (it may not be necessary
+but it’s likely sufficient for simple analyses).</li>
+</ul>
+</div>
+<div id="dont-save-output." class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Don’t save
+output.</h2>
+<p>Saving output from various stages in a data analysis <strong>may seem
+like a responsible thing to do</strong> (what if the computer crashes),
+<strong><em>but it should be avoided if possible</em></strong>.</p>
+<ul>
+<li>The reason is that <em>output files are often undocumented</em> and
+the manner in which they were constructed can be <em>difficult to
+reproduce</em>.</li>
+</ul>
+<p>Better to <strong>save the inputs and code</strong> that were
+<strong>used to create a given piece of output</strong> rather than save
+the output itself.</p>
+<ul>
+<li>That way, if changes need to be made (or if output is lost), we can
+simply re-run the code with the appropriate input.</li>
+</ul>
+<p>Outputs that we should avoid saving are things like <em>tables,
+figures, summaries and processed data</em>.</p>
+<div id="the-one-exception." class="section level3" number="2.7.1">
+<h3><span class="header-section-number">2.7.1</span> The one
+exception.</h3>
+<p>The one exception here is <strong>if it took a very long time to
+create that output</strong>.</p>
+<ul>
+<li>Then it might make sense to temporarily save some output for
+efficiency purposes.<br />
+</li>
+<li>But in those cases, it’s <em>important to document carefully</em>
+how the output was generated, perhaps via a version control
+system.<br />
+</li>
+<li>Ultimately, if an output file cannot be easily connected with the
+means by which it was created, then it is not reproducible.</li>
+</ul>
+</div>
+</div>
+<div id="set-your-seed." class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Set your seed.</h2>
+<p>This is a <strong>niche issue</strong> that may not be generally
+applicable, but is often the source of non-reproducible results in
+statistical output or simulations.</p>
+<p>Many <strong>sophisticated statistical routines</strong> these days
+depend on the generation of random numbers.</p>
+<ul>
+<li>Think Markov chain Monte Carlo, random forests and
+bootstrapping.</li>
+</ul>
+<p>Any procedure that depends on randomness will not generate the exact
+same output if you run it twice (the very definition of
+non-reproducibility).</p>
+<p>However, <strong>on a computer</strong>, <strong>random numbers are
+not truly random</strong>, rather they are pseudo-random.</p>
+<ul>
+<li>Therefore, <strong>it is possible to exactly reconstruct</strong> a
+sequence of pseudo-random numbers if we have the <strong><em>initial
+seed</em></strong>.<br />
+</li>
+<li>Setting the seed allows for the stream of random numbers to be
+exactly reproducible at a later date.<br />
+</li>
+<li>Whenever we generate random numbers for a non-trivial purpose,
+always set the seed at the beginning of our code.</li>
+</ul>
+<p><strong>In R</strong> we can use the <code>set.seed()</code> function
+to:</p>
+<ul>
+<li>set the random number <em>generator seed</em>;<br />
+</li>
+<li>and to specify <em>which random number generator to use</em> (see
+?set.seed for details).</li>
+</ul>
+<p>Here’s an example of some random numbers.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="fl">0.2979836</span> <span class="sc">-</span><span class="fl">1.0195522</span>  <span class="fl">2.8708974</span>  <span class="fl">0.2187100</span> <span class="sc">-</span><span class="fl">0.9665543</span></span></code></pre></div>
+<p>There is now no way for us to go back (via code) and regenerate those
+numbers because <strong>we didn’t set the seed</strong>. The next time
+we call <code>rnorm()</code> it will generate different numbers.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="fl">0.3838382</span> <span class="sc">-</span><span class="fl">0.1218961</span> <span class="sc">-</span><span class="fl">0.3505476</span>  <span class="fl">0.5994636</span>  <span class="fl">0.2312741</span></span></code></pre></div>
+<p>However, if we <strong>set the seed first</strong>, we can always
+re-generate the same numbers if needed.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="fl">0.01874617</span> <span class="sc">-</span><span class="fl">0.18425254</span> <span class="sc">-</span><span class="fl">1.37133055</span> <span class="sc">-</span><span class="fl">0.59916772</span>  <span class="fl">0.29454513</span></span></code></pre></div>
+<p>And again.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="fl">0.01874617</span> <span class="sc">-</span><span class="fl">0.18425254</span> <span class="sc">-</span><span class="fl">1.37133055</span> <span class="sc">-</span><span class="fl">0.59916772</span>  <span class="fl">0.29454513</span></span></code></pre></div>
+</div>
+<div id="think-about-the-entire-pipeline." class="section level2"
+number="2.9">
+<h2><span class="header-section-number">2.9</span> Think about the
+entire pipeline.</h2>
+<p>Data analysis is a <strong>lengthy process</strong>, starting from
+obtaining data all the way to generating results and communicating
+output.</p>
+<ul>
+<li><p>It is not just fitting a few prediction models or creating
+tables, figures, and reports.</p></li>
+<li><p>Typically, there will be raw data –&gt; processed or analytic
+data –&gt; analysis results –&gt; final report.</p></li>
+</ul>
+<p>In addition to all that there will be code files that correspond to
+each of those transitions.</p>
+<p>The <strong>key thing to remember</strong> is that <em>how we got the
+end is just as important as the end itself</em>.</p>
+<ul>
+<li>The more of the entire data analysis pipeline we can make
+reproducible, the better for everyone (most importantly,
+ourselves).</li>
+</ul>
+</div>
+<div id="summary-the-checklist." class="section level2" number="2.10">
+<h2><span class="header-section-number">2.10</span> Summary: the
+checklist.</h2>
+<ul>
+<li><p>Are we doing good science?</p></li>
+<li><p>Was any part of this analysis done by hand?</p>
+<ul>
+<li><p>If so, are those parts <em>precisely</em> document?</p></li>
+<li><p>Does the documentation match reality?</p></li>
+</ul></li>
+<li><p>Have we taught a computer to do as much as possible
+(i.e. coded)?</p></li>
+<li><p>Are we using a version control system?</p></li>
+<li><p>Have we documented our software environment?</p></li>
+<li><p>Have we saved any output that we cannot reconstruct from original
+data + code?</p></li>
+<li><p>How far back in the analysis pipeline can we go before our
+results are no longer (automatically) reproducible?</p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="evidence-based-data-analysis." class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Evidence-based data
+analysis.</h1>
+<p>There are <strong>many underlying trends</strong> that have produced
+this <strong>increased interest in reproducibility</strong>:</p>
+<ul>
+<li>Larger and larger studies being harder to replicate
+independently.<br />
+</li>
+<li>Cheaper data collection technologies and methods producing larger
+datasets.<br />
+</li>
+<li>Cheaper computing power allowing for more sophisticated
+analyses.<br />
+</li>
+<li>The rise of general computational science (for every “X” we now have
+“Computational X”).</li>
+</ul>
+<p>Ase we know, <strong>reproducibility</strong> focuses on the
+<em>validity of the data analysis</em>.</p>
+<ul>
+<li>In the past, when datasets were small and the analyses were fairly
+straightforward, the idea of being able to reproduce a data analysis was
+perhaps not that interesting.<br />
+</li>
+<li>But now, with computational science and big data, where data
+analyses can be extraodinarily complicated (and much of the value comes
+from the analysis), there’s great interest in whether certain data
+analyses can in fact be reproduced, meaning that if <strong>is it
+possible to take someone’s dataset and come to the same
+numerical/graphical/whatever output</strong> that they came to.<br />
+</li>
+<li>While this seems theoretically trivial, <strong>in practice it’s
+very complicated</strong> because a given data analysis, which typically
+will involve a long pipeline of analytic operations, may be difficult to
+keep track of without proper organization, training, or software.</li>
+</ul>
+<center>
+<img src="5_data/dataSciencePipeline3.png" style="width:60.0%" />
+</center>
+<div id="what-problem-does-reproducibility-solve" class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> What problem does
+reproducibility solve?</h2>
+<p><em>Reproducibility</em> <strong>cannot really address</strong> the
+<strong>validity of a</strong> <strong><em>scientific
+claim</em></strong> <em>as well as replication</em>.</p>
+<ul>
+<li>Of course, if a given analysis <em>is not reproducible</em>, that
+may call into question any conclusions drawn from the analysis.<br />
+</li>
+<li>However, if an analysis <em>is reproducible</em>, that <strong>says
+practically nothing</strong> about the <strong>validity of the
+conclusion</strong> or of the <strong>analysis itself</strong>.</li>
+</ul>
+<p>In fact, <strong>there are numerous examples</strong> in the
+literature of <strong>analyses that were reproducible</strong> but
+<strong><em>just wrong</em></strong>.</p>
+<ul>
+<li>Perhaps the <strong>most nefarious example</strong> is the <a
+href="http://simplystatistics.org/2012/02/27/the-duke-saga-starter-set/">Potti
+scandal at Duke</a>
+<ul>
+<li>Given the amount of effort (somewhere close to 2000 hours) Keith
+Baggerly and his colleagues had to put into figuring out what Potti and
+others did, it’s reasonable to say that their work was not
+reproducible.<br />
+</li>
+<li>But in the end, Baggerly was able to reproduce some of the results
+–this was how he was able to figure out that the analysis were
+incorrect-.<br />
+</li>
+<li>If the Potti analysis had not been reproducible from the start, it
+would have been impossible for Baggerly to come up with the laundry list
+of errors that they made.<br />
+</li>
+</ul></li>
+<li>The <a
+href="http://simplystatistics.org/2013/04/19/podcast-7-reinhart-rogoff-reproducibility/">Reinhart-Rogoff
+kerfuffle</a> is another example of analysis that ultimately was
+reproducible but nevertheless questionable.
+<ul>
+<li>While Thomas Herndon did have to do a little reverse engineering to
+figure out the original analysis, it was nowhere near the years-long
+effort of Baggerly and colleagues.<br />
+</li>
+<li>However, it was Reinhart-Rogoff’s unconventional weighting scheme
+(fully reproducible, mind you) that drew all of the negative attention
+and strongly influenced the analysis.</li>
+</ul></li>
+</ul>
+<p>The <strong>key question we want to answer</strong> when seeing the
+results of any data analysis is <strong><em>“Can I trust this
+analysis?”</em></strong></p>
+<ul>
+<li>It’s <em>not possible</em> to <em>go into every data analysis and
+check everything</em>, even if all the data and code were
+available.<br />
+</li>
+<li>In most cases, we want to <em>have a sense</em> that the analysis
+was done appropriately (if not optimally).</li>
+</ul>
+<p>We can argue that <strong>requiring that analyses be
+reproducible</strong> <strong><em>does not address</em></strong>
+<strong>this key question</strong>.</p>
+<p>With <strong>reproducibility</strong> we get a number of
+<strong>important benefits</strong>:</p>
+<ul>
+<li>Transparency.<br />
+</li>
+<li>Data and code for others to analyze.<br />
+</li>
+<li>An increased rate of transfer of knowledge.</li>
+</ul>
+<p>But <strong>reproducibility does not guarantee</strong>
+<strong><em>validity or correctness of the analysis</em></strong>.</p>
+</div>
+<div id="prevention-vs.-medication." class="section level2"
+number="3.2">
+<h2><span class="header-section-number">3.2</span> Prevention
+vs. Medication.</h2>
+<p>One <strong>key problem</strong> with the notion of
+<strong>reproducibility</strong> is the <strong><em>point in the
+research process</em></strong> <em>at which we can apply it</em>
+<strong><em>as an intervention</em></strong>.</p>
+<ul>
+<li>Reproducibility plays a role only in the <strong>most downstream
+aspect</strong> of the research process–post-publication.<br />
+</li>
+<li>Only <em>after</em> a paper is published (and <em>after</em> any
+questionable analyses have been conducted) can we check to see if an
+analysis was reproducible or conducted in error.<br />
+</li>
+<li>At this point it may be <em>difficult to correct any mistakes</em>
+if they are identified.
+<ul>
+<li>Grad students have graduated, postdocs have left, people have left
+the team.<br />
+</li>
+<li>In the Potti case, letters to the journal editors were ignored.</li>
+</ul></li>
+</ul>
+<p>While it may be better to check the research process at the end
+rather than to never check it, <strong>intervening at the
+post-publication phase</strong> is arguably the <strong>most expensive
+place to do it</strong>.</p>
+<ul>
+<li><p>At this phase of the research process, you are <strong>merely
+“medicating”</strong> the problem, to draw an analogy with chronic
+diseases.<br />
+</p></li>
+<li><p>But fundamental data analytic damage may have already been
+done.<br />
+</p></li>
+<li><p>This medication aspect of reproducibility can be related with a
+famous quotation from R. A. Fisher:</p>
+<blockquote>
+<p><em>“To consult the statistician after an experiment is finished is
+often merely to ask him to conduct a</em> <strong><em>post mortem
+examination.</em></strong> <em>He can perhaps say what the experiment
+died of.</em></p>
+</blockquote></li>
+</ul>
+<p>Wouldn’t it have been better to have <strong>prevented the analysis
+from dying</strong> in the first place?</p>
+</div>
+<div id="moving-upstream." class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Moving upstream.</h2>
+<p>There has already been much discussion of <strong>changing the role
+of reproducibility in the publication/dissemination
+process</strong>.</p>
+<center>
+<div class="figure">
+<img src="5_data/reproducibilityAsMedication.png" style="width:60.0%"
+alt="" />
+<p class="caption">Reproducibility in the publication process?</p>
+</div>
+</center>
+<p><strong>What if a paper had to be deemed (considerarse) reproducible
+before it was published?</strong></p>
+<ul>
+<li>The question here is <strong>who will reproduce the
+analysis?</strong><br />
+</li>
+<li>We can’t trust the authors to do it so <em>we have to get an
+independent third party</em>.<br />
+</li>
+<li>What about <em>peer reviewers?</em>
+<ul>
+<li>This is a pretty big burden to place on a peer reviewer who is
+already working for free.<br />
+</li>
+</ul></li>
+<li>How about one of the <em>Editors?</em>
+<ul>
+<li>Well, that’s exactly what is done at the journal Biostatistics for
+instance.<br />
+</li>
+<li>However, the policy is voluntary and only plays a role after a paper
+has been accepted through the usual peer review process.<br />
+</li>
+<li>At any rate, from a business perspective, most journal owners will
+be reluctant to implement any policy that might reduce the number of
+submissions to the journal.</li>
+</ul></li>
+</ul>
+</div>
+<div id="what-then" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> What then?</h2>
+<p><strong>Reproducibility</strong> of computational research is very
+important, primarily to:</p>
+<ul>
+<li>increase transparency, and to<br />
+</li>
+<li>improve knowledge sharing.</li>
+</ul>
+<p><strong>However</strong>, reproducibility by itself <strong>doesn’t
+seem to addresses the fundamental question of “Can I trust this
+analysis?”</strong>.</p>
+<ul>
+<li>It plays a role at the most downstream part of the research process
+(post-publication) where it is costlest to fix any mistakes that may be
+discovered.</li>
+</ul>
+<p>Ultimately, <strong>we need to think</strong> <strong><em>beyond
+reproducibility</em></strong> and to consider developing ways to ensure
+the <em>quality of data analysis</em> <strong><em>from the
+start</em></strong>.</p>
+<p>How can we address the key problem concerning the validity of a data
+analysis?</p>
+</div>
+<div id="towards-evidence-based-data-analysis-two-problems."
+class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Towards
+evidence-based data analysis: two problems.</h2>
+<p>Having code and data available (reproducibility), as we said, makes
+it possible to discover problems in an analysis only <em>after the
+fact</em>. And this <strong>results in two issues</strong>:</p>
+<ol style="list-style-type: decimal">
+<li><p>It may <strong>take a while to figure out</strong> what exactly
+the problems are (even with code/data) and how to fix them.</p></li>
+<li><p>The problems in the analysis may have already caused some sort of
+<strong>harm</strong>.</p></li>
+</ol>
+</div>
+<div id="regarding-the-fisrt-problem-open-source-science"
+class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Regarding the fisrt
+problem: open source science?</h2>
+<p>For the first problem, a <strong>reasonable analogy</strong> for
+reproducible research <strong>is open source software</strong>.</p>
+<ul>
+<li>There the idea is that source code is available for all computer
+programs so that we can inspect and modify how a program runs.<br />
+</li>
+<li>With open source software <em>“all bugs are shallow
+(superficiales)”</em>.<br />
+</li>
+<li>But <strong>the key</strong> here is that as long as all programmers
+have the requisite tools, they can:
+<ul>
+<li><em>modify the source code on their own</em>;<br />
+</li>
+<li><em>publish their corrected version</em> (if they are fixing a
+bug);<br />
+</li>
+<li>others can <em>review it and accept or modify</em>;<br />
+</li>
+<li>and on and on.<br />
+</li>
+</ul></li>
+<li>All programmers are more or less on the same footing, as long as
+they have the ability to hack the code.<br />
+</li>
+<li>With <em>distributed source code management systems</em> like
+<code>git</code>, people don’t even need permission to modify the source
+tree.<br />
+</li>
+<li>In this environment, <strong>the best idea wins</strong>.</li>
+</ul>
+<p><strong>The analogy</strong> with open source software <strong>breaks
+down a bit</strong> <em>with scientific research</em> because
+<strong>not all players are on the same footing</strong>.</p>
+<ul>
+<li>Typically, the <em>original investigator is much better
+equipped</em> to modify the “source code”, in this case the data
+analysis, and to fix any problems.<br />
+</li>
+<li>Some types of analyses may require <em>tremendous resources</em>
+that are not available to all researchers.<br />
+</li>
+<li>Also, it might take a <em>long time</em> for others who were not
+involved in the research, <em>to fully understand</em> what is going on
+and how to make reasonable modifications. That may involve, for example:
+<ul>
+<li><em>learning the science</em> in the first place;<br />
+</li>
+<li>or learning <em>how to program a computer</em> for that matter.</li>
+</ul></li>
+</ul>
+<p>So <strong>making changes to a data analysis and having them
+accepted</strong> is a <strong><em>slow process in
+science</em></strong>, much more so than with open source software.</p>
+<p>There are definitely things we can do to improve our ability to make
+rapid changes/updates, but the implementation of those changes are only
+just getting started.</p>
+</div>
+<div id="regarding-the-second-problem-first-do-no-harm."
+class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Regarding the second
+problem: first do no harm.</h2>
+<p>The second problem, that some sort of harm may have already occurred
+before an analysis can be fully examined, is an important one.</p>
+<p>As we mentioned before, merely stating that an analysis is
+reproducible doesn’t say a whole lot about whether it was done
+correctly.</p>
+<p>In order to verify that, <strong>someone knowledgeable has to go into
+the details and muck around</strong> to see what is going on. If someone
+is not available to do this, then we may never know what actually
+happened.</p>
+<ul>
+<li>Meanwhile, the science still stands and others may build off of
+it.<br />
+</li>
+<li>In the <em>Duke saga</em>, one of the most concerning aspects of the
+whole story was that some of Potti’s research was going to be used to
+<em>guide therapy in a clinical trial</em>.<br />
+</li>
+<li>The fact that a series of flawed data analyses was going to be used
+as the basis of choosing <em>what cancer treatments</em> people were
+going to get was very troubling.<br />
+</li>
+<li>In particular, one of these flawed analyses <em>reversed the
+labeling of the cancer and control cases!</em></li>
+</ul>
+<p>It seems that waiting around for someone like Keith Baggerly to come
+around and spend close to 2,000 hours reproducing, inspecting, and
+understanding a series of analyses is <strong>not an efficient
+system</strong>.</p>
+<p>In particular, when actual human lives may be affected, it would be
+<strong>preferable</strong> if the <strong>analyses were done right in
+the first place</strong>, without the “statistics police” having to come
+in and check that everything was done properly.</p>
+</div>
+<div id="evidence-based-data-analysis.-1" class="section level2"
+number="3.8">
+<h2><span class="header-section-number">3.8</span> Evidence-based data
+analysis.</h2>
+<p>What is “evidence-based data analysis”?</p>
+<ul>
+<li>Most data analyses are not the simple classroom exercises that we’ve
+all done involving linear regression or two-sample t-tests.<br />
+</li>
+<li>Most of the time, we have to obtain the data, clean that data,
+remove outliers, impute missing values, transform variables and on and
+on, even before we fit any sort of model.<br />
+</li>
+<li>Then there’s model selection, model fitting, diagnostics,
+sensitivity analysis and more.</li>
+</ul>
+<p>So a data analysis is really a <strong>pipeline of
+operations</strong> where the output of one stage becomes the input of
+another.</p>
+<p>The <strong>basic idea behind evidence-based data analysis</strong>
+is that <strong>for each stage</strong> of that pipeline, we should be
+using <strong>the best method</strong>, <em>justified by appropriate
+statistical research</em> that provides evidence favoring one method
+over another.</p>
+<ul>
+<li>If we cannot reasonable agree on a best method for a given stage in
+the pipeline, then we have a gap that needs to be filled.<br />
+</li>
+<li>So we fill it!</li>
+</ul>
+<div id="a-a-simple-example-evidence-based-histograms."
+class="section level3" number="3.8.1">
+<h3><span class="header-section-number">3.8.1</span> A a simple example:
+evidence-based histograms.</h3>
+<p>Just to clarify things before moving on too far, here’s a simple
+example.</p>
+<p>Consider the following <strong>histogram</strong> created <strong>in
+R</strong> by <strong>calling <code>hist(x)</code></strong> on some
+<strong>Normal random deviates</strong>.</p>
+<center>
+<img src="5_data/histogram.png" />
+</center>
+<ul>
+<li>As we know, a histogram is a <em>kind of smoother</em>, and with any
+smoother, the critical parameter is the <strong>smoothing
+parameter</strong> or the <strong>bandwidth</strong>.<br />
+</li>
+<li>Here, it’s the <strong>size of the bin</strong> or the
+<strong>number of bins</strong>.<br />
+</li>
+<li>Notice that when we call <code>hist()</code> <strong><em>we don’t
+actually specify the number of bins</em></strong>.<br />
+</li>
+<li>Why not?
+<ul>
+<li>Because <strong>in R</strong>, by <em>default</em>, the
+<strong>Sturges’ formula</strong> is used to determine the number of
+bins.<br />
+</li>
+<li><strong>Where does that come from?</strong> Well, there is a
+<em>paper in the Journal of the American Statistical Association in
+1926</em> by H. A. Sturges that justifies why such a formula is
+reasonable for a histogram.<br />
+</li>
+<li>R provides other choices for choosing the number of bins.<br />
+</li>
+<li>For example, David Scott wrote a <em>paper in Biometrika</em> that
+justified bandwith/bin size based in integrated mean squared error
+criteria.</li>
+</ul></li>
+<li>The <strong>point is</strong> that R doesn’t just choose the default
+number of bins willy-nilly, <strong>there’s actual research behind that
+choice</strong> and <strong>evidence supporting why</strong> it’s a good
+choice.
+<ul>
+<li>Now, we may not all agree that this default is the best choice at
+all times, but in our personal experience we rarely modify the default
+number of bins. Usually we just want to get a sense of what the
+distribution looks like and the default is fine.<br />
+</li>
+<li>If there’s a problem, transforming the variable somehow often is
+more productive than modifying the number of bins.<br />
+</li>
+<li>What’s the <strong>best transformation?</strong> Well, it turns out
+<strong>there’s research on that too</strong>.</li>
+</ul></li>
+</ul>
+</div>
+<div id="evidence-based-reproducible-research." class="section level3"
+number="3.8.2">
+<h3><span class="header-section-number">3.8.2</span> Evidence-based
+reproducible research.</h3>
+<p>Now why can’t we <strong>extend the idea</strong> behind the
+histogram bandwidth <strong>to all data analysis?</strong></p>
+<p>For <strong>every stage</strong> of a given data analysis pipeline,
+we can have the <strong>“best practices”</strong> and back up those
+practices with <em>statistical research</em>.</p>
+<ul>
+<li>Of course it’s possible that such best practices have not yet been
+developed. This is common in <strong>emerging areas</strong> like
+genomics where the data collection technology is constantly
+changing.<br />
+</li>
+<li>But in more <strong>mature areas</strong>, it’s possible for the
+community to agree on a series of practices that work, say, 90% of the
+time.</li>
+</ul>
+<p>There are a few <strong>advantages</strong> to evidence-based
+reproducible research.</p>
+<ul>
+<li>It <strong>reduces the “researcher degrees of freedom”</strong>.
+<ul>
+<li>Researchers would be disincentivized from choosing the method that
+produces the “best” results if there is already a generally agreed upon
+approach.<br />
+</li>
+<li>If a given data analysis required a different approach, the burden
+would be on the analyst to <em>justify why a deviation</em> from the
+generally accepted approach was made.<br />
+</li>
+</ul></li>
+<li>The <strong>methodology would be transparent</strong> because the
+approach would have been vetted by the community.
+<ul>
+<li>This is also called <em>“transparent box” analysis</em>, as opposed
+to black box analysis.<br />
+</li>
+<li>The analysis would be transparent so we would know exactly what is
+going on, but it would “locked in a box” so that you couldn’t tinker
+with it to game the results.<br />
+</li>
+</ul></li>
+<li>We would <strong>not have</strong> the <strong>lonely data analyst
+coming up with their own magical method</strong> to analyze the data.
+<ul>
+<li>If a researcher claimed to have conducted an analysis using an
+evidence-based pipeline, we could at least have a sense that something
+reasonable was done.<br />
+</li>
+<li>We would still need reproducibility to ensure that the researcher
+was not misrepresenting him/herself, but now we would have two checks on
+the analysis, not just one.<br />
+</li>
+</ul></li>
+<li><strong>Most importantly</strong>, evidence-based reproducible
+research <strong>attacks the furthest upstream aspect</strong> of the
+research, which is the <strong>analysis itself</strong>.
+<ul>
+<li>It guarantees that generally accepted approaches are used to analyze
+the data from the very beginning and hopefully prevents problems from
+occurring rather than letting them propagate through the system.</li>
+</ul></li>
+</ul>
+</div>
+<div id="evidence-based-data-analysis-in-practice."
+class="section level3" number="3.8.3">
+<h3><span class="header-section-number">3.8.3</span> Evidence-based data
+analysis in practice.</h3>
+<p><strong>How can we implement</strong> evidence-based data analysis in
+practice?</p>
+<p>Depending on our <strong>favorite software system</strong> we could
+imagine a number of ways to do this.</p>
+<ul>
+<li>If the pipeline were implemented <strong>in R</strong>, we could
+imagine it as an <strong>R package</strong>.</li>
+</ul>
+<p>The <strong>precise platform</strong> is <em>not critical</em> at
+this point.</p>
+<ul>
+<li>We would imagine most complex pipelines would involve multiple
+different software systems tied together.</li>
+</ul>
+<p>Below is a rough diagram of <strong>how the various pieces</strong>
+of an evidence-based data analysis pipeline <strong>would fit
+together</strong>.</p>
+<center>
+<div class="figure">
+<img src="5_data/deterministicStatisticalMachine.png"
+style="width:60.0%" alt="" />
+<p class="caption"><strong>Deterministic Statistical
+Machine</strong></p>
+</div>
+</center>
+<p>There are a few key elements of this diagram that is worth
+highlighting:</p>
+<ul>
+<li><strong>Inputs are minimal</strong>.
+<ul>
+<li>We don’t want to allow for a lot of inputs or arguments that can be
+fiddled with.<br />
+</li>
+<li>This reduces the number of degrees of freedom and hopefully reduces
+the amount of hacking.<br />
+</li>
+<li>Basically, we want to be able to input the data and perhaps some
+metadata.<br />
+</li>
+</ul></li>
+<li><strong>Analysis comes in stages</strong>.
+<ul>
+<li>There are multiple stages in any analysis, not just the part where
+we fit a model.<br />
+</li>
+<li>Everything is important and every stage should use the best
+available method.<br />
+</li>
+</ul></li>
+<li>The <strong>stuff in the red box</strong> does not involve manual
+intervention.
+<ul>
+<li>The point is to not allow tweaking (retoques), fudging
+(manipulaciones) and fiddling (jugueteos).<br />
+</li>
+<li>Once the data goes in, we just wait for something to come out the
+other end.<br />
+</li>
+</ul></li>
+<li><strong>Methods should be benchmarked</strong>.
+<ul>
+<li>For each stage of the analysis, there is a set of methods that are
+applied.<br />
+</li>
+<li>These methods should, at a minimum, be benchmarked via a standard
+group of datasets.<br />
+</li>
+<li>That way, if another method comes a long, we have an objective way
+to evaluate whether the new method is better than the older
+methods.<br />
+</li>
+<li>New methods that improve on the benchmarks can replace the existing
+methods in the pipeline.<br />
+</li>
+</ul></li>
+<li><strong>Output includes a human-readable report</strong>.
+<ul>
+<li>This report summarizes what the analysis was and what the results
+were (including results of any sensitivity analysis).<br />
+</li>
+<li>The material in this report could be included in the “Methods”
+section of a paper and perhaps in the “Results” or “Supplementary
+Materials”.<br />
+</li>
+<li>The goal would be to allow someone who was not intimately familiar
+with the all of the methods used in the pipeline to be able to walk away
+with a report that he/she could understand and interpret.<br />
+</li>
+<li>At a minimum, this person could take the report and share it with
+their local statistician for help with interpretation.<br />
+</li>
+</ul></li>
+<li>There is a <strong>defined set of output parameters</strong>.
+<ul>
+<li>Each analysis pipeline should, in a sense, have an “API” so that we
+know what outputs to expect (not the exact values, of course, but what
+kinds of values).<br />
+</li>
+<li>For example, if a pipeline fits a regression model at the end the
+regression parameters are the key objects of interest, then the output
+could be defined as a vector of regression parameters.<br />
+</li>
+<li>There are two reasons to have this:
+<ol style="list-style-type: decimal">
+<li>the outputs, if the pipeline is deterministic, could be used for
+regression testing in case the pipeline is modified;<br />
+</li>
+<li>the outputs could serve as inputs into another pipeline or
+algorithm.</li>
+</ol></li>
+</ul></li>
+</ul>
+<p>Clearly, <strong>one pipeline (Deterministic Statistical Machine
+-DSM-) is not enough</strong>. We need many of them for different
+problems. So what do we do with all of them?</p>
+<ul>
+<li>We could organize them in a <strong>central location</strong> (kind
+of a specialized GitHub) where people could search for, download, create
+and contribute to existing data analysis pipelines.<br />
+</li>
+<li>An <em>analogy</em> (but not exactly a model) is the <em>Cochrane
+Collaboration</em> which serves as a repository for evidence-based
+medicine.<br />
+</li>
+<li>There are already a number of initiatives along these lines, such as
+the <em>Galaxy Project</em> for bioinformatics.<br />
+</li>
+<li>It’s not something out of the question, if whether it’d be ideal to
+have everything in one place or have a number of sub-projects for
+specialized areas.<br />
+</li>
+<li>Each pipeline would have a leader (or “friendly dictator”) who would
+organize the contributions and determine which components would go
+where.<br />
+</li>
+<li>This could obviously be contentious, more some in some areas than in
+others, but no any more contentious than our average open source project
+(check the archives of the Linus Kernel or Git mailing lists to get a
+sense of that).</li>
+</ul>
+</div>
+<div id="in-summary." class="section level3" number="3.8.4">
+<h3><span class="header-section-number">3.8.4</span> In summary.</h3>
+<p>We need to organize lots of evidence-based data analysis pipelines
+and make them widely available.</p>
+<p>Nowadays, we have pretty much everything we need in terms of
+infrastructure.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="public-reproducibility-resoruces." class="section level1"
+number="4">
+<h1><span class="header-section-number">4</span> Public reproducibility
+resoruces.</h1>
+<p>Let’s provide a list of (certainly incomplete) resources that we may
+find useful when making our code and data available to others.</p>
+<ul>
+<li>Keep in mind that all of these resources are primarily designed
+around making things publicly available.<br />
+</li>
+<li>If we do not want the public to access our material, we may need to
+seek other resources (or pay a fee).</li>
+</ul>
+<div id="code-repositories." class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Code
+repositories.</h2>
+<ul>
+<li><p><a href="https://github.com"><strong>GitHub</strong></a>.</p>
+<ul>
+<li><p>This site hosts git repositories <em>for free</em> either if they
+are public or private.</p></li>
+<li><p>GitHub offers a lot of features for collaborating with others
+such as the ability to track issues and for others to merge changes into
+our repository.</p></li>
+<li><p>Hosting a repository here typically obviates the need for a
+separate mailing list as many of the communication aspects are built
+in.</p></li>
+</ul></li>
+<li><p><a
+href="http://sourceforge.net"><strong>Sourceforge</strong></a>.</p>
+<ul>
+<li><p>An older site that similarly hosts code repositories including
+those based on Mercurial, git or subversion.</p></li>
+<li><p>Features also include issue tracking and discussion
+forums.</p></li>
+</ul></li>
+<li><p><a
+href="https://bitbucket.org/"><strong>Bitbucket</strong></a>.</p>
+<ul>
+<li><p>Similar to other sites described above, Bitbucket hosts
+repositories based on Mercurial or git and allows for simple
+collaboration between project team members.</p></li>
+<li><p>Pricing is based on the number of users collaborating on a
+repository.</p></li>
+<li><p>They also have a special plan for academics (if you have a .edu
+email address).</p></li>
+</ul></li>
+<li><p><a href="http://repo.or.cz/"><strong>repo.or.cz</strong></a>.</p>
+<ul>
+<li><p>This site was one of the original repositories for hosting git
+repositories.</p></li>
+<li><p>It is <em>free</em>, and is <em>still running</em>,
+<strong>but</strong> has largely been overtaken by other sites like
+GitHub, which offer far more in the way of features.</p></li>
+</ul></li>
+<li><p><a
+href="http://cran.r-project.org/"><strong>CRAN</strong></a>.</p>
+<ul>
+<li><p>This is the central repository for R packages.</p></li>
+<li><p>If you <strong>develop code for R</strong>, in addition to
+hosting your source code on a site like GitHub, it’s probably wise to
+<strong>put a package on CRAN</strong> so that others can easily install
+it.</p></li>
+</ul></li>
+</ul>
+<p>It may be logical to host <strong>data in a code repository</strong>,
+<strong><em>if the datasets are small and manageable</em></strong>
+(typically “toy” datasets or demonstration datasets).</p>
+<ul>
+<li>Large datasets are usually not suitable for hosting in a code
+repository.</li>
+</ul>
+</div>
+<div id="data-repositories." class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Data
+repositories.</h2>
+<ul>
+<li><p><a
+href="http://www.ncbi.nlm.nih.gov/"><strong>NCBI</strong></a>.</p>
+<ul>
+<li><p>The <strong>National Center for Biotechnology
+Information</strong> hosts a number of databases to which you can upload
+data for scientific publications and from which you can obtain publicly
+available data.</p></li>
+<li><p>It is an enormous resource for biological data and the goto place
+for biological researchers looking to deposit their data.</p></li>
+</ul></li>
+<li><p><a
+href="http://dataverse.org/"><strong>Dataverse</strong></a>.</p>
+<ul>
+<li><p>This site is run out of <strong>Harvard’s Institute for
+Quantitative and Social Science</strong> as a place where researchers
+can host their data with their papers.</p></li>
+<li><p>Datasets get a permanent unique ID that can be referenced
+elsewhere.</p></li>
+</ul></li>
+<li><p><a
+href="https://www.icpsr.umich.edu/web/pages/"><strong>ICPSR</strong></a>.</p>
+<ul>
+<li>The <strong>Inter-university Consortium for Political and Social
+Research</strong> is another repository for datasets, typically in the
+social sciences.</li>
+</ul></li>
+</ul>
+</div>
+<div id="publication-repositories." class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Publication
+repositories.</h2>
+<ul>
+<li><p><a href="http://rpubs.com/"><strong>R Pubs</strong></a>.</p>
+<ul>
+<li><p>This is a fairly simple web site hosted by <code>RStudio</code>
+that allows for the <em>simple publication of HTML documents</em>
+created using the RStudio development environment.</p></li>
+<li><p>If we are creating an R markdown document in RStudio, we can,
+with the <em>click of a button</em>, publish the HTML version of that
+document to RPubs and immediately make it publicly available.</p></li>
+<li><p>RPubs provides a permanent unique link that we can share with
+others.</p></li>
+</ul></li>
+<li><p><a href="https://github.com/"><strong>GitHub</strong></a>.</p>
+<ul>
+<li><p>Although GitHub is a source code repository, it can be quite
+useful <strong>for hosting documents too</strong>.</p></li>
+<li><p>In particular, the web site will automatically interpret markdown
+documents and <strong>prettify them</strong> so that people can view the
+directly from the repository in their web browser.</p></li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Session Info.</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] xtable_1<span class="fl">.8</span><span class="dv">-4</span>       kernlab_0<span class="fl">.9</span><span class="dv">-29</span>     R.utils_2.<span class="fl">10.1</span>     R.oo_1.<span class="fl">24.0</span>       </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] R.methodsS3_1.<span class="fl">8.1</span>  impute_1.<span class="fl">60.0</span>      RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> maps_3.<span class="fl">3.0</span>        </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] stringr_1.<span class="fl">4.0</span>      lubridate_1.<span class="fl">9.2</span>    quantmod_0.<span class="fl">4.20</span>    TTR_0.<span class="fl">24.2</span>        </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] xts_0.<span class="fl">12.1</span>         zoo_1<span class="fl">.8</span><span class="dv">-9</span>          readr_2.<span class="fl">0.1</span>        tidyr_1.<span class="fl">2.0</span>       </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] dplyr_1.<span class="fl">0.8</span>        reshape2_1.<span class="fl">4.4</span>     Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>        ggplot2_3.<span class="fl">3.5</span>     </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] Formula_1<span class="fl">.2</span><span class="dv">-3</span>      survival_3<span class="fl">.4</span><span class="dv">-0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>    jpeg_0<span class="fl">.1-8.1</span>      </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] gitignore_0.<span class="fl">1.3</span>    rhdf5_2.<span class="fl">30.1</span>       httr_1.<span class="fl">4.2</span>         httpuv_1.<span class="fl">6.3</span>      </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] sqldf_0<span class="fl">.4</span><span class="dv">-11</span>       RSQLite_2.<span class="fl">2.0</span>      gsubfn_0<span class="fl">.7</span>         proto_1.<span class="fl">0.0</span>       </span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] DBI_1.<span class="fl">1.1</span>          data.table_1.<span class="fl">14.0</span>  jsonlite_1.<span class="fl">7.2</span>     XML_3<span class="fl">.99-0.3</span>      </span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] xlsx_0.<span class="fl">6.3</span>         plyr_1.<span class="fl">8.6</span>        </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    ellipsis_0.<span class="fl">3.2</span>      htmlTable_2.<span class="fl">0.1</span>    </span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] bit64_4.<span class="fl">0.5</span>         fansi_1.<span class="fl">0.2</span>         splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] knitr_1<span class="fl">.41</span>          rJava_0<span class="fl">.9</span><span class="dv">-13</span>        cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           clipr_0.<span class="fl">7.1</span>         compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] backports_1.<span class="fl">4.1</span>     assertthat_0.<span class="fl">2.1</span>    Matrix_1<span class="fl">.5</span><span class="dv">-1</span>       </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] fastmap_1.<span class="fl">1.0</span>       cli_3.<span class="fl">6.0</span>           later_1.<span class="fl">3.0</span>        </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] formatR_1<span class="fl">.14</span>        acepack_1.<span class="fl">4.1</span>       htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] tools_3.<span class="fl">6.3</span>         gtable_0.<span class="fl">3.0</span>        glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] Rcpp_1.<span class="fl">0.7</span>          jquerylib_0.<span class="fl">1.4</span>     vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        xfun_0<span class="fl">.36</span>           xlsxjars_0.<span class="fl">6.1</span>     </span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] timechange_0.<span class="fl">2.0</span>    lifecycle_1.<span class="fl">0.3</span>     scales_1.<span class="fl">1.1</span>       </span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] vroom_1.<span class="fl">5.5</span>         hms_1.<span class="fl">1.0</span>           promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>   </span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] parallel_3.<span class="fl">6.3</span>      yaml_2.<span class="fl">2.1</span>          curl_4.<span class="fl">3.2</span>         </span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] memoise_1.<span class="fl">1.0</span>       gridExtra_2<span class="fl">.3</span>       sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] rpart_4.<span class="fl">1.19</span>        latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] highr_0<span class="fl">.9</span>           checkmate_2.<span class="fl">0.0</span>     chron_2<span class="fl">.3</span><span class="dv">-55</span>       </span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] rlang_1.<span class="fl">0.6</span>         pkgconfig_2.<span class="fl">0.3</span>     evaluate_0<span class="fl">.19</span>      </span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] purrr_0.<span class="fl">3.4</span>         Rhdf5lib_1.<span class="fl">8.0</span>      htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] labeling_0.<span class="fl">4.2</span>      bit_4.<span class="fl">0.4</span>           tidyselect_1.<span class="fl">2.0</span>   </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] magrittr_2.<span class="fl">0.2</span>      R6_2.<span class="fl">5.1</span>            generics_0.<span class="fl">1.2</span>     </span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] pillar_1.<span class="fl">7.0</span>        foreign_0<span class="fl">.8</span><span class="dv">-76</span>      withr_2.<span class="fl">5.0</span>        </span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         nnet_7<span class="fl">.3</span><span class="dv">-18</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] crayon_1.<span class="fl">5.0</span>        KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span>  utf8_1.<span class="fl">2.2</span>         </span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] tzdb_0.<span class="fl">3.0</span>          rmarkdown_2<span class="fl">.11</span>      grid_3.<span class="fl">6.3</span>         </span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] blob_1.<span class="fl">2.2</span>          digest_0.<span class="fl">6.29</span>       openssl_2.<span class="fl">0.5</span>      </span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] munsell_0.<span class="fl">5.0</span>       viridisLite_0.<span class="fl">4.0</span>   bslib_0.<span class="fl">3.0</span>        </span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>[<span class="dv">82</span>] tcltk_3.<span class="fl">6.3</span>         askpass_1<span class="fl">.1</span>        </span></code></pre></div>
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

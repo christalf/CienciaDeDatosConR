@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Data Analysis</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis</h1>
+<h3 class="subtitle">Módulo 1 - Ejercitación</h3>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#instructions" id="toc-instructions"><span
+class="toc-section-number">1</span> Instructions</a>
+<ul>
+<li><a href="#introduction" id="toc-introduction"><span
+class="toc-section-number">1.1</span> Introduction</a></li>
+<li><a href="#loading-the-data" id="toc-loading-the-data"><span
+class="toc-section-number">1.2</span> Loading the data</a></li>
+<li><a href="#making-plots" id="toc-making-plots"><span
+class="toc-section-number">1.3</span> Making Plots</a>
+<ul>
+<li><a href="#plot-1" id="toc-plot-1"><span
+class="toc-section-number">1.3.1</span> Plot 1</a></li>
+<li><a href="#plot-2" id="toc-plot-2"><span
+class="toc-section-number">1.3.2</span> Plot 2</a></li>
+<li><a href="#plot-3" id="toc-plot-3"><span
+class="toc-section-number">1.3.3</span> Plot 3</a></li>
+<li><a href="#plot-4" id="toc-plot-4"><span
+class="toc-section-number">1.3.4</span> Plot 4</a></li>
+</ul></li>
+<li><a href="#review-criteria" id="toc-review-criteria"><span
+class="toc-section-number">1.4</span> Review criteria</a></li>
+<li><a href="#reviewing-the-assignments"
+id="toc-reviewing-the-assignments"><span
+class="toc-section-number">1.5</span> Reviewing the Assignments</a></li>
+</ul></li>
+<li><a href="#solución" id="toc-solución"><span
+class="toc-section-number">2</span> Solución</a>
+<ul>
+<li><a href="#contenido-del-file-plot1.r"
+id="toc-contenido-del-file-plot1.r"><span
+class="toc-section-number">2.1</span> Contenido del file
+<code>plot1.R</code></a>
+<ul>
+<li><a href="#comencemos" id="toc-comencemos"><span
+class="toc-section-number">2.1.1</span> Comencemos</a></li>
+<li><a
+href="#nota-1-comparación-de-velocidades-de-lectura-entre-fread-y-read.table"
+id="toc-nota-1-comparación-de-velocidades-de-lectura-entre-fread-y-read.table"><span
+class="toc-section-number">2.1.2</span> Nota 1: comparación de
+velocidades de lectura entre <code>fread()</code> y
+<code>read.table()</code></a></li>
+<li><a href="#retomemos" id="toc-retomemos"><span
+class="toc-section-number">2.1.3</span> Retomemos</a></li>
+<li><a href="#nota-2-variantes-de-subsetting"
+id="toc-nota-2-variantes-de-subsetting"><span
+class="toc-section-number">2.1.4</span> Nota 2: variantes de
+subsetting</a></li>
+<li><a href="#terminemos" id="toc-terminemos"><span
+class="toc-section-number">2.1.5</span> Terminemos</a></li>
+</ul></li>
+<li><a href="#contenido-del-file-plot2.r"
+id="toc-contenido-del-file-plot2.r"><span
+class="toc-section-number">2.2</span> Contenido del file
+<code>plot2.R</code></a></li>
+<li><a href="#contenido-del-file-plot3.r"
+id="toc-contenido-del-file-plot3.r"><span
+class="toc-section-number">2.3</span> Contenido del file
+<code>plot3.R</code></a></li>
+<li><a href="#contenido-del-file-plot4.r"
+id="toc-contenido-del-file-plot4.r"><span
+class="toc-section-number">2.4</span> Contenido del file
+<code>plot4.R</code></a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">3</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="instructions" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Instructions</h1>
+<div id="introduction" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Introduction</h2>
+<p>This assignment uses data from the <a
+href="http://archive.ics.uci.edu/ml/">UC Irvine Machine Learning
+Repository</a>, a popular repository for machine learning datasets. In
+particular, we will be using the <em>Individual household electric power
+consumption Data Set</em> which is available on the course web site:</p>
+<ul>
+<li><strong>Dataset</strong>: <a
+href="https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip">Electric
+power consumption - 20Mb</a>
+<ul>
+<li>It’s a <code>txt</code> file
+(<code>household_power_consumption.txt</code>) that weights 20 Mb
+compressed and 133 Mb uncompressed.<br />
+</li>
+</ul></li>
+<li><strong>Description</strong>: Measurements of electric power
+consumption in one household with a one-minute sampling rate over a
+period of almost 4 years. Different electrical quantities and some
+sub-metering values are available.</li>
+</ul>
+<p>The following descriptions of the 9 variables in the dataset are
+taken from the <a
+href="https://archive.ics.uci.edu/ml/datasets/Individual+household+electric+power+consumption">UCI
+web site</a></p>
+<ol style="list-style-type: decimal">
+<li><strong>Date</strong>: Date in format dd/mm/yyyy<br />
+</li>
+<li><strong>Time</strong>: time in format hh:mm:ss<br />
+</li>
+<li><strong>Global_active_power</strong>: household global
+minute-averaged active power (in kilowatt).<br />
+</li>
+<li><strong>Global_reactive_power</strong>: household global
+minute-averaged reactive power (in kilowatt).<br />
+</li>
+<li><strong>Voltage</strong>: minute-averaged voltage (in volt).<br />
+</li>
+<li><strong>Global_intensity</strong>: household global minute-averaged
+current intensity (in ampere).<br />
+</li>
+<li><strong>Sub_metering_1</strong>: energy sub-metering No. 1 (in
+watt-hour of active energy). It corresponds to the kitchen, containing
+mainly a dishwasher, an oven and a microwave (hot plates are not
+electric but gas powered).<br />
+</li>
+<li><strong>Sub_metering_2</strong>: energy sub-metering No. 2 (in
+watt-hour of active energy). It corresponds to the laundry room,
+containing a washing-machine, a tumble-drier, a refrigerator and a
+light.<br />
+</li>
+<li><strong>Sub_metering_3</strong>: energy sub-metering No. 3 (in
+watt-hour of active energy). It corresponds to an electric water-heater
+and an air-conditioner.</li>
+</ol>
+</div>
+<div id="loading-the-data" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Loading the data</h2>
+<p>When loading the dataset into R, please consider the following:</p>
+<ul>
+<li><p>The dataset has 2,075,259 rows and 9 columns. First calculate a
+rough estimate of how much memory the dataset will require in memory
+before reading into R. Make sure your computer has enough memory (most
+modern computers should be fine).</p></li>
+<li><p>We will only be using data from the dates 2007-02-01 and
+2007-02-02. One alternative is to read the data from just those dates
+rather than reading in the entire dataset and subsetting to those
+dates.</p></li>
+<li><p>You may find it useful to convert the Date and Time variables to
+Date/Time classes in R using the <code>strptime()</code> and
+<code>as.Date()</code> functions.</p></li>
+<li><p>Note that in this dataset missing values are coded as
+<code>?</code>.</p></li>
+</ul>
+</div>
+<div id="making-plots" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Making Plots</h2>
+<p>Our overall goal here is simply to examine how household energy usage
+varies over a 2-day period in February, 2007. Your task is to
+reconstruct the following plots below, all of which were constructed
+using the base plotting system.</p>
+<p>First you will need to fork and clone the following GitHub
+repository: <a
+href="https://github.com/rdpeng/ExData_Plotting1">https://github.com/rdpeng/ExData_Plotting1</a></p>
+<p>For each plot you should</p>
+<ul>
+<li><p>Construct the plot and save it to a PNG file with a width of 480
+pixels and a height of 480 pixels.</p></li>
+<li><p>Name each of the plot files as <code>plot1.png</code>,
+<code>plot2.png</code>, etc.</p></li>
+<li><p>Create a separate R code file (<code>plot1.R</code>,
+<code>plot2.R</code>, etc.) that constructs the corresponding plot,
+i.e. code in <code>plot1.R</code> constructs the <code>plot1.png</code>
+plot. Your code file <strong>should include code for reading the
+data</strong> so that the plot can be fully reproduced. You should also
+include the code that creates the PNG file.</p></li>
+<li><p>Add the PNG file and R code file to your git repository.</p></li>
+</ul>
+<p>When you are finished with the assignment, push your git repository
+to GitHub so that the GitHub version of your repository is up to date.
+There should be four PNG files and four R code files.</p>
+<p>The four plots that you will need to construct are shown below.</p>
+<div id="plot-1" class="section level3" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Plot 1</h3>
+<center>
+<img src="4_data/unnamed-chunk-2.png" />
+</center>
+</div>
+<div id="plot-2" class="section level3" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Plot 2</h3>
+<center>
+<img src="4_data/unnamed-chunk-3.png" />
+</center>
+</div>
+<div id="plot-3" class="section level3" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Plot 3</h3>
+<center>
+<img src="4_data/unnamed-chunk-4.png" />
+</center>
+</div>
+<div id="plot-4" class="section level3" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> Plot 4</h3>
+<center>
+<img src="4_data/unnamed-chunk-5.png" />
+</center>
+</div>
+</div>
+<div id="review-criteria" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Review criteria</h2>
+<ol style="list-style-type: decimal">
+<li>Was a valid GitHub URL containing a git repository submitted?<br />
+</li>
+<li>Does the GitHub repository contain at least one commit beyond the
+original fork?<br />
+</li>
+<li>Please examine the plot files in the GitHub repository. Do the plot
+files appear to be of the correct graphics file format?<br />
+</li>
+<li>Does each plot appear correct?<br />
+</li>
+<li>Does each set of R code appear to create the reference plot?</li>
+</ol>
+</div>
+<div id="reviewing-the-assignments" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Reviewing the
+Assignments</h2>
+<p>Keep in mind this course is about exploratory graphs, understanding
+the data, and developing strategies. Here’s a good quote from a swirl
+lesson about exploratory graphs: <strong>They help us find patterns in
+data and understand its properties. They suggest modeling strategies and
+help to debug analyses. We DON’T use exploratory graphs to communicate
+results.</strong></p>
+<p>The rubrics should always be interpreted in that context.</p>
+<p>As you do your evaluation, please keep an open mind and focus on the
+positive. The goal is not to deduct points over small deviations from
+the requirements or for legitimate differences in implementation styles,
+etc. Look for ways to give points when it’s clear that the submitter has
+given a good faith effort to do the project, and when it’s likely that
+they’ve succeeded. Most importantly, it’s okay if a person did something
+differently from the way that <strong>you</strong> did it. The point is
+not to see if someone managed to match your way of doing things, but to
+see if someone objectively accomplished the task at hand.</p>
+<p>To that end, keep the following things in mind:</p>
+<p>DO</p>
+<ul>
+<li>Review the source code.<br />
+</li>
+<li>Keep an open mind and focus on the positive.<br />
+</li>
+<li>When in doubt, err on the side of giving too many points, rather
+than giving too few.<br />
+</li>
+<li>Ask yourself if a plot might answer a question for the person who
+created it.<br />
+</li>
+<li>Remember that not everyone has the same statistical background and
+knowledge.</li>
+</ul>
+<p>DON’T:</p>
+<ul>
+<li>Deduct just because you disagree with someone’s statistical
+methods.<br />
+</li>
+<li>Deduct just because you disagree with someone’s plotting
+methods.<br />
+</li>
+<li>Deduct based on aesthetics.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="solución" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Solución</h1>
+<p>Cuando hice el curso, a este trabajo práctico de EDA lo subí a mi <a
+href="https://github.com/christalf/ExData_Plotting1">ExData_Plotting1</a>
+repo.</p>
+<p>Sin perjuicio de ello, lo reproduzco aquí de nuevo para que figure
+integrado a este sitio.</p>
+<div id="contenido-del-file-plot1.r" class="section level2"
+number="2.1">
+<h2><span class="header-section-number">2.1</span> Contenido del file
+<code>plot1.R</code></h2>
+<div id="comencemos" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Comencemos</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Downloading and unzipping the data.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The zip file was already downloaded and stored in the &quot;4_data&quot; folder.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">&lt;-</span> <span class="st">&quot;./4_data&quot;</span>                                  <span class="co"># Working directory.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>datasetFile <span class="ot">&lt;-</span> <span class="st">&quot;houshold_power_consumption.zip&quot;</span>        <span class="co"># Name of the file to be downloaded.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>datasetPath <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, datasetFile)         <span class="co"># Complete pathname of the file to download.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dataUrl <span class="ot">&lt;-</span> <span class="st">&quot;https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(dataUrl, destfile = datasetPath, method = &quot;curl&quot;)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># dateDownloaded &lt;- date()</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>zipContent <span class="ot">&lt;-</span> <span class="fu">unzip</span>(datasetPath, <span class="at">exdir =</span> datadir)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>zipContent</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;./4_data/household_power_consumption.txt&quot;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Reading the data</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Rough memory estimate: (2.075.259 lines * 9 cols * 8 bytes) / 2^20 = 142.5 MB.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>hpcDataset <span class="ot">&lt;-</span> <span class="fu">fread</span>(zipContent[<span class="dv">1</span>],       <span class="co"># &quot;sep&quot; and &quot;header&quot; are automatically detected.</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;?&quot;</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## How many rows rows and MB.</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hpcDataset)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>Classes <span class="st">&#39;data.table&#39;</span> and <span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">2075259</span> obs. of  <span class="dv">9</span> variables<span class="sc">:</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Date                 <span class="sc">:</span> chr  <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> ...</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Time                 <span class="sc">:</span> chr  <span class="st">&quot;17:24:00&quot;</span> <span class="st">&quot;17:25:00&quot;</span> <span class="st">&quot;17:26:00&quot;</span> <span class="st">&quot;17:27:00&quot;</span> ...</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_active_power  <span class="sc">:</span> num  <span class="fl">4.22</span> <span class="fl">5.36</span> <span class="fl">5.37</span> <span class="fl">5.39</span> <span class="fl">3.67</span> ...</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_reactive_power<span class="sc">:</span> num  <span class="fl">0.418</span> <span class="fl">0.436</span> <span class="fl">0.498</span> <span class="fl">0.502</span> <span class="fl">0.528</span> <span class="fl">0.522</span> <span class="fl">0.52</span> <span class="fl">0.52</span> <span class="fl">0.51</span> <span class="fl">0.51</span> ...</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Voltage              <span class="sc">:</span> num  <span class="dv">235</span> <span class="dv">234</span> <span class="dv">233</span> <span class="dv">234</span> <span class="dv">236</span> ...</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_intensity     <span class="sc">:</span> num  <span class="fl">18.4</span> <span class="dv">23</span> <span class="dv">23</span> <span class="dv">23</span> <span class="fl">15.8</span> <span class="dv">15</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> ...</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_1       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_2       <span class="sc">:</span> num  <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> ...</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_3       <span class="sc">:</span> num  <span class="dv">17</span> <span class="dv">16</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">16</span> ...</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a> <span class="sc">-</span> <span class="fu">attr</span>(<span class="sc">*</span>, <span class="st">&quot;.internal.selfref&quot;</span>)<span class="ot">=</span><span class="er">&lt;</span>externalptr<span class="sc">&gt;</span> </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">object.size</span>(hpcDataset), <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;142.7 Mb&quot;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hpcDataset)                      <span class="co"># all numeric variables have 25,979 NAs.</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>     Date               Time           Global_active_power</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2075259</span>     Length<span class="sc">:</span><span class="dv">2075259</span>     Min.   <span class="sc">:</span> <span class="fl">0.076</span>     </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span> <span class="fl">0.308</span>     </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Mode  <span class="sc">:</span>character   Median <span class="sc">:</span> <span class="fl">0.602</span>     </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>                                       Mean   <span class="sc">:</span> <span class="fl">1.092</span>     </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                                       3rd Qu.<span class="sc">:</span> <span class="fl">1.528</span>     </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                                       Max.   <span class="sc">:</span><span class="fl">11.122</span>     </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                                       NA<span class="st">&#39;s   :25979      </span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="st"> Global_reactive_power    Voltage      Global_intensity Sub_metering_1  </span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   :0.000         Min.   :223.2   Min.   : 0.200   Min.   : 0.000  </span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.:0.048         1st Qu.:239.0   1st Qu.: 1.400   1st Qu.: 0.000  </span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="st"> Median :0.100         Median :241.0   Median : 2.600   Median : 0.000  </span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   :0.124         Mean   :240.8   Mean   : 4.628   Mean   : 1.122  </span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.:0.194         3rd Qu.:242.9   3rd Qu.: 6.400   3rd Qu.: 0.000  </span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :1.390         Max.   :254.2   Max.   :48.400   Max.   :88.000  </span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>         NA<span class="st">&#39;s   :25979   NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="st"> Sub_metering_2   Sub_metering_3  </span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   : 0.000   Min.   : 0.000  </span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.: 0.000   1st Qu.: 0.000  </span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="st"> Median : 0.000   Median : 1.000  </span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   : 1.299   Mean   : 6.458  </span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.: 1.000   3rd Qu.:17.000  </span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :80.000   Max.   :31.000  </span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span></code></pre></div>
+</div>
+<div
+id="nota-1-comparación-de-velocidades-de-lectura-entre-fread-y-read.table"
+class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Nota 1: comparación
+de velocidades de lectura entre <code>fread()</code> y
+<code>read.table()</code></h3>
+<p>Saliendo por un momento del desarrollo estricto del contenido del
+script <code>plot1.R</code> que nos pide el ejercicio, vale la pena
+hacer una disgresión para notar la impresionante la diferencia que hay
+entre la función <code>fread()</code> del paquete
+<code>data.table</code> y la función <code>read.table()</code> del
+paquete <code>utils</code> de R:</p>
+<ul>
+<li>No solamente en cuanto a la velocidad de lectura (que ahora vamos
+medir, para verificar lo que ya vimos en el Módulo 1 del curso
+<strong>Getting and Cleaning Data</strong> (ver al final “SessionInfo”
+para tener en cuenta los parámetros del hw y sw utilizado).<br />
+</li>
+<li>Sino también en cuanto a la mayor eficiencia de escritura de código,
+en términos de claridad y concisión.</li>
+</ul>
+<p>Veamos:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Leyendo con fread().</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">fread</span>(zipContent[<span class="dv">1</span>],</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">na.strings =</span> <span class="st">&quot;?&quot;</span>))       <span class="do">## Lee los 143 MB en menos de 1 segundo</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>   user  system elapsed </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1.121</span>   <span class="fl">0.020</span>   <span class="fl">0.412</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                                           <span class="do">## (con mi sw y hw)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Leyendo con read.table().</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">read.table</span>(zipContent[<span class="dv">1</span>],</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na.strings =</span> <span class="st">&quot;?&quot;</span>))  <span class="do">## Lee los 143 MB en aprox. 6 seg.!!!!</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>   user  system elapsed </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fl">6.135</span>   <span class="fl">0.312</span>   <span class="fl">6.412</span> </span></code></pre></div>
+<p>Inclusive si tratamos de acelerar la lectura con
+<code>read.table()</code> diciéndole a R las clases de las columnas (ya
+tenemos los datos en “hpcDataset” y podemos usarlo para extraer las
+clases de las variables, pero normalmente lo que habría que hacer, según
+ya lo vimos en el Módulo 1 del <strong>R Programming</strong>, es leer
+con <code>read.table()</code> las primeras 100 o 500 líneas de datos,
+extraer de ahí las clases y volver a usar <code>read.table()</code> para
+leer completamente los datos), igualmente esta función sigue siendo
+mucho más lenta que la <code>fread()</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>classes <span class="ot">&lt;-</span> <span class="fu">sapply</span>(hpcDataset, class)  </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">read.table</span>(zipContent[<span class="dv">1</span>],</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na.strings =</span> <span class="st">&quot;?&quot;</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">colClasses =</span> classes))  <span class="do">## Ahora tarda 4 seg. aprox. (con mi sw y hw)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   user  system elapsed </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fl">4.264</span>   <span class="fl">0.318</span>   <span class="fl">4.559</span> </span></code></pre></div>
+</div>
+<div id="retomemos" class="section level3" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Retomemos</h3>
+<p>Continuemos con el contenido del file <code>plot1.R</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Subsetting observations from dates 01/02/2007 and 02/02/2007.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>twoDays <span class="ot">&lt;-</span> hpcDataset[Date <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;1/2/2007&quot;</span>, <span class="st">&quot;2/2/2007&quot;</span>)]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## How many rows rows and MB.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(twoDays)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Classes <span class="st">&#39;data.table&#39;</span> and <span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">2880</span> obs. of  <span class="dv">9</span> variables<span class="sc">:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Date                 <span class="sc">:</span> chr  <span class="st">&quot;1/2/2007&quot;</span> <span class="st">&quot;1/2/2007&quot;</span> <span class="st">&quot;1/2/2007&quot;</span> <span class="st">&quot;1/2/2007&quot;</span> ...</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Time                 <span class="sc">:</span> chr  <span class="st">&quot;00:00:00&quot;</span> <span class="st">&quot;00:01:00&quot;</span> <span class="st">&quot;00:02:00&quot;</span> <span class="st">&quot;00:03:00&quot;</span> ...</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_active_power  <span class="sc">:</span> num  <span class="fl">0.326</span> <span class="fl">0.326</span> <span class="fl">0.324</span> <span class="fl">0.324</span> <span class="fl">0.322</span> <span class="fl">0.32</span> <span class="fl">0.32</span> <span class="fl">0.32</span> <span class="fl">0.32</span> <span class="fl">0.236</span> ...</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_reactive_power<span class="sc">:</span> num  <span class="fl">0.128</span> <span class="fl">0.13</span> <span class="fl">0.132</span> <span class="fl">0.134</span> <span class="fl">0.13</span> <span class="fl">0.126</span> <span class="fl">0.126</span> <span class="fl">0.126</span> <span class="fl">0.128</span> <span class="dv">0</span> ...</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Voltage              <span class="sc">:</span> num  <span class="dv">243</span> <span class="dv">243</span> <span class="dv">244</span> <span class="dv">244</span> <span class="dv">243</span> ...</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_intensity     <span class="sc">:</span> num  <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="fl">1.4</span> <span class="dv">1</span> ...</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_1       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_2       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_3       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a> <span class="sc">-</span> <span class="fu">attr</span>(<span class="sc">*</span>, <span class="st">&quot;.internal.selfref&quot;</span>)<span class="ot">=</span><span class="er">&lt;</span>externalptr<span class="sc">&gt;</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">object.size</span>(twoDays), <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;295.5 Kb&quot;</span></span></code></pre></div>
+</div>
+<div id="nota-2-variantes-de-subsetting" class="section level3"
+number="2.1.4">
+<h3><span class="header-section-number">2.1.4</span> Nota 2: variantes
+de subsetting</h3>
+<p>Otra disgresión. Veamos algunas formas aternativas de subsetting.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Alternativas de subsetting dentro del mismo paquete &quot;data.table&quot;:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 1.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>twoDays <span class="ot">&lt;-</span> hpcDataset[Date <span class="sc">==</span> <span class="st">&quot;1/2/2007&quot;</span> <span class="sc">|</span> Date <span class="sc">==</span> <span class="st">&quot;2/2/2007&quot;</span>, ]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 2. </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Podemos sacar la coma (&quot;data.table&quot; en ese caso selecciona líneas, no</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## columnas como &quot;data.frame&quot;).</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>twoDays1 <span class="ot">&lt;-</span> hpcDataset[Date <span class="sc">==</span> <span class="st">&quot;1/2/2007&quot;</span> <span class="sc">|</span> Date <span class="sc">==</span> <span class="st">&quot;2/2/2007&quot;</span>]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(twoDays, twoDays1)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 3.</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Podemos también usar, por ejemplo, el operador %in%.</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>twoDays2 <span class="ot">&lt;-</span> hpcDataset[Date <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;1/2/2007&quot;</span>, <span class="st">&quot;2/2/2007&quot;</span>)]</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(twoDays, twoDays2)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 4.</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Podemos usar también el comando &quot;which()&quot;.</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>twoDays3 <span class="ot">&lt;-</span> hpcDataset[<span class="fu">which</span>(Date <span class="sc">==</span> <span class="st">&quot;1/2/2007&quot;</span> <span class="sc">|</span> Date <span class="sc">==</span> <span class="st">&quot;2/2/2007&quot;</span>)]</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(twoDays, twoDays3)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 5.</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="do">## El paquete &quot;data.table&quot; también tiene una función &quot;subset()&quot;.</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>twoDays3<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">subset</span>(hpcDataset, Date <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;1/2/2007&quot;</span>, <span class="st">&quot;2/2/2007&quot;</span>))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(twoDays, twoDays3<span class="fl">.5</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Alternativas de subsetting si no hubiesemos usado el paquete &quot;data.table&quot;.</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 1.</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>twoDays4 <span class="ot">&lt;-</span> hpcDataset[hpcDataset<span class="sc">$</span>Date <span class="sc">==</span> <span class="st">&quot;1/2/2007&quot;</span> <span class="sc">|</span> hpcDataset<span class="sc">$</span>Date <span class="sc">==</span> <span class="st">&quot;2/2/2007&quot;</span>, ]</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(twoDays, twoDays4)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="do">## 2.</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>twoDays5 <span class="ot">&lt;-</span> hpcDataset[hpcDataset<span class="sc">$</span>Date <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;1/2/2007&quot;</span>, <span class="st">&quot;2/2/2007&quot;</span>), ]</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(twoDays, twoDays5)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="do">## 3.</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>twoDays6 <span class="ot">&lt;-</span> hpcDataset[<span class="fu">which</span>(hpcDataset<span class="sc">$</span>Date <span class="sc">==</span> <span class="st">&quot;1/2/2007&quot;</span> <span class="sc">|</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>                             hpcDataset<span class="sc">$</span>Date <span class="sc">==</span> <span class="st">&quot;2/2/2007&quot;</span>), ]</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(twoDays, twoDays6)</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="do">## 4. Y todas las demás opciones que hay con:</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="do">## - la función subset() del paquete &quot;base&quot;.</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="do">## - la función filter() del paquete &quot;dplyr&quot;.</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="do">## - etc.</span></span></code></pre></div>
+</div>
+<div id="terminemos" class="section level3" number="2.1.5">
+<h3><span class="header-section-number">2.1.5</span> Terminemos</h3>
+<p>Volvamos y hagamos la parte final del file <code>plot1.R</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Coercing &#39;Time&#39; variable from character to POSIXct class (we could&#39;ve created a</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## new variable, say &#39;DateTime&#39;, by just naming it before operator &#39;:=&#39;).</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>twoDays[, Time <span class="sc">:</span><span class="er">=</span> {tmp <span class="ot">&lt;-</span> <span class="fu">paste</span>(Date, Time);</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">as.POSIXct</span>(tmp, <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y %H:%M:%S&quot;</span>)}]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(twoDays)                            <span class="co"># No NAs.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>     Date                Time                     Global_active_power</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2880</span>        Min.   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>   Min.   <span class="sc">:</span><span class="fl">0.220</span>      </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">45</span>   1st Qu.<span class="sc">:</span><span class="fl">0.320</span>      </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Median <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Median <span class="sc">:</span><span class="fl">1.060</span>      </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                    Mean   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Mean   <span class="sc">:</span><span class="fl">1.213</span>      </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                    3rd Qu.<span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">15</span>   3rd Qu.<span class="sc">:</span><span class="fl">1.688</span>      </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                    Max.   <span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">00</span>   Max.   <span class="sc">:</span><span class="fl">7.482</span>      </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a> Global_reactive_power    Voltage      Global_intensity Sub_metering_1   </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>        Min.   <span class="sc">:</span><span class="fl">233.1</span>   Min.   <span class="sc">:</span> <span class="fl">1.000</span>   Min.   <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>        1st Qu.<span class="sc">:</span><span class="fl">238.4</span>   1st Qu.<span class="sc">:</span> <span class="fl">1.400</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.1040</span>        Median <span class="sc">:</span><span class="fl">240.6</span>   Median <span class="sc">:</span> <span class="fl">4.600</span>   Median <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.1006</span>        Mean   <span class="sc">:</span><span class="fl">240.4</span>   Mean   <span class="sc">:</span> <span class="fl">5.102</span>   Mean   <span class="sc">:</span> <span class="fl">0.4062</span>  </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.1440</span>        3rd Qu.<span class="sc">:</span><span class="fl">242.4</span>   3rd Qu.<span class="sc">:</span> <span class="fl">7.000</span>   3rd Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">0.5000</span>        Max.   <span class="sc">:</span><span class="fl">246.6</span>   Max.   <span class="sc">:</span><span class="fl">32.000</span>   Max.   <span class="sc">:</span><span class="fl">38.0000</span>  </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a> Sub_metering_2   Sub_metering_3  </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>   Min.   <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.0000</span>   Median <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.2576</span>   Mean   <span class="sc">:</span> <span class="fl">8.501</span>  </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.0000</span>   3rd Qu.<span class="sc">:</span><span class="fl">17.000</span>  </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">2.0000</span>   Max.   <span class="sc">:</span><span class="fl">19.000</span>  </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Constructing the required plot 1 on the screen graphic device.</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(twoDays, <span class="fu">hist</span>(Global_active_power, </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xlab =</span> <span class="st">&quot;Global Active Power (kilowatts)&quot;</span>,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>                   <span class="at">main =</span> <span class="st">&quot;Global Active Power&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_Ejercicios_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Sending plot 1 to the PNG file graphic device.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.copy</span>(png, <span class="at">file =</span> <span class="st">&quot;4_data/plot1.png&quot;</span>, <span class="at">width =</span> <span class="dv">480</span>, <span class="at">height =</span> <span class="dv">480</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove from disk the heavy unzipped file (133 MB) we don&#39;t use anymore.</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>unzipped_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, <span class="st">&quot;household_power_consumption.txt&quot;</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">file.exists</span>(unzipped_file)) {</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">file.remove</span>(unzipped_file)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Unzipped file has been deleted&quot;</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>Unzipped file has been deleted</span></code></pre></div>
+</div>
+</div>
+<div id="contenido-del-file-plot2.r" class="section level2"
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Contenido del file
+<code>plot2.R</code></h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Downloading and unzipping the data.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The zip file was already downloaded and stored in the &quot;4_data&quot; folder.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">&lt;-</span> <span class="st">&quot;./4_data&quot;</span>                                  <span class="co"># Working directory.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>datasetFile <span class="ot">&lt;-</span> <span class="st">&quot;houshold_power_consumption.zip&quot;</span>        <span class="co"># Name of the file to be downloaded.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>datasetPath <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, datasetFile)         <span class="co"># Complete pathname of the file to download.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dataUrl <span class="ot">&lt;-</span> <span class="st">&quot;https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(dataUrl, destfile = datasetPath, method = &quot;curl&quot;)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># dateDownloaded &lt;- date()</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>zipContent <span class="ot">&lt;-</span> <span class="fu">unzip</span>(datasetPath, <span class="at">exdir =</span> datadir)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>zipContent</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;./4_data/household_power_consumption.txt&quot;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Reading the data</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Rough memory estimate: (2.075.259 lines * 9 cols * 8 bytes) / 2^20 = 142.5 MB.</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>hpcDataset <span class="ot">&lt;-</span> <span class="fu">fread</span>(zipContent[<span class="dv">1</span>],       <span class="co"># &quot;sep&quot; and &quot;header&quot; are automatically detected.</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;?&quot;</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="do">## How many rows rows and MB.</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hpcDataset)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>Classes <span class="st">&#39;data.table&#39;</span> and <span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">2075259</span> obs. of  <span class="dv">9</span> variables<span class="sc">:</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Date                 <span class="sc">:</span> chr  <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> ...</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Time                 <span class="sc">:</span> chr  <span class="st">&quot;17:24:00&quot;</span> <span class="st">&quot;17:25:00&quot;</span> <span class="st">&quot;17:26:00&quot;</span> <span class="st">&quot;17:27:00&quot;</span> ...</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_active_power  <span class="sc">:</span> num  <span class="fl">4.22</span> <span class="fl">5.36</span> <span class="fl">5.37</span> <span class="fl">5.39</span> <span class="fl">3.67</span> ...</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_reactive_power<span class="sc">:</span> num  <span class="fl">0.418</span> <span class="fl">0.436</span> <span class="fl">0.498</span> <span class="fl">0.502</span> <span class="fl">0.528</span> <span class="fl">0.522</span> <span class="fl">0.52</span> <span class="fl">0.52</span> <span class="fl">0.51</span> <span class="fl">0.51</span> ...</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Voltage              <span class="sc">:</span> num  <span class="dv">235</span> <span class="dv">234</span> <span class="dv">233</span> <span class="dv">234</span> <span class="dv">236</span> ...</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_intensity     <span class="sc">:</span> num  <span class="fl">18.4</span> <span class="dv">23</span> <span class="dv">23</span> <span class="dv">23</span> <span class="fl">15.8</span> <span class="dv">15</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> ...</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_1       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_2       <span class="sc">:</span> num  <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> ...</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_3       <span class="sc">:</span> num  <span class="dv">17</span> <span class="dv">16</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">16</span> ...</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a> <span class="sc">-</span> <span class="fu">attr</span>(<span class="sc">*</span>, <span class="st">&quot;.internal.selfref&quot;</span>)<span class="ot">=</span><span class="er">&lt;</span>externalptr<span class="sc">&gt;</span> </span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">object.size</span>(hpcDataset), <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;142.7 Mb&quot;</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hpcDataset)                      <span class="co"># all numeric variables have 25,979 NAs.</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>     Date               Time           Global_active_power</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2075259</span>     Length<span class="sc">:</span><span class="dv">2075259</span>     Min.   <span class="sc">:</span> <span class="fl">0.076</span>     </span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span> <span class="fl">0.308</span>     </span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Mode  <span class="sc">:</span>character   Median <span class="sc">:</span> <span class="fl">0.602</span>     </span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>                                       Mean   <span class="sc">:</span> <span class="fl">1.092</span>     </span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>                                       3rd Qu.<span class="sc">:</span> <span class="fl">1.528</span>     </span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>                                       Max.   <span class="sc">:</span><span class="fl">11.122</span>     </span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>                                       NA<span class="st">&#39;s   :25979      </span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="st"> Global_reactive_power    Voltage      Global_intensity Sub_metering_1  </span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   :0.000         Min.   :223.2   Min.   : 0.200   Min.   : 0.000  </span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.:0.048         1st Qu.:239.0   1st Qu.: 1.400   1st Qu.: 0.000  </span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="st"> Median :0.100         Median :241.0   Median : 2.600   Median : 0.000  </span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   :0.124         Mean   :240.8   Mean   : 4.628   Mean   : 1.122  </span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.:0.194         3rd Qu.:242.9   3rd Qu.: 6.400   3rd Qu.: 0.000  </span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :1.390         Max.   :254.2   Max.   :48.400   Max.   :88.000  </span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>         NA<span class="st">&#39;s   :25979   NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="st"> Sub_metering_2   Sub_metering_3  </span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   : 0.000   Min.   : 0.000  </span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.: 0.000   1st Qu.: 0.000  </span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="st"> Median : 0.000   Median : 1.000  </span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   : 1.299   Mean   : 6.458  </span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.: 1.000   3rd Qu.:17.000  </span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :80.000   Max.   :31.000  </span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="st">## Subsetting observations from dates 01/02/2007 and 02/02/2007.</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="st">twoDays &lt;- hpcDataset[Date %in% c(&quot;1/2/2007&quot;, &quot;2/2/2007&quot;)]</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="st">## How many rows rows and MB.</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="st">str(twoDays)</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="st">Classes &#39;</span>data.table<span class="st">&#39; and &#39;</span>data.frame<span class="st">&#39;:  2880 obs. of  9 variables:</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Date                 : chr  &quot;1/2/2007&quot; &quot;1/2/2007&quot; &quot;1/2/2007&quot; &quot;1/2/2007&quot; ...</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Time                 : chr  &quot;00:00:00&quot; &quot;00:01:00&quot; &quot;00:02:00&quot; &quot;00:03:00&quot; ...</span></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_active_power  : num  0.326 0.326 0.324 0.324 0.322 0.32 0.32 0.32 0.32 0.236 ...</span></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_reactive_power: num  0.128 0.13 0.132 0.134 0.13 0.126 0.126 0.126 0.128 0 ...</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Voltage              : num  243 243 244 244 243 ...</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_intensity     : num  1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1 ...</span></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_1       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_2       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_3       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="st"> - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt; </span></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="st">format(object.size(twoDays), units = &quot;auto&quot;)</span></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="st">[1] &quot;295.5 Kb&quot;</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="st">## Coercing &#39;</span>Time<span class="st">&#39; variable from character to POSIXct class (we could&#39;</span>ve created a</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="do">## new variable, say &#39;DateTime&#39;, by just naming it before operator &#39;:=&#39;).</span></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>twoDays[, Time <span class="sc">:</span><span class="er">=</span> {tmp <span class="ot">&lt;-</span> <span class="fu">paste</span>(Date, Time);</span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">as.POSIXct</span>(tmp, <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y %H:%M:%S&quot;</span>)}]</span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(twoDays)                         <span class="co"># No NAs.</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>     Date                Time                     Global_active_power</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2880</span>        Min.   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>   Min.   <span class="sc">:</span><span class="fl">0.220</span>      </span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">45</span>   1st Qu.<span class="sc">:</span><span class="fl">0.320</span>      </span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Median <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Median <span class="sc">:</span><span class="fl">1.060</span>      </span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>                    Mean   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Mean   <span class="sc">:</span><span class="fl">1.213</span>      </span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>                    3rd Qu.<span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">15</span>   3rd Qu.<span class="sc">:</span><span class="fl">1.688</span>      </span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>                    Max.   <span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">00</span>   Max.   <span class="sc">:</span><span class="fl">7.482</span>      </span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a> Global_reactive_power    Voltage      Global_intensity Sub_metering_1   </span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>        Min.   <span class="sc">:</span><span class="fl">233.1</span>   Min.   <span class="sc">:</span> <span class="fl">1.000</span>   Min.   <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>        1st Qu.<span class="sc">:</span><span class="fl">238.4</span>   1st Qu.<span class="sc">:</span> <span class="fl">1.400</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.1040</span>        Median <span class="sc">:</span><span class="fl">240.6</span>   Median <span class="sc">:</span> <span class="fl">4.600</span>   Median <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.1006</span>        Mean   <span class="sc">:</span><span class="fl">240.4</span>   Mean   <span class="sc">:</span> <span class="fl">5.102</span>   Mean   <span class="sc">:</span> <span class="fl">0.4062</span>  </span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.1440</span>        3rd Qu.<span class="sc">:</span><span class="fl">242.4</span>   3rd Qu.<span class="sc">:</span> <span class="fl">7.000</span>   3rd Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">0.5000</span>        Max.   <span class="sc">:</span><span class="fl">246.6</span>   Max.   <span class="sc">:</span><span class="fl">32.000</span>   Max.   <span class="sc">:</span><span class="fl">38.0000</span>  </span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a> Sub_metering_2   Sub_metering_3  </span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>   Min.   <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.0000</span>   Median <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.2576</span>   Mean   <span class="sc">:</span> <span class="fl">8.501</span>  </span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.0000</span>   3rd Qu.<span class="sc">:</span><span class="fl">17.000</span>  </span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">2.0000</span>   Max.   <span class="sc">:</span><span class="fl">19.000</span>  </span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="do">## Constructing the required plot 2 on the screen graphic device.</span></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="do">## - Notice: instead of the two first arguments below, we can also use the formula</span></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a><span class="do">##           &#39;Global_active_power ~ Time&#39;.</span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(twoDays, <span class="fu">plot</span>(Time, Global_active_power,</span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Global Active Power (kilowatts)&quot;</span>,</span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>                   <span class="at">type =</span> <span class="st">&quot;l&quot;</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_Ejercicios_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Sending plot 2 to the PNG file graphic device.</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.copy</span>(png, <span class="at">file =</span> <span class="st">&quot;4_data/plot2.png&quot;</span>, <span class="at">width =</span> <span class="dv">480</span>, <span class="at">height =</span> <span class="dv">480</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove from disk the heavy unzipped file (133 MB) we don&#39;t use anymore.</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>unzipped_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, <span class="st">&quot;household_power_consumption.txt&quot;</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">file.exists</span>(unzipped_file)) {</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">file.remove</span>(unzipped_file)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Unzipped file has been deleted&quot;</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>Unzipped file has been deleted</span></code></pre></div>
+</div>
+<div id="contenido-del-file-plot3.r" class="section level2"
+number="2.3">
+<h2><span class="header-section-number">2.3</span> Contenido del file
+<code>plot3.R</code></h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Downloading and unzipping the data.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The zip file was already downloaded and stored in the &quot;4_data&quot; folder.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">&lt;-</span> <span class="st">&quot;./4_data&quot;</span>                                  <span class="co"># Working directory.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>datasetFile <span class="ot">&lt;-</span> <span class="st">&quot;houshold_power_consumption.zip&quot;</span>        <span class="co"># Name of the file to be downloaded.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>datasetPath <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, datasetFile)         <span class="co"># Complete pathname of the file to download.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>dataUrl <span class="ot">&lt;-</span> <span class="st">&quot;https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(dataUrl, destfile = datasetPath, method = &quot;curl&quot;)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># dateDownloaded &lt;- date()</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>zipContent <span class="ot">&lt;-</span> <span class="fu">unzip</span>(datasetPath, <span class="at">exdir =</span> datadir)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>zipContent</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;./4_data/household_power_consumption.txt&quot;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Reading the data</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Rough memory estimate: (2.075.259 lines * 9 cols * 8 bytes) / 2^20 = 142.5 MB.</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>hpcDataset <span class="ot">&lt;-</span> <span class="fu">fread</span>(zipContent[<span class="dv">1</span>],       <span class="co"># &quot;sep&quot; and &quot;header&quot; are automatically detected.</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;?&quot;</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="do">## How many rows rows and MB.</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hpcDataset)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>Classes <span class="st">&#39;data.table&#39;</span> and <span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">2075259</span> obs. of  <span class="dv">9</span> variables<span class="sc">:</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Date                 <span class="sc">:</span> chr  <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> ...</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Time                 <span class="sc">:</span> chr  <span class="st">&quot;17:24:00&quot;</span> <span class="st">&quot;17:25:00&quot;</span> <span class="st">&quot;17:26:00&quot;</span> <span class="st">&quot;17:27:00&quot;</span> ...</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_active_power  <span class="sc">:</span> num  <span class="fl">4.22</span> <span class="fl">5.36</span> <span class="fl">5.37</span> <span class="fl">5.39</span> <span class="fl">3.67</span> ...</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_reactive_power<span class="sc">:</span> num  <span class="fl">0.418</span> <span class="fl">0.436</span> <span class="fl">0.498</span> <span class="fl">0.502</span> <span class="fl">0.528</span> <span class="fl">0.522</span> <span class="fl">0.52</span> <span class="fl">0.52</span> <span class="fl">0.51</span> <span class="fl">0.51</span> ...</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Voltage              <span class="sc">:</span> num  <span class="dv">235</span> <span class="dv">234</span> <span class="dv">233</span> <span class="dv">234</span> <span class="dv">236</span> ...</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_intensity     <span class="sc">:</span> num  <span class="fl">18.4</span> <span class="dv">23</span> <span class="dv">23</span> <span class="dv">23</span> <span class="fl">15.8</span> <span class="dv">15</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> ...</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_1       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_2       <span class="sc">:</span> num  <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> ...</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_3       <span class="sc">:</span> num  <span class="dv">17</span> <span class="dv">16</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">16</span> ...</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a> <span class="sc">-</span> <span class="fu">attr</span>(<span class="sc">*</span>, <span class="st">&quot;.internal.selfref&quot;</span>)<span class="ot">=</span><span class="er">&lt;</span>externalptr<span class="sc">&gt;</span> </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">object.size</span>(hpcDataset), <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;142.7 Mb&quot;</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hpcDataset)                      <span class="co"># all numeric variables have 25,979 NAs.</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>     Date               Time           Global_active_power</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2075259</span>     Length<span class="sc">:</span><span class="dv">2075259</span>     Min.   <span class="sc">:</span> <span class="fl">0.076</span>     </span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span> <span class="fl">0.308</span>     </span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Mode  <span class="sc">:</span>character   Median <span class="sc">:</span> <span class="fl">0.602</span>     </span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>                                       Mean   <span class="sc">:</span> <span class="fl">1.092</span>     </span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>                                       3rd Qu.<span class="sc">:</span> <span class="fl">1.528</span>     </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>                                       Max.   <span class="sc">:</span><span class="fl">11.122</span>     </span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>                                       NA<span class="st">&#39;s   :25979      </span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="st"> Global_reactive_power    Voltage      Global_intensity Sub_metering_1  </span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   :0.000         Min.   :223.2   Min.   : 0.200   Min.   : 0.000  </span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.:0.048         1st Qu.:239.0   1st Qu.: 1.400   1st Qu.: 0.000  </span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="st"> Median :0.100         Median :241.0   Median : 2.600   Median : 0.000  </span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   :0.124         Mean   :240.8   Mean   : 4.628   Mean   : 1.122  </span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.:0.194         3rd Qu.:242.9   3rd Qu.: 6.400   3rd Qu.: 0.000  </span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :1.390         Max.   :254.2   Max.   :48.400   Max.   :88.000  </span></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>         NA<span class="st">&#39;s   :25979   NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a><span class="st"> Sub_metering_2   Sub_metering_3  </span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   : 0.000   Min.   : 0.000  </span></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.: 0.000   1st Qu.: 0.000  </span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a><span class="st"> Median : 0.000   Median : 1.000  </span></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   : 1.299   Mean   : 6.458  </span></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.: 1.000   3rd Qu.:17.000  </span></span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :80.000   Max.   :31.000  </span></span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a><span class="st">## Subsetting observations from dates 01/02/2007 and 02/02/2007.</span></span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a><span class="st">twoDays &lt;- hpcDataset[Date %in% c(&quot;1/2/2007&quot;, &quot;2/2/2007&quot;)]</span></span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a><span class="st">## How many rows rows and MB.</span></span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a><span class="st">str(twoDays)</span></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a><span class="st">Classes &#39;</span>data.table<span class="st">&#39; and &#39;</span>data.frame<span class="st">&#39;:  2880 obs. of  9 variables:</span></span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Date                 : chr  &quot;1/2/2007&quot; &quot;1/2/2007&quot; &quot;1/2/2007&quot; &quot;1/2/2007&quot; ...</span></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Time                 : chr  &quot;00:00:00&quot; &quot;00:01:00&quot; &quot;00:02:00&quot; &quot;00:03:00&quot; ...</span></span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_active_power  : num  0.326 0.326 0.324 0.324 0.322 0.32 0.32 0.32 0.32 0.236 ...</span></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_reactive_power: num  0.128 0.13 0.132 0.134 0.13 0.126 0.126 0.126 0.128 0 ...</span></span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Voltage              : num  243 243 244 244 243 ...</span></span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_intensity     : num  1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1 ...</span></span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_1       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_2       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_3       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a><span class="st"> - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt; </span></span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a><span class="st">format(object.size(twoDays), units = &quot;auto&quot;)</span></span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a><span class="st">[1] &quot;295.5 Kb&quot;</span></span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a><span class="st">## Coercing &#39;</span>Time<span class="st">&#39; variable from character to POSIXct class (we could&#39;</span>ve created a</span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a><span class="do">## new variable, say &#39;DateTime&#39;, by just naming it before operator &#39;:=&#39;).</span></span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>twoDays[, Time <span class="sc">:</span><span class="er">=</span> {tmp <span class="ot">&lt;-</span> <span class="fu">paste</span>(Date, Time);</span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">as.POSIXct</span>(tmp, <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y %H:%M:%S&quot;</span>)}]</span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(twoDays)                         <span class="co"># No NAs.</span></span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>     Date                Time                     Global_active_power</span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2880</span>        Min.   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>   Min.   <span class="sc">:</span><span class="fl">0.220</span>      </span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">45</span>   1st Qu.<span class="sc">:</span><span class="fl">0.320</span>      </span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Median <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Median <span class="sc">:</span><span class="fl">1.060</span>      </span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>                    Mean   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Mean   <span class="sc">:</span><span class="fl">1.213</span>      </span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>                    3rd Qu.<span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">15</span>   3rd Qu.<span class="sc">:</span><span class="fl">1.688</span>      </span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>                    Max.   <span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">00</span>   Max.   <span class="sc">:</span><span class="fl">7.482</span>      </span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a> Global_reactive_power    Voltage      Global_intensity Sub_metering_1   </span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>        Min.   <span class="sc">:</span><span class="fl">233.1</span>   Min.   <span class="sc">:</span> <span class="fl">1.000</span>   Min.   <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>        1st Qu.<span class="sc">:</span><span class="fl">238.4</span>   1st Qu.<span class="sc">:</span> <span class="fl">1.400</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.1040</span>        Median <span class="sc">:</span><span class="fl">240.6</span>   Median <span class="sc">:</span> <span class="fl">4.600</span>   Median <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.1006</span>        Mean   <span class="sc">:</span><span class="fl">240.4</span>   Mean   <span class="sc">:</span> <span class="fl">5.102</span>   Mean   <span class="sc">:</span> <span class="fl">0.4062</span>  </span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.1440</span>        3rd Qu.<span class="sc">:</span><span class="fl">242.4</span>   3rd Qu.<span class="sc">:</span> <span class="fl">7.000</span>   3rd Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">0.5000</span>        Max.   <span class="sc">:</span><span class="fl">246.6</span>   Max.   <span class="sc">:</span><span class="fl">32.000</span>   Max.   <span class="sc">:</span><span class="fl">38.0000</span>  </span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a> Sub_metering_2   Sub_metering_3  </span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>   Min.   <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.0000</span>   Median <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.2576</span>   Mean   <span class="sc">:</span> <span class="fl">8.501</span>  </span>
+<span id="cb10-106"><a href="#cb10-106" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.0000</span>   3rd Qu.<span class="sc">:</span><span class="fl">17.000</span>  </span>
+<span id="cb10-107"><a href="#cb10-107" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">2.0000</span>   Max.   <span class="sc">:</span><span class="fl">19.000</span>  </span>
+<span id="cb10-108"><a href="#cb10-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-109"><a href="#cb10-109" aria-hidden="true" tabindex="-1"></a><span class="do">## Constructing the required plot 3 on the screen graphic device.</span></span>
+<span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a><span class="do">## - Notice: instead of the two first arguments in all functions below, we can also</span></span>
+<span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a><span class="do">##           use the formula &#39;Sub_mettering_* ~ Time&#39;.</span></span>
+<span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a><span class="do">## - Notice: instead of the &quot;line()&quot; function, we can also use the &quot;point()&quot;</span></span>
+<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a><span class="do">##           function with &#39;type = &quot;l&quot;&#39;.</span></span>
+<span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(twoDays, <span class="fu">plot</span>(Time, Sub_metering_1,</span>
+<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a>                   <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb10-116"><a href="#cb10-116" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Energy sub metering&quot;</span>))</span>
+<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(twoDays, <span class="fu">lines</span>(Time, Sub_metering_2, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>))</span>
+<span id="cb10-118"><a href="#cb10-118" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(twoDays, <span class="fu">lines</span>(Time, Sub_metering_3, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>))</span>
+<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">lty =</span> <span class="st">&quot;solid&quot;</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>),</span>
+<span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Sub_metering_1&quot;</span>, <span class="st">&quot;Sub_metering_2&quot;</span>, <span class="st">&quot;Sub_metering_3&quot;</span>),</span>
+<span id="cb10-121"><a href="#cb10-121" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_Ejercicios_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Sending plot 3 to the PNG file graphic device.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.copy</span>(png, <span class="at">file =</span> <span class="st">&quot;4_data/plot3.png&quot;</span>, <span class="at">width =</span> <span class="dv">480</span>, <span class="at">height =</span> <span class="dv">480</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove from disk the heavy unzipped file (133 MB) we don&#39;t use anymore.</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>unzipped_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, <span class="st">&quot;household_power_consumption.txt&quot;</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">file.exists</span>(unzipped_file)) {</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">file.remove</span>(unzipped_file)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Unzipped file has been deleted&quot;</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>Unzipped file has been deleted</span></code></pre></div>
+</div>
+<div id="contenido-del-file-plot4.r" class="section level2"
+number="2.4">
+<h2><span class="header-section-number">2.4</span> Contenido del file
+<code>plot4.R</code></h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Downloading and unzipping the data.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The zip file was already downloaded and stored in the &quot;4_data&quot; folder.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">&lt;-</span> <span class="st">&quot;./4_data&quot;</span>                                  <span class="co"># Working directory.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>datasetFile <span class="ot">&lt;-</span> <span class="st">&quot;houshold_power_consumption.zip&quot;</span>        <span class="co"># Name of the file to be downloaded.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>datasetPath <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, datasetFile)         <span class="co"># Complete pathname of the file to download.</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>dataUrl <span class="ot">&lt;-</span> <span class="st">&quot;https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip&quot;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(dataUrl, destfile = datasetPath, method = &quot;curl&quot;)</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># dateDownloaded &lt;- date()</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>zipContent <span class="ot">&lt;-</span> <span class="fu">unzip</span>(datasetPath, <span class="at">exdir =</span> datadir)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>zipContent</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;./4_data/household_power_consumption.txt&quot;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Reading the data</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Rough memory estimate: (2.075.259 lines * 9 cols * 8 bytes) / 2^20 = 142.5 MB.</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>hpcDataset <span class="ot">&lt;-</span> <span class="fu">fread</span>(zipContent[<span class="dv">1</span>],       <span class="co"># &quot;sep&quot; and &quot;header&quot; are automatically detected.</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;?&quot;</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="do">## How many rows rows and MB.</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hpcDataset)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>Classes <span class="st">&#39;data.table&#39;</span> and <span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">2075259</span> obs. of  <span class="dv">9</span> variables<span class="sc">:</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Date                 <span class="sc">:</span> chr  <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> <span class="st">&quot;16/12/2006&quot;</span> ...</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Time                 <span class="sc">:</span> chr  <span class="st">&quot;17:24:00&quot;</span> <span class="st">&quot;17:25:00&quot;</span> <span class="st">&quot;17:26:00&quot;</span> <span class="st">&quot;17:27:00&quot;</span> ...</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_active_power  <span class="sc">:</span> num  <span class="fl">4.22</span> <span class="fl">5.36</span> <span class="fl">5.37</span> <span class="fl">5.39</span> <span class="fl">3.67</span> ...</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_reactive_power<span class="sc">:</span> num  <span class="fl">0.418</span> <span class="fl">0.436</span> <span class="fl">0.498</span> <span class="fl">0.502</span> <span class="fl">0.528</span> <span class="fl">0.522</span> <span class="fl">0.52</span> <span class="fl">0.52</span> <span class="fl">0.51</span> <span class="fl">0.51</span> ...</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Voltage              <span class="sc">:</span> num  <span class="dv">235</span> <span class="dv">234</span> <span class="dv">233</span> <span class="dv">234</span> <span class="dv">236</span> ...</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Global_intensity     <span class="sc">:</span> num  <span class="fl">18.4</span> <span class="dv">23</span> <span class="dv">23</span> <span class="dv">23</span> <span class="fl">15.8</span> <span class="dv">15</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> <span class="fl">15.8</span> ...</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_1       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_2       <span class="sc">:</span> num  <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> ...</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Sub_metering_3       <span class="sc">:</span> num  <span class="dv">17</span> <span class="dv">16</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">17</span> <span class="dv">16</span> ...</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a> <span class="sc">-</span> <span class="fu">attr</span>(<span class="sc">*</span>, <span class="st">&quot;.internal.selfref&quot;</span>)<span class="ot">=</span><span class="er">&lt;</span>externalptr<span class="sc">&gt;</span> </span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">object.size</span>(hpcDataset), <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>)</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;142.7 Mb&quot;</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hpcDataset)                      <span class="co"># all numeric variables have 25,979 NAs.</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>     Date               Time           Global_active_power</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2075259</span>     Length<span class="sc">:</span><span class="dv">2075259</span>     Min.   <span class="sc">:</span> <span class="fl">0.076</span>     </span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span> <span class="fl">0.308</span>     </span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Mode  <span class="sc">:</span>character   Median <span class="sc">:</span> <span class="fl">0.602</span>     </span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>                                       Mean   <span class="sc">:</span> <span class="fl">1.092</span>     </span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>                                       3rd Qu.<span class="sc">:</span> <span class="fl">1.528</span>     </span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>                                       Max.   <span class="sc">:</span><span class="fl">11.122</span>     </span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>                                       NA<span class="st">&#39;s   :25979      </span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="st"> Global_reactive_power    Voltage      Global_intensity Sub_metering_1  </span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   :0.000         Min.   :223.2   Min.   : 0.200   Min.   : 0.000  </span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.:0.048         1st Qu.:239.0   1st Qu.: 1.400   1st Qu.: 0.000  </span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="st"> Median :0.100         Median :241.0   Median : 2.600   Median : 0.000  </span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   :0.124         Mean   :240.8   Mean   : 4.628   Mean   : 1.122  </span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.:0.194         3rd Qu.:242.9   3rd Qu.: 6.400   3rd Qu.: 0.000  </span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :1.390         Max.   :254.2   Max.   :48.400   Max.   :88.000  </span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>         NA<span class="st">&#39;s   :25979   NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="st"> Sub_metering_2   Sub_metering_3  </span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="st"> Min.   : 0.000   Min.   : 0.000  </span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="st"> 1st Qu.: 0.000   1st Qu.: 0.000  </span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="st"> Median : 0.000   Median : 1.000  </span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="st"> Mean   : 1.299   Mean   : 6.458  </span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="st"> 3rd Qu.: 1.000   3rd Qu.:17.000  </span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="st"> Max.   :80.000   Max.   :31.000  </span></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a><span class="st"> NA&#39;</span>s   <span class="sc">:</span><span class="dv">25979</span>    NA<span class="st">&#39;s   :25979   </span></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="st">## Subsetting observations from dates 01/02/2007 and 02/02/2007.</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="st">twoDays &lt;- hpcDataset[Date %in% c(&quot;1/2/2007&quot;, &quot;2/2/2007&quot;)]</span></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a><span class="st"># How many rows rows and MB.</span></span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a><span class="st">str(twoDays)</span></span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="st">Classes &#39;</span>data.table<span class="st">&#39; and &#39;</span>data.frame<span class="st">&#39;:  2880 obs. of  9 variables:</span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Date                 : chr  &quot;1/2/2007&quot; &quot;1/2/2007&quot; &quot;1/2/2007&quot; &quot;1/2/2007&quot; ...</span></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Time                 : chr  &quot;00:00:00&quot; &quot;00:01:00&quot; &quot;00:02:00&quot; &quot;00:03:00&quot; ...</span></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_active_power  : num  0.326 0.326 0.324 0.324 0.322 0.32 0.32 0.32 0.32 0.236 ...</span></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_reactive_power: num  0.128 0.13 0.132 0.134 0.13 0.126 0.126 0.126 0.128 0 ...</span></span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Voltage              : num  243 243 244 244 243 ...</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Global_intensity     : num  1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1 ...</span></span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_1       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_2       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a><span class="st"> $ Sub_metering_3       : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="st"> - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt; </span></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a><span class="st">format(object.size(twoDays), units = &quot;auto&quot;)</span></span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="st">[1] &quot;295.5 Kb&quot;</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="st">## Coercing &#39;</span>Time<span class="st">&#39; variable from character to POSIXct class (we could&#39;</span>ve created a</span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a><span class="do">## new variable, say &#39;DateTime&#39;, by just naming it before operator &#39;:=&#39;).</span></span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>twoDays[, Time <span class="sc">:</span><span class="er">=</span> {tmp <span class="ot">&lt;-</span> <span class="fu">paste</span>(Date, Time);</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">as.POSIXct</span>(tmp, <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y %H:%M:%S&quot;</span>)}]</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(twoDays)                         <span class="co"># No NAs.</span></span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>     Date                Time                     Global_active_power</span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a> Length<span class="sc">:</span><span class="dv">2880</span>        Min.   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>   Min.   <span class="sc">:</span><span class="fl">0.220</span>      </span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a> Class <span class="sc">:</span>character   1st Qu.<span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">45</span>   1st Qu.<span class="sc">:</span><span class="fl">0.320</span>      </span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a> Mode  <span class="sc">:</span>character   Median <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Median <span class="sc">:</span><span class="fl">1.060</span>      </span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>                    Mean   <span class="sc">:</span><span class="dv">2007-02-01</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">30</span>   Mean   <span class="sc">:</span><span class="fl">1.213</span>      </span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>                    3rd Qu.<span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">15</span>   3rd Qu.<span class="sc">:</span><span class="fl">1.688</span>      </span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>                    Max.   <span class="sc">:</span><span class="dv">2007-02-02</span> <span class="dv">23</span><span class="sc">:</span><span class="dv">59</span><span class="sc">:</span><span class="dv">00</span>   Max.   <span class="sc">:</span><span class="fl">7.482</span>      </span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a> Global_reactive_power    Voltage      Global_intensity Sub_metering_1   </span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>        Min.   <span class="sc">:</span><span class="fl">233.1</span>   Min.   <span class="sc">:</span> <span class="fl">1.000</span>   Min.   <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>        1st Qu.<span class="sc">:</span><span class="fl">238.4</span>   1st Qu.<span class="sc">:</span> <span class="fl">1.400</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.1040</span>        Median <span class="sc">:</span><span class="fl">240.6</span>   Median <span class="sc">:</span> <span class="fl">4.600</span>   Median <span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.1006</span>        Mean   <span class="sc">:</span><span class="fl">240.4</span>   Mean   <span class="sc">:</span> <span class="fl">5.102</span>   Mean   <span class="sc">:</span> <span class="fl">0.4062</span>  </span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.1440</span>        3rd Qu.<span class="sc">:</span><span class="fl">242.4</span>   3rd Qu.<span class="sc">:</span> <span class="fl">7.000</span>   3rd Qu.<span class="sc">:</span> <span class="fl">0.0000</span>  </span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">0.5000</span>        Max.   <span class="sc">:</span><span class="fl">246.6</span>   Max.   <span class="sc">:</span><span class="fl">32.000</span>   Max.   <span class="sc">:</span><span class="fl">38.0000</span>  </span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a> Sub_metering_2   Sub_metering_3  </span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a> Min.   <span class="sc">:</span><span class="fl">0.0000</span>   Min.   <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a> 1st Qu.<span class="sc">:</span><span class="fl">0.0000</span>   1st Qu.<span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a> Median <span class="sc">:</span><span class="fl">0.0000</span>   Median <span class="sc">:</span> <span class="fl">0.000</span>  </span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a> Mean   <span class="sc">:</span><span class="fl">0.2576</span>   Mean   <span class="sc">:</span> <span class="fl">8.501</span>  </span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a> 3rd Qu.<span class="sc">:</span><span class="fl">0.0000</span>   3rd Qu.<span class="sc">:</span><span class="fl">17.000</span>  </span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a> Max.   <span class="sc">:</span><span class="fl">2.0000</span>   Max.   <span class="sc">:</span><span class="fl">19.000</span>  </span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a><span class="do">## Constructing the required plot 4 on the screen graphic device.</span></span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="do">## - Notice: instead of the two first arguments in all functions below, we can also</span></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a><span class="do">##           use the formula &#39;Sub_mettering_* ~ Time&#39;.</span></span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a><span class="do">## - Notice: instead of the &quot;line()&quot; function, we can also use the &quot;point()&quot;</span></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a><span class="do">##           function with &#39;type = &quot;l&quot;&#39;.</span></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfcol =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">0.5</span>), <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">1</span>))</span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(twoDays, {</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Time, Global_active_power,</span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>             <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Global Active Power&quot;</span>,</span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>             <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Time, Sub_metering_1,</span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>             <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>             <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Energy sub metering&quot;</span>)</span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lines</span>(Time, Sub_metering_2, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lines</span>(Time, Sub_metering_3, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>        <span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">lty =</span> <span class="st">&quot;solid&quot;</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>),</span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>               <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Sub_metering_1&quot;</span>, <span class="st">&quot;Sub_metering_2&quot;</span>, <span class="st">&quot;Sub_metering_3&quot;</span>),</span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>               <span class="at">xjust =</span> <span class="dv">1</span>, <span class="at">yjust =</span> <span class="dv">1</span>,</span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>               <span class="at">cex =</span> <span class="fl">0.7</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Time, Voltage, <span class="at">xlab =</span> <span class="st">&quot;datetime&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Voltage&quot;</span>,</span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>             <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Time, Global_reactive_power, <span class="at">xlab =</span> <span class="st">&quot;datetime&quot;</span>,</span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>             <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_Ejercicios_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Sending plot 4 to the PNG file graphic device.</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.copy</span>(png, <span class="at">file =</span> <span class="st">&quot;4_data/plot4.png&quot;</span>, <span class="at">width =</span> <span class="dv">480</span>, <span class="at">height =</span> <span class="dv">480</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span> </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove from disk the heavy unzipped file (133 MB) we don&#39;t use anymore.</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>unzipped_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, <span class="st">&quot;household_power_consumption.txt&quot;</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">file.exists</span>(unzipped_file)) {</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">file.remove</span>(unzipped_file)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Unzipped file has been deleted&quot;</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>Unzipped file has been deleted</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Session Info.</h1>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] stringr_1.<span class="fl">4.0</span>     lubridate_1.<span class="fl">9.2</span>   quantmod_0.<span class="fl">4.20</span>   TTR_0.<span class="fl">24.2</span>       </span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] xts_0.<span class="fl">12.1</span>        zoo_1<span class="fl">.8</span><span class="dv">-9</span>         readr_2.<span class="fl">0.1</span>       tidyr_1.<span class="fl">2.0</span>      </span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] dplyr_1.<span class="fl">0.8</span>       reshape2_1.<span class="fl">4.4</span>    Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>       ggplot2_3.<span class="fl">3.5</span>    </span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] Formula_1<span class="fl">.2</span><span class="dv">-3</span>     survival_3<span class="fl">.4</span><span class="dv">-0</span>    lattice_0<span class="fl">.20</span><span class="dv">-45</span>   jpeg_0<span class="fl">.1-8.1</span>     </span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] gitignore_0.<span class="fl">1.3</span>   rhdf5_2.<span class="fl">30.1</span>      httr_1.<span class="fl">4.2</span>        httpuv_1.<span class="fl">6.3</span>     </span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] sqldf_0<span class="fl">.4</span><span class="dv">-11</span>      RSQLite_2.<span class="fl">2.0</span>     gsubfn_0<span class="fl">.7</span>        proto_1.<span class="fl">0.0</span>      </span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] DBI_1.<span class="fl">1.1</span>         data.table_1.<span class="fl">14.0</span> jsonlite_1.<span class="fl">7.2</span>    XML_3<span class="fl">.99-0.3</span>     </span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] xlsx_0.<span class="fl">6.3</span>        plyr_1.<span class="fl">8.6</span>       </span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        bit64_4.<span class="fl">0.5</span>         RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> </span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] tools_3.<span class="fl">6.3</span>         backports_1.<span class="fl">4.1</span>     bslib_0.<span class="fl">3.0</span>        </span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] utf8_1.<span class="fl">2.2</span>          R6_2.<span class="fl">5.1</span>            rpart_4.<span class="fl">1.19</span>       </span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    nnet_7<span class="fl">.3</span><span class="dv">-18</span>        </span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] withr_2.<span class="fl">5.0</span>         tidyselect_1.<span class="fl">2.0</span>    gridExtra_2<span class="fl">.3</span>      </span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] bit_4.<span class="fl">0.4</span>           curl_4.<span class="fl">3.2</span>          compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] chron_2<span class="fl">.3</span><span class="dv">-55</span>        cli_3.<span class="fl">6.0</span>           formatR_1<span class="fl">.14</span>       </span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] htmlTable_2.<span class="fl">0.1</span>     labeling_0.<span class="fl">4.2</span>      sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] scales_1.<span class="fl">1.1</span>        checkmate_2.<span class="fl">0.0</span>     askpass_1<span class="fl">.1</span>        </span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] digest_0.<span class="fl">6.29</span>       foreign_0<span class="fl">.8</span><span class="dv">-76</span>      rmarkdown_2<span class="fl">.11</span>     </span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     pkgconfig_2.<span class="fl">0.3</span>     htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] fastmap_1.<span class="fl">1.0</span>       highr_0<span class="fl">.9</span>           htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] rlang_1.<span class="fl">0.6</span>         rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] jquerylib_0.<span class="fl">1.4</span>     generics_0.<span class="fl">1.2</span>      acepack_1.<span class="fl">4.1</span>      </span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] magrittr_2.<span class="fl">0.2</span>      Matrix_1<span class="fl">.5</span><span class="dv">-1</span>        Rcpp_1.<span class="fl">0.7</span>         </span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] munsell_0.<span class="fl">5.0</span>       Rhdf5lib_1.<span class="fl">8.0</span>      fansi_1.<span class="fl">0.2</span>        </span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] clipr_0.<span class="fl">7.1</span>         lifecycle_1.<span class="fl">0.3</span>     stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] yaml_2.<span class="fl">2.1</span>          grid_3.<span class="fl">6.3</span>          blob_1.<span class="fl">2.2</span>         </span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>    crayon_1.<span class="fl">5.0</span>        splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] xlsxjars_0.<span class="fl">6.1</span>      hms_1.<span class="fl">1.0</span>           knitr_1<span class="fl">.41</span>         </span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] pillar_1.<span class="fl">7.0</span>        tcltk_3.<span class="fl">6.3</span>         glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] evaluate_0<span class="fl">.19</span>       latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           tzdb_0.<span class="fl">3.0</span>          gtable_0.<span class="fl">3.0</span>       </span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] openssl_2.<span class="fl">0.5</span>       purrr_0.<span class="fl">3.4</span>         assertthat_0.<span class="fl">2.1</span>   </span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] xfun_0<span class="fl">.36</span>           later_1.<span class="fl">3.0</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] rJava_0<span class="fl">.9</span><span class="dv">-13</span>        memoise_1.<span class="fl">1.0</span>       cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] timechange_0.<span class="fl">2.0</span>    ellipsis_0.<span class="fl">3.2</span>     </span></code></pre></div>
+<hr />
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

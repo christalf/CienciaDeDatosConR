@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Sumario del contenido del sitio</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Sumario del contenido del sitio</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a
+href="#cuál-es-el-material-o-la-fuente-de-información-que-se-utiliza-en-este-sitio"
+id="toc-cuál-es-el-material-o-la-fuente-de-información-que-se-utiliza-en-este-sitio"><span
+class="toc-section-number">1</span> ¿Cuál es el material o la fuente de
+información que se utiliza en este sitio?</a></li>
+<li><a
+href="#data-science-toolbox-caja-de-herramientas-del-científico-de-datos"
+id="toc-data-science-toolbox-caja-de-herramientas-del-científico-de-datos"><span
+class="toc-section-number">2</span> Data science toolbox (caja de
+herramientas del científico de datos)</a></li>
+<li><a href="#r-programming" id="toc-r-programming"><span
+class="toc-section-number">3</span> R Programming</a>
+<ul>
+<li><a
+href="#módulo-1---introducción-a-r-tipos-de-datos-y-objetos-lectura-y-escritura-de-datos"
+id="toc-módulo-1---introducción-a-r-tipos-de-datos-y-objetos-lectura-y-escritura-de-datos"><span
+class="toc-section-number">3.1</span> Módulo 1 - Introducción a R, tipos
+de datos y objetos, lectura y escritura de datos</a></li>
+<li><a
+href="#módulo-2---control-del-flujo-de-ejecución-funciones-reglas-de-visibilidad-dates-and-times"
+id="toc-módulo-2---control-del-flujo-de-ejecución-funciones-reglas-de-visibilidad-dates-and-times"><span
+class="toc-section-number">3.2</span> Módulo 2 - Control del flujo de
+ejecución, funciones, reglas de visibilidad, dates and times</a>
+<ul>
+<li><a href="#trabajo-práctico" id="toc-trabajo-práctico"><span
+class="toc-section-number">3.2.1</span> Trabajo práctico</a></li>
+</ul></li>
+<li><a href="#módulo-3---funciones-de-bucle-debugging"
+id="toc-módulo-3---funciones-de-bucle-debugging"><span
+class="toc-section-number">3.3</span> Módulo 3 - Funciones de bucle,
+debugging</a>
+<ul>
+<li><a href="#trabajo-práctico-1" id="toc-trabajo-práctico-1"><span
+class="toc-section-number">3.3.1</span> Trabajo práctico</a></li>
+</ul></li>
+<li><a href="#módulo-4---simulación-optimización"
+id="toc-módulo-4---simulación-optimización"><span
+class="toc-section-number">3.4</span> Módulo 4 - Simulación,
+optimización</a>
+<ul>
+<li><a href="#trabajo-práctico-final"
+id="toc-trabajo-práctico-final"><span
+class="toc-section-number">3.4.1</span> Trabajo práctico final</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#getting-and-cleaning-data-obtención-y-limpieza-de-datos"
+id="toc-getting-and-cleaning-data-obtención-y-limpieza-de-datos"><span
+class="toc-section-number">4</span> Getting and cleaning data (obtención
+y limpieza de datos)</a>
+<ul>
+<li><a href="#módulo-1" id="toc-módulo-1"><span
+class="toc-section-number">4.1</span> Módulo 1</a></li>
+<li><a href="#módulo-2" id="toc-módulo-2"><span
+class="toc-section-number">4.2</span> Módulo 2</a>
+<ul>
+<li><a href="#trabajos-prácticos" id="toc-trabajos-prácticos"><span
+class="toc-section-number">4.2.1</span> Trabajos prácticos</a></li>
+</ul></li>
+<li><a href="#módulo-3" id="toc-módulo-3"><span
+class="toc-section-number">4.3</span> Módulo 3</a>
+<ul>
+<li><a href="#trabajos-prácticos-1" id="toc-trabajos-prácticos-1"><span
+class="toc-section-number">4.3.1</span> Trabajos prácticos</a></li>
+</ul></li>
+<li><a href="#módulo-4" id="toc-módulo-4"><span
+class="toc-section-number">4.4</span> Módulo 4</a>
+<ul>
+<li><a href="#trabajos-prácticos-2" id="toc-trabajos-prácticos-2"><span
+class="toc-section-number">4.4.1</span> Trabajos prácticos</a></li>
+</ul></li>
+<li><a href="#proyecto-final" id="toc-proyecto-final"><span
+class="toc-section-number">4.5</span> Proyecto final</a></li>
+</ul></li>
+<li><a href="#exploratory-data-analysis-análisis-exploratorio-de-datos"
+id="toc-exploratory-data-analysis-análisis-exploratorio-de-datos"><span
+class="toc-section-number">5</span> Exploratory data analysis (análisis
+exploratorio de datos)</a>
+<ul>
+<li><a href="#módulo-1-1" id="toc-módulo-1-1"><span
+class="toc-section-number">5.1</span> Módulo 1</a>
+<ul>
+<li><a href="#trabajo-práctico-2" id="toc-trabajo-práctico-2"><span
+class="toc-section-number">5.1.1</span> Trabajo práctico</a></li>
+</ul></li>
+<li><a href="#módulo-2-1" id="toc-módulo-2-1"><span
+class="toc-section-number">5.2</span> Módulo 2</a></li>
+<li><a href="#módulo-3-1" id="toc-módulo-3-1"><span
+class="toc-section-number">5.3</span> Módulo 3</a></li>
+<li><a href="#módulo-4-1" id="toc-módulo-4-1"><span
+class="toc-section-number">5.4</span> Módulo 4</a></li>
+<li><a href="#proyecto-final-1" id="toc-proyecto-final-1"><span
+class="toc-section-number">5.5</span> Proyecto final</a></li>
+</ul></li>
+<li><a href="#reproducible-research-investigación-reproducible"
+id="toc-reproducible-research-investigación-reproducible"><span
+class="toc-section-number">6</span> Reproducible research (investigación
+reproducible)</a>
+<ul>
+<li><a href="#módulo-1-2" id="toc-módulo-1-2"><span
+class="toc-section-number">6.1</span> Módulo 1</a></li>
+<li><a href="#módulo-2-2" id="toc-módulo-2-2"><span
+class="toc-section-number">6.2</span> Módulo 2</a></li>
+<li><a href="#módulo-3-2" id="toc-módulo-3-2"><span
+class="toc-section-number">6.3</span> Módulo 3</a></li>
+<li><a href="#módulo-4-2" id="toc-módulo-4-2"><span
+class="toc-section-number">6.4</span> Módulo 4</a></li>
+<li><a href="#proyectos-finales" id="toc-proyectos-finales"><span
+class="toc-section-number">6.5</span> Proyectos finales</a></li>
+</ul></li>
+</ul>
+</div>
+
+<hr />
+<div
+id="cuál-es-el-material-o-la-fuente-de-información-que-se-utiliza-en-este-sitio"
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> ¿Cuál es el material o
+la fuente de información que se utiliza en este sitio?</h1>
+<p>El contenido de este sitio se elaboró primordialmente a partir del
+material teórico y práctico que he consultado al realizar, en el año
+2020, cinco cursos de la <a
+href="https://www.coursera.org/specializations/jhu-data-science">“Especialización
+en Ciencia de Datos”</a> impartida por la Universidad Johns Hopkins a
+través de la plataforma educativa online Coursera, en conjunción con
+otras fuentes que he considerado conveniente u oportuno agregar desde el
+punto de vista metodológico en cada uno de los temas estudiados.</p>
+<p>La referida “Especialización en Ciencia de Datos” se compone de un
+total de 10 cursos:</p>
+<ol style="list-style-type: decimal">
+<li>Data Science Toolbox<br />
+</li>
+<li>R Programming<br />
+</li>
+<li>Getting and Cleaning Data<br />
+</li>
+<li>Exploratory Data Analysis<br />
+</li>
+<li>Reproducible Research<br />
+</li>
+<li>Statistical Inference<br />
+</li>
+<li>Regression Models<br />
+</li>
+<li>Practical Machine Learning<br />
+</li>
+<li>Developing Data Products<br />
+</li>
+<li>Proyecto final de la especialización</li>
+</ol>
+<p>Los cursos que realizado y que en este sitio se exponen y
+desarrollan, son los cinco primeros de la precedente enumeración.</p>
+<p>Los instructores de la especialización son los Dres. Roger D. Peng,
+Jeff Leek y Brian Caffo.</p>
+<hr />
+</div>
+<div
+id="data-science-toolbox-caja-de-herramientas-del-científico-de-datos"
+class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Data science toolbox
+(caja de herramientas del científico de datos)</h1>
+<p>En este primer curso se introducen los conceptos elementales de
+ciencia de datos y la instalación de las herramientas necesarias para
+utilizar el lenguaje R y sus distintos paquetes o librerías.</p>
+<hr />
+</div>
+<div id="r-programming" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> R Programming</h1>
+<p>Este es el segundo curso de la Especialiación en Ciencia de Datos y
+se centra en los mecanismos esenciales de funcionamiento del lenguaje
+R.</p>
+<p>Más en particular, se aprenderá no sólo a programar en R y sino
+también a utilizar R para un análisis de datos efectivo. Se verá cómo
+instalar y configurar el software necesario para un entorno de
+programación estadística, discutir conceptos genéricos de lenguaje de
+programación a medida que se implementan en un lenguaje estadístico de
+alto nivel.</p>
+<p>El curso cubre cuestiones prácticas en computación estadística que
+incluye programación en R, lectura de datos en R, acceso a paquetes de
+R, escritura de funciones de R, depuración y organización y comentarios
+de código R. Los distintos temas de análisis estadístico y optimización
+de datos se verán a través de ejemplos prácticos y concretos.</p>
+<p>El curso está compuesto por cuatro módulos.</p>
+<div
+id="módulo-1---introducción-a-r-tipos-de-datos-y-objetos-lectura-y-escritura-de-datos"
+class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Módulo 1 -
+Introducción a R, tipos de datos y objetos, lectura y escritura de
+datos</h2>
+<ul>
+<li>Las nociones básicas de sintaxis del lenguaje.<br />
+</li>
+<li>Funciones de bajo nivel para interactuar con el file system de la
+computadora.<br />
+</li>
+<li>Los tipos de datos en R.<br />
+</li>
+<li>Funciones para ver los atributos, forma, tamaño y estructura de los
+objetos R.<br />
+</li>
+<li>Cómo crear vectores, matrices, listas, data frames.<br />
+</li>
+<li>Coerción (conversión de tipo) implícita y explícita.<br />
+</li>
+<li>Las distintas funciones para leer/escribir datos desde/hacia
+distintas fuentes/destinos.<br />
+</li>
+<li>Cómo obtener subconjuntos de objetos R (de vectores, matrices,
+listas, data frames).<br />
+</li>
+<li>Tratamiento de “missing values” o valores “NA”.<br />
+</li>
+<li>Operaciones vectorizadas.<br />
+</li>
+<li>Operaciones básicas sobre data frames: inspección, seccionamiento,
+ordenamiento y combinación de datos para obtener un “tidy data
+frame”.</li>
+</ul>
+</div>
+<div
+id="módulo-2---control-del-flujo-de-ejecución-funciones-reglas-de-visibilidad-dates-and-times"
+class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Módulo 2 - Control
+del flujo de ejecución, funciones, reglas de visibilidad, dates and
+times</h2>
+<ul>
+<li>Control del flujo de ejecución del programa.
+<ul>
+<li>Operadores lógicos y funciones lógicas.<br />
+</li>
+<li>Constructos <code>if-else</code>, <code>for</code>,
+<code>while</code>, <code>repeat</code>, <code>next</code>,
+<code>break</code>.<br />
+</li>
+</ul></li>
+<li>Funciones.<br />
+</li>
+<li>Reglas de visibilidad.<br />
+</li>
+<li>Estándares de codificación en R.</li>
+<li>Dates and Times en R.
+<ul>
+<li>Clases que los representan.<br />
+</li>
+<li>Funciones básicas para gestionar fechas y horas.<br />
+</li>
+<li>Operaciones básicas con fechas y horas.</li>
+</ul></li>
+</ul>
+<div id="trabajo-práctico" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Trabajo
+práctico</h3>
+<p>Este módulo tiene una práctica previa (tomada del repositorio oficial
+del curso <a
+href="https://github.com/rdpeng/practice_assignment/blob/master/practice_assignment.rmd"
+class="uri">https://github.com/rdpeng/practice_assignment/blob/master/practice_assignment.rmd</a>),
+la cual desarrolla y aclara aspectos necesarios para poder realizar el
+ejercicio, como:</p>
+<ul>
+<li>Las distintas técnicas de selección de datos en data frames.<br />
+</li>
+<li>La utilización del constructo <code>which</code>, la equivalente
+utilización de la función <code>select()</code>.<br />
+</li>
+<li>La lectura de múltiples files con <code>list.files()</code>, el uso
+de <code>rbind()</code> para generar nuevos data frames.<br />
+</li>
+<li>El ejemplo de una función para calcular una media pesada.</li>
+</ul>
+<p>El trabajo práctico en sí consiste en leer 332 files <code>csv</code>
+(cada file representa un “monitor” de sustancias contaminantes -sulfato
+y nitrato- del aire en una locación de US) y realizar tres
+funciones:</p>
+<ul>
+<li>Una para calcular la media de un contaminante sobre una conjunto de
+“monitores”.<br />
+</li>
+<li>Otra para obtener un data frame que indique cuántos “complete cases”
+existen en cada uno de los monitores.<br />
+</li>
+<li>Y una tercera función que calcula la correlación que existe entre
+sulfato y nitrato para los monitores que superen un determinado nivel de
+“complete cases”.</li>
+</ul>
+</div>
+</div>
+<div id="módulo-3---funciones-de-bucle-debugging" class="section level2"
+number="3.3">
+<h2><span class="header-section-number">3.3</span> Módulo 3 - Funciones
+de bucle, debugging</h2>
+<ul>
+<li>Las poderosas “funciones de bucle” (loop functions) que tiene R.
+<ul>
+<li>lapply(), sapply(), vapply(), split(), tapply(), apply(),
+mapply()<br />
+</li>
+</ul></li>
+<li>Debugging.</li>
+</ul>
+<div id="trabajo-práctico-1" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Trabajo
+práctico</h3>
+<p>El trabajo práctico de este módulo consiste en redactar una función
+que permita crear objetos (como un vector o una matríz) respecto de los
+cuales se pueda hacer el “caching” de operaciones que potencialmente
+consumen mucho tiempo de ejecución (como el cálculo de la media en en
+vectores muy largos o el cálculo de matrices inversas).</p>
+</div>
+</div>
+<div id="módulo-4---simulación-optimización" class="section level2"
+number="3.4">
+<h2><span class="header-section-number">3.4</span> Módulo 4 -
+Simulación, optimización</h2>
+<ul>
+<li>Simulación de la aletoriedad.
+<ul>
+<li>Funciones en R para generar las distintas distribuciones de
+probabilidad (normal, binomial, poisson, etc.).<br />
+</li>
+<li>Simulación a partir de un modelo lineal.<br />
+</li>
+<li>Muestreo aleatorio.<br />
+</li>
+</ul></li>
+<li>Optimización del código R.<br />
+</li>
+<li>Gráficos de base en R: <code>plot()</code>, <code>boxplot()</code>,
+<code>hist()</code>.</li>
+</ul>
+<div id="trabajo-práctico-final" class="section level3" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> Trabajo práctico
+final</h3>
+<p>Este trabajo práctico, es el trabajo final de este primer curso de
+Programación en R.</p>
+<p>Consiste en explorar el archivo
+<code>outcome-of-care-measures.csv</code> proveniente del sitio web del
+Hospital Compare (administrado por el US Department of Health an Human
+Services) y, a partir de los datos allí contenidos acerca de los
+hospitales -públicos y privados- de 54 estados de US, elaborar tres
+funciones:</p>
+<ul>
+<li>Una primera función que permita especificar como ingresos las
+iniciales de un estado y un indicador (“heart attack”, “heart failure” o
+“pneumonia”) y que retorne el nombre del mejor hospital (léase el que
+tenga la menor tasa de mortalidad respecto del indicador solicitado)
+dentro del estado peticionado.<br />
+</li>
+<li>Una segunda función que, además del estado y del indicador, permita
+también especificar como ingreso un ranking <code>num</code> y que, como
+salida, retorne el nombre del hospital que tiene ese ranking dentro del
+estado peticionado. El ranking <code>num</code> se determina como la
+<code>num</code>-ésima tasa más baja de mortalidad del indicador
+solicitado.<br />
+</li>
+<li>Y una tercera función que admita como ingresos un indicador y un
+ranking <code>num</code> y que retorne un data frame conteniendo el
+nombre del hospital en cada uno de los 54 estados que tiene el ranking
+<code>num</code> especificado.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="getting-and-cleaning-data-obtención-y-limpieza-de-datos"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Getting and cleaning
+data (obtención y limpieza de datos)</h1>
+<p>Este tercer curso de la Especialización en Ciencia de Datos, se
+focaliza en desarrollar habilidades para recopilar y limpiar datos, esto
+es, para poner los datos en condiciones de poder ser analizados y
+compartidos.</p>
+<p>Una de las principales tareas de un científico de datos es recopilar
+y limpiar datos. En cualquier tipo de organización, ya sea pequeña o en
+una gran empresa, antes de usar o analizar los datos, primero hay que
+obtenerlos, limpliarlos y comprenderlos.</p>
+<p>En el curso veremos específicos paquetes de R y algunas herramientas
+externas que se pueden utilizar para recopilar datos de una variedad de
+fuentes, desde archivos de Excel hasta bases de datos como MySQL.
+También cubriremos una variedad de formatos, incluidos JSON, XML y
+archivos planos (.csv,.txt).</p>
+<p>Se abordarán todos los componentes de un conjunto completo de datos,
+a saber: datos sin procesar (raw data), instrucciones de procesamiento,
+code books y datos procesados u ordenados.</p>
+<p>Los datos ordenados (tidy data) aceleran drásticamente las tareas de
+análisis de datos. Precisamente, el énfasis de este curso estará en la
+creación de conjuntos de datos ordenados.</p>
+<p>El curso se compone de cuatro módulos y prevé asimismo un proyecto
+final.</p>
+<div id="módulo-1" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Módulo 1</h2>
+<ul>
+<li>Cosmovisión de todo el flujo de procesamiento de datos y el lugar
+que allí ocupa el análisis de datos.<br />
+</li>
+<li>Definiciones y tipologías de datos, población, variables.<br />
+</li>
+<li>Componentes de los datos ordenados (tydy data).<br />
+</li>
+<li>Cómo descargar files.<br />
+</li>
+<li>Cómo leer y escribir files locales con datos tabulares.
+<ul>
+<li>Las funciones <code>read.table()</code> y
+<code>read.csv()</code><br />
+</li>
+<li>El paquete <code>xlsx</code> para leer y escribir files excel.<br />
+</li>
+</ul></li>
+<li>Lectura de files XML.<br />
+</li>
+<li>Lectura y escritura de files JSON.<br />
+</li>
+<li>El paquete <code>data.table</code> para gestionar data frames.</li>
+</ul>
+</div>
+<div id="módulo-2" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Módulo 2</h2>
+<ul>
+<li>Interrogación de la base de datos MySQL con el paquete
+<code>RMySQL</code>.<br />
+</li>
+<li>Gestión de data frames con comandos SQL a través del paquete
+<code>sqldf</code>.<br />
+</li>
+<li>Lectura y escritura de datos HDF5 con el paquete
+<code>rhdf5</code>.<br />
+</li>
+<li>Lectura de datos de la Web - Webscraping.
+<ul>
+<li>Uso de las funciones <code>readLines()</code>,
+<code>htmlTreeParse()</code> y <code>xpathSApply()</code>.<br />
+</li>
+<li>Uso del paquete <code>httr</code>.<br />
+</li>
+</ul></li>
+<li>Lectura de datos desde APIs con el paquete <code>httr</code>.
+<ul>
+<li>Twitter API.<br />
+</li>
+<li>Github API.<br />
+</li>
+</ul></li>
+<li>Lectura desde otras fuentes.</li>
+</ul>
+<div id="trabajos-prácticos" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Trabajos
+prácticos</h3>
+<p>Ejercitación: comandos <code>sqldf</code>, acceso la API de Github y
+manejo de files de formato fijo.</p>
+</div>
+</div>
+<div id="módulo-3" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Módulo 3</h2>
+<ul>
+<li>De nuevo sobre la inspección y resumen de datos.
+<ul>
+<li>Cómo ver el tamaño de los datos y hacer una primera aproximación a
+su contenido.
+<ul>
+<li><code>object.size()</code>, parámetro <code>units</code> de
+<code>print()</code>, <code>dim()</code>, <code>names()</code>,
+<code>head()</code>, <code>tail()</code>.<br />
+</li>
+</ul></li>
+<li>Cómo resumir todas las variables y obtener una información completa
+acerca de la estructura del conjunto de datos.
+<ul>
+<li><code>summarize()</code> y <code>str()</code>.<br />
+</li>
+</ul></li>
+<li>Quantiles.<br />
+</li>
+<li>Distintas técnicas para gestionar <code>missing values</code>.<br />
+</li>
+<li>Cómo encontrar valores en una variable con determinadas
+características (operador <code>%in%</code>).<br />
+</li>
+<li>Cómo crear tablas de contingencia (unidimensionales y
+bidimensionales), tablas cruzadas y tablas planas.<br />
+</li>
+</ul></li>
+<li>Creación de variables y transformación de datos.
+<ul>
+<li>Diversas técnicas de utilidad para indexar, filtrar, seleccionar
+subconjuntos.<br />
+</li>
+<li>Creación de variables categóricas para diseccionar variables
+cuantitativas: comandos <code>cut()</code>, <code>cut2()</code>.<br />
+</li>
+<li>Transformación de variables numéricas en categóricas (factores) y
+viceversa.<br />
+</li>
+<li>Mutación de un data frame.<br />
+</li>
+</ul></li>
+<li>Remodelación de datos.
+<ul>
+<li>Fundir datos con <code>melt()</code> para que cada fila sea una
+combinación única de variables.<br />
+</li>
+<li>Luego con <code>cast()</code> darle a esos datos “fundidos” la forma
+deseada.<br />
+</li>
+</ul></li>
+<li>Cómo promediar datos con <code>tapply()</code>,
+<code>split()</code>, <code>lapply()</code>, <code>unlist()</code>,
+<code>sapply()</code>.
+<ul>
+<li>El tipo de problema Split-Apply-Combine (S-A-C) y sus estrategias de
+solución.<br />
+</li>
+</ul></li>
+<li>Gestión de data frames con el paquete <code>dplyr</code>.
+<ul>
+<li>Ventajas de la gramática de este paquete.<br />
+</li>
+<li>El conjunto de paquetes <code>tidyverse</code> y los
+<code>tibbles</code>.<br />
+</li>
+<li>Formato común de todas las funciones <code>dplyr</code>.<br />
+</li>
+<li>Selección de columnas con <code>select()</code>.
+<ul>
+<li>Diversas técnicas.<br />
+</li>
+<li>Los selectores de ayuda.<br />
+</li>
+</ul></li>
+<li>Selección de líneas con <code>filter()</code>.
+<ul>
+<li>Diversas técnicas.<br />
+</li>
+</ul></li>
+<li>Ordenamiento de líneas con <code>arrange()</code>.<br />
+</li>
+<li>Cómo cambiar el nombre de las columnas o variables simplemente con
+una función: <code>rename()</code>.<br />
+</li>
+<li>Transformar variables o crear nuevas con <code>mutate()</code> y
+<code>transmutate()</code>.<br />
+</li>
+<li>Cómo generar estadísticas por estratos o grupos con
+<code>group_by()</code> y <code>summarize()</code> o
+<code>summarise()</code>.<br />
+</li>
+<li>Operador de encadenamiento <code>%&gt;%</code>.<br />
+</li>
+</ul></li>
+<li>Ordenando datos con el paquete <code>tidyr</code>.
+<ul>
+<li>Síntomas más comunes de los datos desordenados y las distintas
+formas de resolverlos.<br />
+</li>
+</ul></li>
+<li>Fusión de datos con <code>merge()</code>, <code>join()</code>,
+<code>join_all()</code>.</li>
+</ul>
+<div id="trabajos-prácticos-1" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Trabajos
+prácticos</h3>
+<p>Ejercitación: subsetting, quantiles, merging, sorting y averaging con
+datos sobre housing y gross domestic product.</p>
+</div>
+</div>
+<div id="módulo-4" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Módulo 4</h2>
+<ul>
+<li>Manejo de variables de texto.
+<ul>
+<li>Expresiones regulares: literales, metacaracteres.<br />
+</li>
+<li>El paquete <code>base</code> de R para gestionar expresiones
+regulares.
+<ul>
+<li>Búsqueda por patrones con <code>grep()</code>, <code>grepl()</code>,
+<code>regexpr()</code>, <code>gregexpr()</code> y extracción con
+<code>substr()</code> y <code>regmatches()</code>.<br />
+</li>
+<li>Búsqueda por patrones y reemplazo con <code>sub()</code> y
+<code>gsub()</code>.<br />
+</li>
+<li>Búsqueda por patrones con <code>regexec()</code> y extracción con
+<code>substr()</code> y <code>regmatches()</code>.<br />
+</li>
+<li>Ajustando vectores de caracteres con <code>tolower()</code>,
+<code>toupper()</code>, <code>strsplit()</code> y
+<code>sapply()</code>.<br />
+</li>
+<li>Otras funciones de <code>base</code> útiles.<br />
+</li>
+</ul></li>
+<li>El paquete <code>stringr</code> de la colección
+<code>tidyverse</code> para gestionar expresiones regulares.
+<ul>
+<li>Mapping entre las funciones de <code>base</code> y de
+<code>stringr</code>.<br />
+</li>
+</ul></li>
+</ul></li>
+<li>Gestión de fechas.
+<ul>
+<li>Cómo crear objetos de clase <code>Date</code> con
+<code>Sys.Date()</code>, <code>Sys.time()</code>,
+<code>Sys.timezone()</code>, <code>as.Date()</code>.<br />
+</li>
+<li>Cómo dar formato a un objeto <code>Date</code> con
+<code>format()</code>.<br />
+</li>
+<li>Fácil determinación de la diferencia de tiempo entre dos objetos
+<code>Date</code>.<br />
+</li>
+<li>Obtención de <code>weekdays()</code> y <code>months()</code>, y
+conversión a <code>julian()</code>.<br />
+</li>
+<li>Las ventajas del paquete <code>lubridate</code>.
+<ul>
+<li>Conversiones con <code>ymd()</code>, <code>ydm()</code>,
+<code>mdy()</code>, <code>myd()</code>, <code>dmy()</code>,
+<code>dym()</code> y <code>yq()</code>.<br />
+</li>
+<li>Gestión de las horas con las familias de funciones
+<code>*_hms()</code>, <code>*_hm()</code> y <code>*_h()</code>.<br />
+</li>
+<li>Obtención del día, semana, mes y año con <code>day()</code>,
+<code>mday()</code>, <code>wday()</code>, <code>qday()</code>,
+<code>yday()</code>.<br />
+</li>
+</ul></li>
+</ul></li>
+<li>Fuentes de datos.
+<ul>
+<li>Sitios y colecciones de datos públicos y privados de
+relevancia.</li>
+</ul></li>
+</ul>
+<div id="trabajos-prácticos-2" class="section level3" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Trabajos
+prácticos</h3>
+<p>Ejercitación: ejercicios de procesamiento de variables de texto para
+aplicar funciones de los paquetes <code>base</code>,
+<code>stringr</code>, <code>lubridate</code> estudiados y usar
+expresiones regulares.</p>
+</div>
+</div>
+<div id="proyecto-final" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Proyecto final</h2>
+<p>El propósito del proyecto final del curso “Getting and Cleaning Data”
+es demostrar la capacidad para recopilar, limpiar y trabajar con un
+conjunto de datos, esto es, la habilidad para preparar datos ordenados
+que puedan ser utilizados en un análisis posterior.</p>
+<p>El proyecto requiere el envío de:</p>
+<ol style="list-style-type: decimal">
+<li>un conjunto de datos ordenado<br />
+</li>
+<li>un enlace a un repositorio Github con un script que implementa el
+análisis<br />
+</li>
+<li>un “code book” que describa las variables, los datos y cualquier
+transformación o trabajo que se haya realizado para limpiar los
+datos</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="exploratory-data-analysis-análisis-exploratorio-de-datos"
+class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Exploratory data
+analysis (análisis exploratorio de datos)</h1>
+<p>Este es el cuarto curso de la Especialización en Ciencia de
+Datos.</p>
+<p>El análisis exploratorio de datos (EDA - Exploratory Data Analysis)
+es un elemento clave de la ciencia de datos porque permite desarrollar
+una idea aproximada de cómo se ven los datos que queremos abordar y qué
+tipo de preguntas podrían ser respondidas por esos datos.</p>
+<p>El curso cubre las técnicas de exploración esenciales para
+inspeccionar y resumir datos. Estas técnicas se aplican típicamente
+antes de que comience el modelado formal y pueden ayudar a informar el
+desarrollo de modelos estadísticos más complejos.</p>
+<p>Las técnicas exploratorias también son importantes para eliminar o
+pulir posibles hipótesis sobre el mundo que pueden ser abordadas por los
+datos.</p>
+<p>Cubrimos en detalle los sistemas gráficos en R, así como algunos de
+los principios básicos de la construcción de gráficos de datos. También
+cubrimos algunas de las técnicas estadísticas multivariadas o
+multivariantes que más comunmente se utilizan para visualizar datos de
+alta dimensión o multivariantes.</p>
+<p>Como los anteriores, el curso está dividido en cuatro módulos.
+También prevé un proyecto final.</p>
+<div id="módulo-1-1" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Módulo 1</h2>
+<ul>
+<li>Principios del análisis gráfico.<br />
+</li>
+<li>Gráficos exploratorios.
+<ul>
+<li>Características.<br />
+</li>
+<li>Simples resúmenes estadísticos unidimensionales.
+<ul>
+<li><code>fivenum()</code>, <code>quantile()</code>,
+<code>summary()</code>.<br />
+</li>
+<li><code>boxplot()</code>, <code>map()</code>, <code>hist()</code>,
+<code>rug()</code>, <code>abline()</code>, <code>barplot()</code>.<br />
+</li>
+</ul></li>
+<li>Simples resúmenes estadísticos multidimensionales.<br />
+</li>
+</ul></li>
+<li>Visión general de los sistemas gráficos de R.
+<ul>
+<li><code>base</code>, <code>lattice</code> y
+<code>ggplot2</code>.<br />
+</li>
+</ul></li>
+<li>Dispositivos gráficos en R.
+<ul>
+<li>La pantalla y los files.<br />
+</li>
+<li>El proceso de creación de un gráfico.<br />
+</li>
+</ul></li>
+<li>El sistema gráfico <code>base</code>.
+<ul>
+<li>Parámetros globales.<br />
+</li>
+<li>Gráficos elementales con <code>hist()</code>, <code>boxplot()</code>
+y <code>plot()</code>.<br />
+</li>
+<li>Algunos parámetros gráficos importantes.<br />
+</li>
+<li>Estudio más detallado de la función <code>plot()</code>.</li>
+</ul></li>
+</ul>
+<div id="trabajo-práctico-2" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Trabajo
+práctico</h3>
+<p>En esta ejercitación se explora una gran cantidad de datos referidos
+al consumo eléctrico de hogares. Se pide la reproducción de ciertos
+gráficos, con el propósito de adquirir familiaridad con las distintas
+opciones gráficas que brinda R.</p>
+</div>
+</div>
+<div id="módulo-2-1" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Módulo 2</h2>
+<ul>
+<li>El sistema gráfico <code>lattice</code>.
+<ul>
+<li>Principales características diferenciales de este sistema.<br />
+</li>
+<li>La función <code>xyplot()</code>.<br />
+</li>
+<li>Gráficos elementales.<br />
+</li>
+<li>Particular comportamiento de <code>lattice</code>, devolución de un
+objeto <code>trellis</code>.<br />
+</li>
+<li>Propiedades de los objetos <code>trellis</code>.<br />
+</li>
+<li>Funciones de panel.<br />
+</li>
+</ul></li>
+<li>El color en los sistemas gráficos de R.
+<ul>
+<li>Colores <code>1</code>, <code>2</code> y <code>3</code>.<br />
+</li>
+<li>Funciones <code>heat.colors()</code> y
+<code>topo.colors()</code>.<br />
+</li>
+<li>Las funciones <code>colorRamp()</code>,
+<code>colorRampPallete()</code> y <code>rgb()</code> del paquete
+<code>grDevices</code>.<br />
+</li>
+<li>Las funciones <code>brewer.pal()</code> y
+<code>smoothScatter()</code> del paquete
+<code>RColorBrewer</code>.<br />
+</li>
+<li>Transparencia con el parámetro <code>alpha</code>.<br />
+</li>
+</ul></li>
+<li>El sistema gráfico <code>ggplot2</code>.
+<ul>
+<li>El poder descriptivo de la gramática de gráficos.<br />
+</li>
+<li>Lo más básico de <code>ggplot2</code> con la función
+<code>qplot()</code>.
+<ul>
+<li>Gráficos de dispersión.<br />
+</li>
+<li>Manipulando <code>aesthetics</code> y <code>geoms</code>.<br />
+</li>
+<li>Histogramas.<br />
+</li>
+<li>Boxplots.<br />
+</li>
+<li>Facetas.<br />
+</li>
+</ul></li>
+<li>El meollo de <code>ggplot2</code>.
+<ul>
+<li>Componentes básicos y proceso de creación de un gráfico
+<code>ggplot2</code>.</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div id="módulo-3-1" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Módulo 3</h2>
+<ul>
+<li>Agrupamiento jerárquico.
+<ul>
+<li>Los tres aspectos del clustering jerárquico: qué es, que necesita y
+qué produce.<br />
+</li>
+<li>Distancias euclideana y manhattan.<br />
+</li>
+<li>El algoritmo que genera el dendrograma o árbol.
+<ul>
+<li>Cálculo de la matríz de distancias con <code>dist()</code>.<br />
+</li>
+<li>Determinación del par de puntos más cercanos, fusión y comienzo de
+construcción del dendrograma o árbol con <code>hclust()</code> y
+<code>as.dendrogram()</code>.<br />
+</li>
+<li>Reinicio del algoritmo para determinar el siguiente par de puntos
+más cercanos y sus hojas de árbol fusionadas.<br />
+</li>
+<li>Finalización del algoritmo.<br />
+</li>
+</ul></li>
+<li>El algoritmo de una sola vez con la función
+<code>hclust()</code>.<br />
+</li>
+<li>Dendrogramas más bonitos.<br />
+</li>
+<li>Los métodos de agrupamiento de enlace completo y de enlace
+promedio.<br />
+</li>
+<li>La función <code>heatmap()</code>.<br />
+</li>
+</ul></li>
+<li>Agrupamiento <code>K-Means</code>.
+<ul>
+<li>Los tres aspectos del clustering k-means: qué es, qué necesita y qué
+produce.<br />
+</li>
+<li>El algoritmo.
+<ul>
+<li>Los puntos aleatorios (centroides) de inicio.<br />
+</li>
+<li>Asignación de todos los puntos al ceintroide más cercano.<br />
+</li>
+<li>Recálculo los centroides.<br />
+</li>
+<li>Reasignación de valores y actualización de centroides.<br />
+</li>
+<li>Finalización del algoritmo.<br />
+</li>
+</ul></li>
+<li>El algoritmo de una sola vez con la función
+<code>kmeans()</code>.<br />
+</li>
+<li>Mapas de calor a partir de soluciones k-means.<br />
+</li>
+</ul></li>
+<li>Reducción de dimensionalidad.
+<ul>
+<li>Las técnicas estadísticas SVD (Singular Value Decomposition) y PCA
+(Principal Components Anaysis).<br />
+</li>
+<li>Las funciones <code>svd()</code> y <code>prcomp()</code>.</li>
+</ul></li>
+</ul>
+</div>
+<div id="módulo-4-1" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Módulo 4</h2>
+<ul>
+<li>Caso de estudio de EDA por agrupamiento:
+<ul>
+<li><em>Comprendiendo la actividad humana a través de los
+celulares</em><br />
+</li>
+</ul></li>
+<li>Otro caso de estudio de EDA:
+<ul>
+<li><em>Cambios en la contaminación del aire por partículas finas en
+Estados Unidos</em></li>
+</ul></li>
+</ul>
+</div>
+<div id="proyecto-final-1" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Proyecto final</h2>
+<p>El objetivo general del proyecto final de EDA es explorar la base de
+datos conocida como NEI (National Emissions Inventory) y ver la
+información que podemos extraer sobre la contaminación por partículas
+finas en los Estados Unidos durante el período de 10 años 1999 a
+2008.</p>
+<hr />
+</div>
+</div>
+<div id="reproducible-research-investigación-reproducible"
+class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Reproducible research
+(investigación reproducible)</h1>
+<p>Este curso desarrolla los conceptos de investigación reproducible y
+la presentación de informes de análisis estadísticos.</p>
+<p>Los temas cubiertos incluyen herramientas de programación
+alfabetizadas (literate programming tools), análisis de datos basados en
+evidencia y organización de análisis de datos. Se aprenderá a escribir
+un documento usando <code>R Markdown</code>, integrar código R en vivo
+en un programa estadístico alfabetizado, compilar documentos de
+<code>R Markdown</code> usando <code>knitr</code> y herramientas
+relacionadas, publicar documentos reproducibles en la web y organizar un
+análisis de datos para que sea reproducible y accesible para otros.</p>
+<p>El curso se divide en cuatro módulos y prevé un proyecto final.</p>
+<div id="módulo-1-2" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Módulo 1</h2>
+<ul>
+<li>La reproducibilidad en la ciencia de datos.
+<ul>
+<li>Rol del “scripting”.<br />
+</li>
+<li>Buenas prácticas, el reporte IOM.<br />
+</li>
+<li>Programación estadística alfabetizada.
+<ul>
+<li>The <code>knitr</code> package.<br />
+</li>
+</ul></li>
+</ul></li>
+<li>Estructura del análisis de datos.
+<ul>
+<li>Pasos o etapas, el desafío clave.<br />
+</li>
+<li>Definción de una pregunta.<br />
+</li>
+<li>Definición del conjunto de datos ideal, el conjunto de datos
+real.<br />
+</li>
+<li>Limpieza de datos, subdivisión del conjunto de datos.<br />
+</li>
+<li>Análisis exploratorio, centrado en el conjunto de datos de
+entrenamiento.<br />
+</li>
+<li>Modelación estadística y predictiva.<br />
+</li>
+<li>Interpretación del resultado.<br />
+</li>
+<li>Desafiar los hallazgos.<br />
+</li>
+<li>Sintetizar los resultados.<br />
+</li>
+<li>Crear el código reproducible.<br />
+</li>
+</ul></li>
+<li>Organización del análisis de datos.
+<ul>
+<li>Files del análisis de datos.<br />
+</li>
+<li>Datos brutos, datos procesados, gráficos de exploración, gráficos
+finales.<br />
+</li>
+<li>Scripts borradores, scripts finales.<br />
+</li>
+<li><code>R Markdown</code> files, readme files.<br />
+</li>
+<li>El texto del reporte final.</li>
+</ul></li>
+</ul>
+</div>
+<div id="módulo-2-2" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Módulo 2</h2>
+<ul>
+<li><code>Markdown</code>.
+<ul>
+<li>Característica clave.<br />
+</li>
+<li>Sintaxis.<br />
+</li>
+</ul></li>
+<li><code>R Markdown</code>.<br />
+</li>
+<li>Uso de <code>knitr</code> para escribir reportes reproducibles.
+<ul>
+<li>Ventajas y desventajas de la programación estadística
+alfabetizada.<br />
+</li>
+<li>Cómo procesar un file <code>R Markdown</code> sin
+<code>RStudio</code>.<br />
+</li>
+<li>Qué sucede exactamente cuando se procesa un documento
+<code>knitr</code>.<br />
+</li>
+<li>Sintaxis de los fragmentos de código (code chunks), opciones.<br />
+</li>
+<li>Código en linea (inline code).<br />
+</li>
+<li>Cómo se insertan gráficos.<br />
+</li>
+<li>Tablas con el paquete <code>xtable</code>.<br />
+</li>
+<li>Configuración de las opciones globales
+(<code>opts_chunks</code>).<br />
+</li>
+<li>Caching.</li>
+</ul></li>
+</ul>
+</div>
+<div id="módulo-3-2" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Módulo 3</h2>
+<ul>
+<li>Comunicación de los resultados.
+<ul>
+<li>Típica primera presentación a través de e-mail.<br />
+</li>
+<li>Estructura jerárquica de un paper de investigación, de un
+e-mail.<br />
+</li>
+</ul></li>
+<li>Check list de la reproducibilidad.<br />
+</li>
+<li>Análisis de datos basado en la evidencia.<br />
+</li>
+<li>Fuentes públicas de reproducibilidad.
+<ul>
+<li>Repositorios de código, de datos y de publicación.</li>
+</ul></li>
+</ul>
+</div>
+<div id="módulo-4-2" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Módulo 4</h2>
+<ul>
+<li>El caching en la programación estatística alfabetizada.
+<ul>
+<li>El paquete <code>cacher</code>.
+<ul>
+<li>Modelo conceptual.<br />
+</li>
+<li>Uso como autor.<br />
+</li>
+<li>Uso como lector: <code>clonecache()</code>, <code>code()</code>,
+<code>graphcode()</code>, <code>objectcode()</code>,
+<code>runcode()</code>, <code>checkcode()</code>,
+<code>checkobjects()</code>, <code>loadcache()</code>.<br />
+</li>
+</ul></li>
+</ul></li>
+<li>Casos de estudio de investigación reproducible.
+<ul>
+<li>Contaminación del aire.<br />
+</li>
+<li>Biología de alto rendimiento.</li>
+</ul></li>
+</ul>
+</div>
+<div id="proyectos-finales" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Proyectos
+finales</h2>
+<p>Escritura de reportes reproducibles de:</p>
+<ul>
+<li>un análisis de datos obtenidos de un dispositivo de monitoreo de
+actividad personal.<br />
+</li>
+<li>un análisis de datos referidos a tormentas, contenidos en la base de
+datos NOAA (National Oceanic and Atmospheric Administration) de
+USA.</li>
+</ul>
+<hr />
+</div>
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

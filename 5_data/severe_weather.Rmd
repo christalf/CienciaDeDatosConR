@@ -1,0 +1,1067 @@
+---
+title: "Health and Economic Consequences of Severe Weather Events in the U.S.A."
+author: "Christian A. Karanicolas"
+date: "02/11/2020"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+---
+
+```{css, echo=FALSE}
+p {
+    font-size: 16px;
+}
+```
+
+```{r setup_severe-weather, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA, collapse = TRUE)
+```
+
+
+***
+# Synopsis.
+
+This report explores the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database that tracks characteristics of major storms and weather events in the U.S., from April 1950 to November 2011.
+
+The analysis adresses the following questions:
+
+  - ***Across the United States, which types of events are most harmful with respect to population health?***  
+  
+  - ***Across the United States, which types of events have the greatest economic consequences?***  
+
+The [R language](https://www.r-project.org/about.html) was used both to obtain / clean / prepare the aforementioned database (*data processing* section) and to apply the exploration techniques for the analysis (*results* section). There's a section at the end indicating the technical data regarding the software and hardware used to produce this report (*session info* section).
+
+The main results that we found are that in the 60-year period recorded in the NOOA storm database across all the U.S.:
+
+  - The types of severe weather events related to *tornadoes, hurricanes and similars* are the most harmful types events with respect to population health in terms of deaths and injuries.  
+  
+  - The group of events related to *tides, tsunamies, floods and similars* has the greatest economic consequences in terms of property and crop damage considered jointly.
+  
+  - Other specific results on damages considered separately (fatalities, injuries, property damage, crop damage) were also found.
+
+  - A final exploration of the data divided by decades raises the need for further analysis to determine the specific causes of trend changes observed from one decade to the next.
+
+
+***
+# Data processing.
+
+## Downloading and reading the raw data in.
+
+The storm database employed to perform this analysis is contained in the `repdata_data_StormData.csv.bze` compressed file downloaded from [this official web site](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2)
+
+The following code can be used to download the compressed file in the working directory, if it's not already downloaded there.
+
+```{r}
+fileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+destFile <- "repdata_data_StormData.csv.bz2"
+if(!file.exists(destFile)) {
+        download.file(fileUrl, destfile = destFile, method = "curl")
+        dateDownloaded <- date()
+}
+```
+
+The database belongs to the **U.S. National Oceanic and Atmospheric Administration (NOAA)**.
+
+  - It tracks the characteristics of mayor storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries and property damages.  
+
+  - The events in it start in the year 1950 and end in November 2011.  
+
+  - This National Weather [Storm Data Documentation](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf) explains how the variables or measures of interest were constructed/defined.  
+
+The following code reads in the dataset from the compressed file downloaded.
+
+```{r message=FALSE}
+library(R.utils)
+library(data.table)
+
+if(!exists("storm_db")) {
+        storm_db <- fread(destFile)
+}
+```
+
+Here we can see the first rows and columns of the data.
+
+```{r message=FALSE}
+library(dplyr)
+
+storm_db <- as_tibble(storm_db)
+storm_db
+```
+
+- The output also lists *at the bottom* all the variables in the dataset.  
+
+## Data preparation.
+
+### Variables of interest.
+
+In order to perform the analysis we are interested in, we don't need all of the 37 variables in the dataset but only a subset of them.
+
+In particular, we'll focus on the information contained in the following variables:  
+
+- `EVTYPE`: name of the type of extreme weather event.   
+- `STATE`: two-letter State abbreviations, identifying the State where the event occurred.  
+- `BGN_DATE`: beginning date of the event (the dataset contains other time related variables, like the precise beginning time and the ending date and time of the event but, for our purposes, we take the beginning date just to keep track of the event's ocurrence in time).  
+- `FATALITIES`: number of fatalities.  
+- `INJURIES`: number of injuries.  
+- `PROPDMG`: property damage estimates as actual dollar amounts, rounded to three significant digits.  
+- `PROPDMGEXP`: alphabetical character signifying the magnitude of the property damage number ("K" for thousands, “M” for millions, “B” for billions).  
+- `CROPDMG`: crop damage estimates as actual dollar amounts.  
+- `CROPDMGEXP`: alphabetical character signifying the magnitude of the crop damage number ("K" for thousands, “M” for millions, “B” for billions).
+
+### Selecting and formatting variables of interest.
+
+The following code selects our variables of interest and gives them a convinient format for the analysis.
+
+```{r}
+library(dplyr)
+
+storm_tidy <- storm_db %>% 
+        select(EVTYPE, STATE, BGN_DATE, FATALITIES, INJURIES,
+               PROPDMG, PROPDMGEXP, CROPDMG, CROPDMGEXP) %>% 
+        mutate(EVTYPE = as.factor(EVTYPE),
+               STATE = as.factor(STATE),
+               BGN_DATE = as.Date(BGN_DATE, format = "%m/%d/%Y %H:%M:%S"),
+               PROPDMGEXP = as.factor(PROPDMGEXP),
+               CROPDMGEXP = as.factor(CROPDMGEXP))
+```
+
+Here's the result.
+
+```{r}
+storm_tidy
+```
+
+### Checking the global content of the variables.
+
+Let's look at the following summaries of the content of these variables.
+
+```{r}
+summary(storm_tidy)
+```
+
+Among other things, this output shows us that:
+
+  - The variables that indicate the magnitud of the property damage (`PROPDMGEXP`) and crop damage (`CROPDMGEXP`), on the one hand, contain mostly blank spaces and, on the other, use several symbols (in addition to simply "K", "M" and "B") to encode the magnitudes.  
+      - In the next section we'll specifically consider this aspect, in order to properly calculate the damage's magnitudes.  
+  - We can also see here, for instance, the most frequent type of events (in `EVTYPE` we find that `HAIL` is the most frequent type of event with `r table(storm_tidy$EVTYPE)["HAIL"]` occurrences) and the States with the highest numbers of events (in `STATE`, `TX` leads the frequency ranking with `r table(storm_tidy$STATE)["TX"]` occurrences).  
+      - Bellow, we'll also focus on the type of events variable (`EVTYPE`), how is it composed and organized, because this is the variable that we are going to use to group the damage calculations.  
+
+### Calculating the magnitude of the property and crop damage.
+
+Let's see in detail what symbols do the `PROPDMGEXP` and `CROPDMGEXP` use.
+
+```{r}
+levels(storm_tidy$PROPDMGEXP)
+
+levels(storm_tidy$CROPDMGEXP)
+```
+
+From the summaries we did before, we know that:
+
+- the symbols `-`, `?` and `+` contained in `PROPDMGEXP` are, at most, 84 (see "Other" category);
+
+- the symbol `?` contained in `CROPDMGEXP` occurs, at most, 9 times (see "Other" category).
+
+Although it is true that the proportion of those cases with respect to the total number of events is negligible (less than 0,01% in the first case and less than 0,001% percent in the second), let us verify however that an event with extraordinary harmful consecuences is not included there.
+
+To do so, let's see what the events these symbols refer to are about.
+
+```{r}
+library(dplyr)
+
+storm_tidy %>%
+        filter(PROPDMGEXP %in% c("-", "+", "?")) %>% 
+        select(-c(STATE, BGN_DATE))
+
+storm_tidy %>% 
+        filter(CROPDMGEXP == "?") %>% 
+        select(-c(STATE, BGN_DATE))
+```
+
+As we can see:
+
+- there are a couple of `FLOOD` related events with about a half a million dollars of property damage and a `HIGH WIND` event with two fatalities;  
+- all the events characterized with the `?` symbol in `PROPDMGEXT` have zero property damage (and no other consecuencies);  
+- all the events characterized with the `?` symbol in `CROPDMGEXT` have zero crop damage.   
+
+Instead of discarding these cases, we are going to replace both the symbol `?` and the symbols `-` and `+`, with a "blank space" (technically called *null string* and denoted as `""`).
+
+This is the code that computes that task:
+
+```{r}
+library(dplyr)
+
+storm_tidy <- storm_tidy %>% 
+        mutate(PROPDMGEXP = ifelse(PROPDMGEXP %in% c("-", "+", "?"), "", as.character(PROPDMGEXP)),
+               PROPDMGEXP = as.factor(PROPDMGEXP),
+               CROPDMGEXP = ifelse(CROPDMGEXP == "?", "", as.character(CROPDMGEXP)),
+               CROPDMGEXP = as.factor(CROPDMGEXP))
+```
+
+Now, `PROPDMGEXP` and `CROPDMGEXP` contain these symbols:
+
+```{r}
+levels(storm_tidy$PROPDMGEXP)
+
+levels(storm_tidy$CROPDMGEXP)
+```
+
+This solution wont affect the conclusions of our analysis, because of the negligible proportion of cases involved.  
+
+So, we can move on and calculate the amount of property and crop damage using the exponents specified in the `PROPDMGEXP` and `CROPDMGEXP` variables. The following table shows the association between the exponents coded in those variables and the multiplier that we'll use to perform the calculations.
+
+| Symbol | Exponent | Multiplier |
+|--------|----------|------------|
+| ""     | e0       | 1*e0 |
+| "0"    | e0       | 1*e0 |
+| "1"    | e1       | 1*e1 |
+| "2"    | e2       | 1*e2 |
+| "h"    | e2       | 1*e2 |
+| "H"    | e2       | 1*e2 |
+| "3"    | e3       | 1*e3 |
+| "k"    | e3       | 1*e3 |
+| "K"    | e3       | 1*e3 |
+| "4"    | e4       | 1*e4 |
+| "5"    | e5       | 1*e5 |
+| "6"    | e6       | 1*e6 |
+| "m"    | e6       | 1*e6 |
+| "M"    | e6       | 1*e6 |
+| "7"    | e7       | 1*e7 |
+| "8"    | e8       | 1*e8 |
+| "B"    | e9       | 1*e9 |
+
+- Notice that we associated **"blank spaces" (`""`)** to a magnitud with **exponent `0` (`e0`)**  
+
+The following code creates two new variables, `PROPDMGTOT` and `CROPDMGTOT`, where the results of the amount of property and crop damage calculation are respectively stored.
+
+```{r}
+library(dplyr)
+
+## Getting the symbols used in PROPDMGEXP and CROPDMGEXP
+symbols <- storm_tidy %>% 
+        select(PROPDMGEXP, CROPDMGEXP) %>% 
+        t %>% c %>%
+        unique %>% sort
+symbols
+
+## Constructing the multiplier vector
+multiplier <- numeric(length(symbols))
+for(i in seq_along(symbols)) {
+        if(symbols[i] %in% c("", "0")) multiplier[i] <- 1e0
+        if(symbols[i] == "1") multiplier[i] <- 1e1
+        if(symbols[i] %in% c("2", "h", "H")) multiplier[i] <- 1e2
+        if(symbols[i] %in% c("3", "k", "K")) multiplier[i] <- 1e3
+        if(symbols[i] == "4") multiplier[i] <- 1e4
+        if(symbols[i] == "5") multiplier[i] <- 1e5
+        if(symbols[i] %in% c("6", "m", "M")) multiplier[i] <- 1e6
+        if(symbols[i] == "7") multiplier[i] <- 1e7
+        if(symbols[i] == "8") multiplier[i] <- 1e8
+        if(symbols[i] == "B") multiplier[i] <- 1e9
+}
+names(multiplier) <- symbols
+multiplier
+
+## Creating two new variables (PROPDMGTOT and CROPDMGTOT) with the results of the
+## amount of property and crop damage calculation
+storm_tidy <- storm_tidy %>% 
+        mutate(PROPDMGTOT = PROPDMG * multiplier[PROPDMGEXP],
+               CROPDMGTOT = CROPDMG * multiplier[CROPDMGEXP])
+```
+
+Here we can see the new created variables containing the total amount, in dollars, of property damage (`PROPDMGTOT`) and crop damage (`CROPDMGTOT`).
+
+```{r}
+library(dplyr)
+
+storm_tidy %>% 
+        select(PROPDMG, PROPDMGEXP, PROPDMGTOT,
+               CROPDMG, CROPDMGEXP, CROPDMGTOT)
+```
+
+So we can remove form our dataset the `PROPDMG`, `PROPDMGEXP`, `CROPDMG` and `CROPDMGEXP` variables.
+
+```{r}
+library(dplyr)
+
+storm_tidy <- storm_tidy %>% 
+        select(-c(PROPDMG, PROPDMGEXP, CROPDMG, CROPDMGEXP))
+```
+
+Therefore, this is how our dataset looks like so far.
+
+```{r}
+storm_tidy
+```
+
+
+### Organizing the types of events.
+
+As we anticipated, let us focus now on the `EVTYPE` variable.
+
+We've already made a summary of it and saw the most frequent types of events. But we want to know precisely how many types of events are there.
+
+This code gives us that information:
+
+```{r}
+levels(storm_tidy$EVTYPE)
+```
+
+  > The number is overwhelming: **`r length(levels(storm_tidy$EVTYPE))` "types" of events**.
+
+At a first glance, we notice that there are events classified as:
+
+  - **"Summary..." of some date** (see numbers 681 to 746 in the output).  
+
+  - **"?" queston mark** (see number 9).  
+
+Let's see what this is about.
+
+```{r}
+library(dplyr)
+library(stringr)
+
+strangeEvents <- storm_tidy %>% 
+        filter(str_detect(EVTYPE, "Summary|SUMMARY|\\?"))
+
+strangeEvents
+
+summary(strangeEvents)
+```
+
+We'll remove those entries because:
+
+  - They're only `r nrow(strangeEvents)` entries (less than 0.009% of all events).  
+  
+  - The "Summary" events refer to just one year (January 1996 to January 1997) and don't report any consequences (no fatalities, no injuries, zero property and crop damage).  
+  
+  - There's only one "question mark/undefined" event (February 1994).  
+
+This is the code that deletes the mentioned entries.
+
+```{r}
+library(dplyr)
+library(stringr)
+
+storm_tidy <- storm_tidy %>% 
+        filter(!str_detect(EVTYPE, "Summary|SUMMARY|\\?"))
+
+dim(storm_tidy)
+```
+
+Before we go further, let's clean a little bit the names contained in the `EVTYPE` variable, by removing white spaces from start and end of an entry, reducing whitespaces inside a string and turning all entries into lower case.
+
+```{r}
+library(dplyr)
+library(stringr)
+
+storm_tidy <- storm_tidy %>% 
+        mutate(EVTYPE = tolower(str_squish(EVTYPE)))
+```
+
+So these are the types of events which we are going to work with, in ascending order:
+
+```{r}
+sort(unique(storm_tidy$EVTYPE))
+```
+
+Well now, using the [Storm Data Event Table in the documentation -paragraph 2.1.1-](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf) as a reference, we are going to aggregate the events in the following categories or classes:
+
+```{r}
+## Creating the "classesNames" variable containing the event's grouping categories.
+classesNames <- c("avalanche",
+                  "tide.tsunami.flood",
+                  "ash",
+                  "fog.smoke",
+                  "storm.wind.blizzard",
+                  "wet",
+                  "heat.drought",
+                  "frost.hail.sleet",
+                  "tornado.hurricane.etaltri",
+                  "lightning",
+                  "other")
+```
+
+For each category, we are now going to determine a *pattern* that must be present in the event names, in order to belong to that category (technically, these patterns are called *regular expressions*).
+
+  - The patterns take into account several misspellings and typos that event's names have from the original dataset.  
+
+```{r}
+## Regular expressions for each category.
+avalanche_pattern <- "avalanch*e"
+
+tide.tsunami.flood_pattern <- "tid(e|al)|tsunami|surge|flooo*d|current|seiche|erosi|\\bdam\\b|\\bseas\\b|surf|swell|high water|(high|rogue) wave|jam|landslide|landslump|mud *(/rock)?slide|mud/rock|rock slide|rapidly rising water|stream|urban"
+
+ash_pattern <- "volcan|\\bvog\\b"
+
+fog.smoke_pattern <- "fog|smoke"
+
+storm.wind.blizzard_pattern <- "[srt][ts][or][ro]m|wind|\\bwnd\\b|\\btstmw*\\b|burst|blizzard|depression|apache county|rain|(excessive|heavy|mixed|monthly|record) precip|shower|blowing dust|^high$"
+
+wet_pattern <- "\\bwet(ness)*\\b"
+
+heat.drought_pattern <- "heat|(?<!lightning |red flag )fire|warm|excessive$|drought|below normal precipitation|driest|\\bdry(ness)*\\b|drowing|mild|^hot |hot$|^(high )*temp|record (high|temperature)|hyperthermia"
+
+frost.hail.sleet_pattern <- "frost|freez|cold|\\bcool\\b|hail|sleet|winte*ry*|snow|glaze|\\bice\\b(?! jam)|heavy mix|low temp|record low|hypothermia|icy roads|monthly temp"
+
+tornado.hurricane.etaltri_pattern <- "torn[ad][ad]o|hurricane|typhoon|remnants of floyd|spout|devil|\\bdevel\\b|funnel|gustnado|wall cloud"
+
+lightning_pattern <- "lig[hn]t(n)*ing"
+
+other_pattern <- "marine (accident|mishap)|non*( |-|e)|northern lights|red flag|saharan dust|severe turbulence|southeast|drowning|^normal precipitation|\\bother\\b"
+
+## Putting all regular expressions in a vector.
+classesRegExps <- c(avalanche_pattern,
+                    tide.tsunami.flood_pattern,
+                    ash_pattern,
+                    fog.smoke_pattern,
+                    storm.wind.blizzard_pattern,
+                    wet_pattern,
+                    heat.drought_pattern,
+                    frost.hail.sleet_pattern,
+                    tornado.hurricane.etaltri_pattern,
+                    lightning_pattern,
+                    other_pattern)
+```
+
+With those patterns, we'll make now a list (`classesList`) of the events separated by category.
+
+This is the code that actually does the job:
+
+```{r}
+library(dplyr)
+library(stringr)
+
+## Creating a list in which each of its elements will be a category that will contain the
+## respective events.
+classesList <- vector(mode = "list", length = length(classesNames))
+names(classesList) <- classesNames
+
+## Filling in the categories with the dataset events that match the respective patterns.
+for(i in seq_along(classesList)) {
+        classesList[[i]] <- sort(
+                              unique(
+                                str_subset(storm_tidy$EVTYPE, classesRegExps[i])
+                                # same as
+                                # grep(classesRegExps[i], storm_tidy$EVTYPE, value = TRUE)
+                                ) )
+}
+```
+
+In this way we obtain the following list of events, classified according to the aforementioned patterns:
+
+```{r}
+classesList
+```
+
+We are not done with this issue yet, because we have to verify two things:
+
+  1. That the patterns that we have used catch *all the events* from the `storm_tidy` dataset.  
+  
+  2. That there are *no duplicate events* or events present in more than one category.  
+
+To perform those checkings, we could beging counting all the elements (events) in all the categories of the list.
+
+```{r}
+eventsInList_number <- 0
+for(i in seq_along(classesList)) {
+        eventsInList_number <- eventsInList_number + length(classesList[[i]])
+}
+eventsInList_number
+
+eventsInDataset_number <- length(unique(storm_tidy$EVTYPE))
+eventsInDataset_number
+```
+
+So, we have more events in our list (`r eventsInList_number`) than the maximum number of type of events in the dataset (`r eventsInDataset_number`).
+
+Let's then see which events are repeated in the list.
+
+```{r}
+for( i in seq.int(from = 1, to = length(classesList)-1)) {
+        cat( paste0("Category ", names(classesList)[i]), "\n" )
+        for(j in seq.int(from = i+1, to = length(classesList))) {
+                cat( paste0("  compared with ", names(classesList)[j]), "\n")
+                result <- intersect(classesList[[i]], classesList[[j]])
+                cat("\t\t")
+                if(length(result) == 0) cat("no duplicates\n")
+                else print( paste0("duplicate: ", result) )
+        }
+        cat("\n\n")
+}
+```
+
+So, we have a lot of duplicates and, as we can see, the main problem here is between:
+
+- categories `tide.tsunami.flood` and `storm.wind.blizzard`;  
+
+- categories `storm.wind.blizzard` and `frost.hail.sleet`.  
+
+Let's try to eliminate all these duplicates with the following code:
+
+```{r}
+library(stringr)
+
+## Removing duplicates from "tide.tsunami.flood" group.
+tide.tsunami.flood_duplicates <-
+        str_detect(classesList[["tide.tsunami.flood"]],
+                   "rain(?!.+surf)|(?<!surf and )wind(?!.+(tides|seas))|storm(?! surge)|hurricane")
+table(tide.tsunami.flood_duplicates)
+
+classesList[["tide.tsunami.flood"]] <-
+        classesList[["tide.tsunami.flood"]][!tide.tsunami.flood_duplicates]
+
+## Removing duplicates from "storm.wind.blizzard" group.
+storm.wind.blizzard_duplicates <-
+        str_detect(classesList[["storm.wind.blizzard"]],
+                   "avalanche|surf|lightning|tide|surge|\\bseas\\b|tornado|hurricane|funnel")
+table(storm.wind.blizzard_duplicates)
+
+classesList[["storm.wind.blizzard"]] <-
+        classesList[["storm.wind.blizzard"]][!storm.wind.blizzard_duplicates]
+
+## Removing duplicates from "wet" group.
+wet_duplicates <- str_detect(classesList[["wet"]], "cold|cool|snow|burst|warm")
+table(wet_duplicates)
+
+classesList[["wet"]] <- classesList[["wet"]][!wet_duplicates]
+
+## Removing duplicates from "heat.drought" group.
+heat.drought_duplicates <- str_detect(classesList[["heat.drought"]], "burst")
+table(heat.drought_duplicates)
+
+classesList[["heat.drought"]] <- classesList[["heat.drought"]][!heat.drought_duplicates]
+
+## Removing duplicates from "frost.hail.sleet" group.
+frost.hail.sleet_duplicates <-
+        str_detect(classesList[["frost.hail.sleet"]],
+                   "blizzard|storm|rain|tornado|funnel|wind|fog|shower|avalanche|drought|flood")
+table(frost.hail.sleet_duplicates)
+
+classesList[["frost.hail.sleet"]] <-
+        classesList[["frost.hail.sleet"]][!frost.hail.sleet_duplicates]
+
+## Removing repeated events from "other" group.
+other_duplicates <- str_detect(classesList[["other"]], "hail|wind")
+table(other_duplicates)
+
+classesList[["other"]] <- classesList[["other"]][!other_duplicates]
+```
+
+Let's count again all the elements (events) in all the categories of the list:
+
+```{r}
+eventsInList_number <- 0
+for(i in seq_along(classesList)) {
+        eventsInList_number <- eventsInList_number + length(classesList[[i]])
+}
+eventsInList_number
+
+eventsInDataset_number <- length(unique(storm_tidy$EVTYPE))
+eventsInDataset_number
+```
+
+We now have the same number of event types in the `classesList` list as there are in the `storm_tidy` dataset.
+
+To be completely sure that they are exactly the same event types, we are going to:
+
+  - extract all the (unique) event types from `storm_tidy` dataset and put them in a vector `evtype`;  
+  
+  - extract all the event types from the `classesList` list and put them in a vector `evtype_bis`;  
+  
+  - verify that both vectors are identical.  
+
+```{r}
+evtype <- sort(unique(storm_tidy$EVTYPE))
+str(evtype)
+
+evtype_bis <- sort(do.call(c, classesList))
+names(evtype_bis) <- NULL
+str(evtype_bis)
+
+## Verifying identity with setdiff() function.
+### Entries of evtype that are not in evtype_bis
+setdiff(evtype, evtype_bis)
+
+### Entries of evtype_bis that are not in evtype
+setdiff(evtype_bis, evtype)
+
+## Verifying identity with duplicate() function.
+which_dup <- duplicated(evtype_bis)
+evtype_bis[which_dup]
+
+## verifying identity with idetical() function.
+identical(evtype, evtype_bis)
+```
+
+### Creating a new grouping variable.
+
+The last step we are going to take to prepare the dataset for the analysis, besides changing the variable's names to a more readable format, is to add into the dataset a useful variable to keep track of the events' groups.
+
+So, let's adjust the names of the variables as follows:
+
+```{r}
+library(dplyr)
+
+names(storm_tidy)
+
+storm_tidy <- storm_tidy %>% 
+        rename(event = EVTYPE, state = STATE, date = BGN_DATE,
+               fatalities = FATALITIES, injuries = INJURIES,
+               property.damage = PROPDMGTOT, crop.damage = CROPDMGTOT)
+
+names(storm_tidy)
+```
+
+Then, since we already carried out the heavy task of classifying the weather events, now we can introduce a new variable in the dataset -`event.group`- for identifying which group each event belongs to, as follows:
+
+```{r}
+library(dplyr)
+
+sort(classesNames)
+
+storm_tidy <- storm_tidy %>% 
+        mutate( event.group = ifelse(event %in% classesList[[classesNames[1]]],
+                                     classesNames[1], NA),
+                event.group = ifelse(event %in% classesList[[classesNames[2]]],
+                                     classesNames[2], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[3]]],
+                                     classesNames[3], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[4]]],
+                                     classesNames[4], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[5]]],
+                                     classesNames[5], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[6]]],
+                                     classesNames[6], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[7]]],
+                                     classesNames[7], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[8]]],
+                                     classesNames[8], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[9]]],
+                                     classesNames[9], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[10]]],
+                                     classesNames[10], event.group),
+                event.group = ifelse(event %in% classesList[[classesNames[11]]],
+                                     classesNames[11], event.group),
+                event.group = as.factor(event.group),
+                event = as.factor(event))
+
+table(storm_tidy$event.group, useNA = "always")
+```
+
+  - As we can see from the table output, the new created `event.group` variable has **no `NA` values** which means that all events of the dataset have been classified.  
+  
+## The dataset ready for analysis.
+
+After all the processing steps computed in this section, we have a dataset `storm_tidy` containing `r nrow(storm_tidy)` severe weather events registered across all the U.S. from `r storm_tidy$date[1]` to `r storm_tidy$date[nrow(storm_tidy)]`.
+
+Here there are the first ten entries of the dataset (we omit the `state` variable in the output):
+
+```{r}
+library(dplyr)
+
+storm_tidy %>% select(-state)
+```
+
+And here the last 10 entries (we omit the `state` variable in the output):
+
+```{r}
+library(dplyr)
+
+storm_tidy %>% select(-state) %>% tail(10)
+```
+
+
+***
+# Results.
+
+In this section we are going to graphically explore the `storm_tidy` dataset previously prepared, in order to answer to these two questions:
+
+  > **First:** ***across the United States, which types of events are most harmful with respect to population health?***
+  
+  > **Second:** ***across the United States, which types of events have the greatest economic consequences?***
+
+The first thing to notice is that:
+
+  - on one side, the variables in the dataset that measure damage to *population health* are `fatalities` and `injuries`;
+
+  - on the other, the variables that measure *economic* damage are `property.damage` and `crop.damage`.  
+
+So those are the variables that we are going to take into account to answer the questions.
+
+## Consequences in population health of severe weather events in the U.S.
+
+Focusing on the **first question**, we will explore the dataset using the following approach:
+
+  - For each group of severe weather events (`event.group` variable), we'll calculate the sum of the injuries, the sum of the fatalities and the sum of both of them.  
+
+  - We'll then plot those summaries on a graphic where the results can be compared.  
+
+Here's the code that computes those steps:
+
+```{r message=FALSE}
+library(dplyr)
+library(ggplot2)
+
+human.damage.plot <- storm_tidy %>% 
+        ## Grouping by types of events.
+        group_by(event.group) %>% 
+        ## Summarizing.
+        summarize(human.damage = sum(fatalities, injuries),
+                  fatalities = sum(fatalities),
+                  injuries = sum(injuries)) %>% 
+        ## Plotting.
+        ggplot(aes(x = reorder(event.group, human.damage),
+                   y = human.damage/10^3)) +
+            geom_linerange(aes(ymin = 0,
+                               ymax = human.damage/10^3),
+                           position = position_dodge(width = 0.2),
+                           size = 1,
+                           colour = "peachpuff3") +
+            geom_point(aes(y = fatalities/10^3, color = "paleturquoise4"),
+                       size = 3) +
+            geom_point(aes(y = injuries/10^3, color = "slateblue4"),
+                       size = 3) +
+            geom_point(aes(color = "darkred"),
+                       size = 4) +
+            scale_color_identity(name = "Types of harm",
+                                 ## force ggplot to recognize color names when they are inside aes()
+                                 guide = "legend",
+                                 ## order of the legends
+                                 breaks = c("darkred", "slateblue4", "paleturquoise4" ),
+                                 ## name of the legends
+                                 labels = c("total harm", "injuries", "fatalities")) +
+            labs(title = "U.S. Severe Weather Events Consequences in Public Health",
+                 subtitle = "over a 60 years period (April 1950 to November 2011)",
+                 caption = "Source: U.S. National Oceanic and Atmospheric Administration (NOOA) storm database",
+                 x = "",
+                 y = "Number of Fatalities & Injured People (in thousands)") +
+            theme_bw(base_family = "Times New Roman", base_size = 11) +
+            coord_flip()
+```
+
+And here's the result:
+
+```{r}
+human.damage.plot
+```
+
+  > **During the 60-year period recorded in the NOOA storm database, the group of events that we've identified as `tornado.hurricane.etaltri` are the most harmful types of severe weather events with respect to population health in terms of deaths and injuries, considered jointly (about 95 thousand people died and were injured) or separately (about 90 thousand injuries and 5 thousand fatalities).**
+  
+Let's remeber how that group of events is composed and check the precise numbers:
+
+```{r message=FALSE}
+library(dplyr)
+
+## Events that belong to the "tornado.hurricane.etaltri" group.
+sort(unique(storm_tidy$event[which(storm_tidy$event.group == "tornado.hurricane.etaltri")]))
+
+## Summaries.
+storm_tidy %>% group_by(event.group) %>% 
+        summarize(human.damage = sum(fatalities + injuries),
+                  fatalities = sum(fatalities),
+                  injuries = sum(injuries)) %>% 
+        arrange(desc(human.damage))
+```
+
+  > **As we can also see in the above figure and table, when we compare the most damaging group of events with, let say, the other three "more harmful" groups  (`storm.wind.blizzard`, `heat.drought` and `tide.tsunami.flood`) the difference in terms of** ***injuries*** **is much greater (92 thousand against a range of 9 and 17 thousand injuries in those three groups -`tornado.hurricane.etaltri` is about 10 times more harmful), than the difference that exists in terms of** ***deaths*** **(5.8 thusand against a range of 2.4 and 3.2 thousand -`tornado.hurricane.etaltri` is about 2 times more harmful)**.  
+
+  > **Another fact that stands out is that, among the groups that follows after the first, the `heat.drought` group of events is more harmful in terms of** ***fatalities***.
+  
+```{r}
+## Events that belong to the "heat.drought" group.
+sort(unique(storm_tidy$event[which(storm_tidy$event.group == "heat.drought")]))
+```
+
+  > **Let's finally notice that there are no harmful consequences registered in the `ash` and `wet` groups.**
+  
+```{r}
+## Events that belong to the "ash" group.
+sort(unique(storm_tidy$event[which(storm_tidy$event.group == "ash")]))
+```
+  
+## Economic consequences of severe weather events in the U.S.
+
+We'll approach the **second question** using the same strategy as before, but focusing on the variables that measure the economic consequences (`property.damage` and `crop.damage`).
+
+```{r message=FALSE}
+library(dplyr)
+library(ggplot2)
+
+storm_tidy %>% 
+        ## Grouping by types of events.
+        group_by(event.group) %>% 
+        ## Summarizing.
+        summarize(economic.damage = sum(property.damage, crop.damage),
+                  crop.damage = sum(crop.damage),
+                  property.damage = sum(property.damage)) %>% 
+        ## Plotting.
+        ggplot(aes(x = reorder(event.group, economic.damage),
+                   y = economic.damage/10^9)) +
+            geom_linerange(aes(ymin = 0,
+                               ymax = economic.damage/10^9),
+                           position = position_dodge(width = 0.2),
+                           size = 1,
+                           colour = "peachpuff3") +
+            geom_point(aes(y = crop.damage/10^9, color = "paleturquoise4"),
+                       size = 3) +
+            geom_point(aes(y = property.damage/10^9, color = "slateblue4"),
+                       size = 3) +
+            geom_point(aes(color = "darkred"),
+                       size = 4) +
+            scale_color_identity(name = "Types of damage",
+                                 ## force ggplot to recognize color names when they are inside aes()
+                                 guide = "legend",
+                                 ## order of the legends
+                                 breaks = c("darkred", "slateblue4", "paleturquoise4" ),
+                                 ## name of the legends
+                                 labels = c("total dmge", "propty dmge", "crop dmge")) +
+            labs(title = "U.S. Severe Weather Events Economic Consequences",
+                 subtitle = "over a 60 year period (April 1950 to November 2011)",
+                 caption = "Source: U.S. National Oceanic and Atmospheric Administration (NOOA) storm database",
+                 x = "",
+                 y = "Property & Crop Damage (B U$S)") +
+            theme_bw(base_family = "Times New Roman", base_size = 11) +
+            coord_flip()
+```
+
+  > **During the 60-year period recorded in the NOOA storm database, the group of events that we've identified as `tide.tsunami.flood` has the greatest economic consequences in terms of property and crop damage considered jointly (about 230 billion dollars, mainly made up of property damage -about 210 billion- and a remaining of approximately 10 billion of crop damage).**
+
+Let's see this more precisely:
+
+```{r message=FALSE}
+library(dplyr)
+
+## Events that belong to the "tide.tsunami.flood" group.
+sort(unique(storm_tidy$event[which(storm_tidy$event.group == "tide.tsunami.flood")]))
+
+## Summaries.
+storm_tidy %>% group_by(event.group) %>% 
+        summarize(economic.damage = sum(property.damage + crop.damage),
+                  property.damage = sum(property.damage),
+                  crop.damage = sum(crop.damage)) %>% 
+        arrange(desc(economic.damage))
+```
+
+We can also notice that:
+
+  > **The most part of the total economic consequences produced by the three first groups (`tide.tsunami.flood`, `tornado.hurricane.etaltri` and `storm.wind.blizzard`), are property damage.**  
+  
+  > **The only group where crop damage is greater than property damage within the same group, is `heat.drought`.**  
+  
+  > **Groups in fourth and fifth place (`frost.hail.sleet` and `heat.drought`) produce less damage in total economic terms, but have the greatest consequences in terms of crop damage.**
+
+Having just remembered how `heat.drought` group was composed, let's recall `frost.hail.sleet` group:
+
+```{r}
+## Events that belong to the "frost.hail.sleet" group.
+sort(unique(storm_tidy$event[which(storm_tidy$event.group == "frost.hail.sleet")]))
+```
+
+## Looking by decades.
+
+We finally want to get a sense of the data when we look at it divided by decades.
+
+Let's take the total economic consequences (property + crop damage) of the events, as the sample measure to carrie out this last inspection.
+
+
+```{r message=FALSE}
+library(dplyr)
+library(ggplot2)
+
+## Creating the labels that will be used in the faceted graphic.
+decade_levels <- levels(cut.Date(storm_tidy$date, breaks = "10 year"))
+
+storm_tidy %>%
+        ## Factorizing "date" variable by decades.
+        mutate(decade = cut.Date(date, breaks = "10 year"),
+               decade = factor(decade, levels = decade_levels,
+                               labels = c("fifties", "sixties",
+                               "seventies", "eighties", "nineties",
+                               "two-thowsands", "2010-2011") )) %>% 
+        ## Grouping by classes of events and decades.
+        group_by(event.group, decade) %>% 
+        ## Summarizing.
+        summarize(economic.damage = sum(property.damage, crop.damage)) %>% 
+        ## Plotting.
+        ggplot(aes(x = reorder(event.group, economic.damage),
+                   y = economic.damage/10^9)) +
+            facet_wrap(. ~ decade) +
+            geom_linerange(aes(ymin = 0,
+                               ymax = economic.damage/10^9),
+                           position = position_dodge(width = 0.2),
+                           size = 1,
+                           colour = "peachpuff3") +
+            geom_point(color = "darkred",
+                       size = 1) +
+            labs(title = "U.S. Severe Weather Events Economic Consequences",
+                 subtitle = "by decades (from April 1950 to November 2011)",
+                 caption = "Source: U.S. National Oceanic and Atmospheric Administration (NOOA) storm database",
+                 x = "",
+                 y = "Property & Crop Damage (B U$S)") +
+            theme_bw(base_family = "Times New Roman", base_size = 11) +
+            coord_flip()
+```
+
+The figure above allows us to realize that:
+
+  > **From the 50s to the 80s, there are fewer data recorded.**  
+
+  > **In the 90s the `tornado.hurricane.etaltri` has greater economic consequences than `tide.tsunami.flood` group. The situation then changes in the 2000s where the `tide.tsunami.flood` group happens to lead the ranking with a big difference.**  
+
+  > **A further analysis would be necessary to find out why this latest change in trend occured, if it's due for instance to a change in the methodology or amount of data registered in the database, or to an increase in the number or severity of the phenomena belonging to the `tide.tsunami.flood` group from one decade to the other.**
+
+
+***
+# Session info.
+
+Below is a summary of the software and hardware used to make this report.
+
+```{r}
+sessionInfo()
+```
+
+
+***
+
+<!-- ##---------------------------------------------------------------------------------------------## -->
+<!-- ##---------------------------------------------------------------------------------------------## -->
+
+<!-- ```{r} -->
+<!-- # OJO, NO FUNCIONA (se tilda R): -->
+<!-- # for(i in seq_along(classesList)) { -->
+<!-- #         classesList[[i]] <- storm_tidy %>%  -->
+<!-- #                 select(EVTYPE) %>%  -->
+<!-- #                 str_subset(classesRegExps[i]) %>% -->
+<!-- #                 ## same as grep(classesRegExps[i], storm_tidy$EVTYPE, value = TRUE) -->
+<!-- #                 unique %>% sort -->
+<!-- # } -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # ## Removing duplicates from "tide.tsunami.flood" group. -->
+<!-- # non_repeated4 <- !str_detect(classesList[["Tide.Tsunami.Flood"]], -->
+<!-- #                              "rain(?!.+surf)|(?<!surf and )wind(?!.+(tides|seas))|storm(?! surge)|hurricane") -->
+<!-- # table(non_repeated4) -->
+<!-- #  -->
+<!-- # classesList[["Tide.Tsunami.Flood"]] <- classesList[["Tide.Tsunami.Flood"]][non_repeated4] -->
+<!-- #  -->
+<!-- # ## Removing repeated events from "Storm.Wind.Blizzard" group. -->
+<!-- # non_repeated <- !str_detect(classesList[["Storm.Wind.Blizzard"]], -->
+<!-- #                             "avalanche|surf|lightning|tide|surge|\\bseas\\b|tornado|hurricane|funnel") -->
+<!-- # table(non_repeated) -->
+<!-- #  -->
+<!-- # classesList[["Storm.Wind.Blizzard"]] <- classesList[["Storm.Wind.Blizzard"]][non_repeated] -->
+<!-- #  -->
+<!-- # ## Removing repeated events from "Wet" group. -->
+<!-- # non_repeated3 <- !str_detect(classesList[["Wet"]], -->
+<!-- #                              "cold|cool|snow|burst|warm") -->
+<!-- # table(non_repeated3) -->
+<!-- #  -->
+<!-- # classesList[["Wet"]] <- classesList[["Wet"]][non_repeated3] -->
+<!-- #  -->
+<!-- # ## Removing repeated events from "Heat.Drought" group. -->
+<!-- # non_repeated5 <- !str_detect(classesList[["Heat.Drought"]], -->
+<!-- #                              "burst") -->
+<!-- # table(non_repeated5) -->
+<!-- #  -->
+<!-- # classesList[["Heat.Drought"]] <- classesList[["Heat.Drought"]][non_repeated5] -->
+<!-- #  -->
+<!-- # ## Removing repeated events from "Frost.Hail.Street" group. -->
+<!-- # non_repeated2 <- !str_detect(classesList[["Frost.Hail.Sleet"]], -->
+<!-- #                              "blizzard|storm|rain|tornado|funnel|wind|fog|shower| -->
+<!-- #                               avalanche|drought|flood") -->
+<!-- # table(non_repeated2) -->
+<!-- #  -->
+<!-- # classesList[["Frost.Hail.Sleet"]] <- classesList[["Frost.Hail.Sleet"]][non_repeated2] -->
+<!-- #  -->
+<!-- # ## Removing repeated events from "Other" group. -->
+<!-- # non_repeated6 <- !str_detect(classesList[["Other"]], -->
+<!-- #                              "hail|wind") -->
+<!-- # table(non_repeated6) -->
+<!-- #  -->
+<!-- # classesList[["Other"]] <- classesList[["Other"]][non_repeated6] -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- library(dplyr) -->
+<!-- library(ggplot2) -->
+
+<!-- storm_tidy %>%  -->
+<!--         group_by(event.group) %>%  -->
+<!--         summarize(human.damage = sum(human.damage)) %>%  -->
+<!--         ggplot(aes(x = reorder(event.group, human.damage), -->
+<!--                    y = human.damage)) + -->
+<!--                 geom_col() + -->
+<!--                 #geom_point(alpha = 1/3) + -->
+<!--                 #facet_grid(. ~ ) + -->
+<!--                 labs(x = "Groups of Severe Weather Events", -->
+<!--                      y = "Number of Fatalities and Injured persons") + -->
+<!--                 #theme(axis.text.x = element_text(angle = 20, vjust = 0.9, hjust = 0.9)) + -->
+<!--                 coord_flip() -->
+
+<!-- ``` -->
+
+
+<!-- ```{r message=FALSE} -->
+<!-- library(dplyr) -->
+<!-- library(ggplot2) -->
+
+<!-- decade_levels <- levels(cut.Date(storm_tidy$date, breaks = "10 year")) -->
+
+<!-- storm_tidy %>% -->
+<!--         mutate(decade = cut.Date(date, breaks = "10 year"), -->
+<!--                decade = factor(decade, levels = decade_levels, -->
+<!--                                labels = c("fifties", "sixties", -->
+<!--                                "seventies", "eighties", "nineties", -->
+<!--                                "two-thowsands", "2010-2011")) ) %>%  -->
+<!--         group_by(event.group, decade) %>%  -->
+<!--         summarize(human.damage = sum(fatalities, injuries), -->
+<!--                   economic.damage = sum(property.damage, crop.damage)) %>%  -->
+<!--         ## Converting "human.damage" and "economic.damage" to a common scale -->
+<!--         ## (from 0 to 1 million), to be able to show both types of damage -->
+<!--         ## in the same graph. -->
+<!--         mutate(human.damage = human.damage/range(human.damage)[2]*10^12, -->
+<!--                economic.damage = economic.damage/range(economic.damage)[2]*10^12) %>%  -->
+<!--         ## Plotting. -->
+<!--         ggplot(aes(x = reorder(event.group, economic.damage), -->
+<!--                    y = economic.damage/10^9)) + -->
+<!--             facet_wrap(. ~ decade) + -->
+<!--             geom_linerange(aes(ymin = 0, -->
+<!--                                ymax = economic.damage/10^9), -->
+<!--                            position = position_dodge(width = 0.2), -->
+<!--                            size = 0.5, -->
+<!--                            colour = "peachpuff3") + -->
+<!--             geom_point(color = "darkred", -->
+<!--                        size = 1) + -->
+<!--             geom_linerange(aes(ymin = 0, -->
+<!--                                ymax = human.damage/10^9), -->
+<!--                            position = position_dodge(width = 0.2), -->
+<!--                            size = 0.5, -->
+<!--                            colour = "steelblue1") + -->
+<!--             geom_point(aes(y = human.damage/10^9), -->
+<!--                        color = "darkblue", -->
+<!--                        size = 0.5) + -->
+<!--             # geom_point(aes(y = crop.damage/10^9, color = "paleturquoise4"), -->
+<!--             #            size = 3) + -->
+<!--             # geom_point(aes(y = property.damage/10^9, color = "slateblue4"), -->
+<!--             #            size = 3) + -->
+<!--             # scale_color_identity(name = "Types of damage", -->
+<!--             #                      ## force ggplot to recognize color names when they are inside aes() -->
+<!--             #                      guide = "legend", -->
+<!--             #                      ## order of the legends -->
+<!--             #                      breaks = c("darkred", "slateblue4", "paleturquoise4" ), -->
+<!--             #                      ## name of the legends -->
+<!--             #                      labels = c("total dmge", "propty dmge", "crop dmge")) + -->
+<!--             labs(title = "U.S. Severe Weather Events Economic Consequences", -->
+<!--                  subtitle = "by decades (from April 1950 to November 2011)", -->
+<!--                  caption = "Source: U.S. National Oceanic and Atmospheric Administration (NOOA) storm database", -->
+<!--                  x = "", -->
+<!--                  y = "Property & Crop Damage (B U$S)") + -->
+<!--             theme_bw(base_family = "Times New Roman", base_size = 11) + -->
+<!--             coord_flip() -->
+<!-- ``` -->
+
+
+

@@ -1,0 +1,3102 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Data Analysis Course - Module 1</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis Course - Module
+1</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction." id="toc-introduction."><span
+class="toc-section-number">1</span> Introduction.</a></li>
+<li><a href="#principles-of-analytic-graphics."
+id="toc-principles-of-analytic-graphics."><span
+class="toc-section-number">2</span> Principles of Analytic Graphics.</a>
+<ul>
+<li><a href="#first-principle-show-comparisons."
+id="toc-first-principle-show-comparisons."><span
+class="toc-section-number">2.1</span> First principle: show
+comparisons.</a></li>
+<li><a
+href="#second-principle-show-causality-mechanism-explanation-systematic-structure."
+id="toc-second-principle-show-causality-mechanism-explanation-systematic-structure."><span
+class="toc-section-number">2.2</span> Second principle: show causality,
+mechanism, explanation, systematic structure.</a></li>
+<li><a href="#third-principle-show-multivariate-data."
+id="toc-third-principle-show-multivariate-data."><span
+class="toc-section-number">2.3</span> Third principle: show multivariate
+data.</a></li>
+<li><a href="#fourth-principle-integrate-evidence."
+id="toc-fourth-principle-integrate-evidence."><span
+class="toc-section-number">2.4</span> Fourth principle: integrate
+evidence.</a></li>
+<li><a href="#fifth-principle-describe-and-document-the-evidence."
+id="toc-fifth-principle-describe-and-document-the-evidence."><span
+class="toc-section-number">2.5</span> Fifth principle: describe and
+document the evidence.</a></li>
+<li><a href="#sixth-principle-content-content-content."
+id="toc-sixth-principle-content-content-content."><span
+class="toc-section-number">2.6</span> Sixth principle: content, content,
+content.</a></li>
+</ul></li>
+<li><a href="#exploratory-graphs." id="toc-exploratory-graphs."><span
+class="toc-section-number">3</span> Exploratory graphs.</a>
+<ul>
+<li><a href="#characteristics-of-exploratory-graphs."
+id="toc-characteristics-of-exploratory-graphs."><span
+class="toc-section-number">3.1</span> Characteristics of exploratory
+graphs.</a></li>
+<li><a
+href="#case-study-air-pollution-in-the-united-states-of-north-america.-a-key-question."
+id="toc-case-study-air-pollution-in-the-united-states-of-north-america.-a-key-question."><span
+class="toc-section-number">3.2</span> Case study: air pollution in the
+United States of North America. A key question.</a></li>
+<li><a href="#loading-the-data." id="toc-loading-the-data."><span
+class="toc-section-number">3.3</span> Loading the data.</a></li>
+<li><a href="#back-to-the-question."
+id="toc-back-to-the-question."><span
+class="toc-section-number">3.4</span> Back to the question.</a>
+<ul>
+<li><a href="#simple-summaries-one-dimension."
+id="toc-simple-summaries-one-dimension."><span
+class="toc-section-number">3.4.1</span> Simple summaries: one
+dimension.</a>
+<ul>
+<li><a href="#five-number-summaries-fivenum-quantile-and-summary."
+id="toc-five-number-summaries-fivenum-quantile-and-summary."><span
+class="toc-section-number">3.4.1.1</span> Five number summaries:
+<code>fivenum()</code>, <code>quantile()</code> and
+<code>summary()</code>.</a></li>
+<li><a href="#boxplot-boxplot." id="toc-boxplot-boxplot."><span
+class="toc-section-number">3.4.1.2</span> Boxplot:
+<code>boxplot()</code>.</a>
+<ul>
+<li><a href="#a-quick-map-from-maps-package."
+id="toc-a-quick-map-from-maps-package."><span
+class="toc-section-number">3.4.1.2.1</span> A quick <code>map()</code>
+from <code>maps</code> package.</a></li>
+</ul></li>
+<li><a href="#histogram-hist-and-rug."
+id="toc-histogram-hist-and-rug."><span
+class="toc-section-number">3.4.1.3</span> Histogram: <code>hist()</code>
+and <code>rug()</code>.</a>
+<ul>
+<li><a href="#the-hist-default-algorithm-and-its-breaks-argument."
+id="toc-the-hist-default-algorithm-and-its-breaks-argument."><span
+class="toc-section-number">3.4.1.3.1</span> The <code>hist()</code>
+default algorithm and it’s <code>breaks</code> argument.</a></li>
+</ul></li>
+<li><a href="#overlaying-features-abline."
+id="toc-overlaying-features-abline."><span
+class="toc-section-number">3.4.1.4</span> Overlaying features:
+<code>abline()</code>.</a></li>
+<li><a href="#barplot-barplot." id="toc-barplot-barplot."><span
+class="toc-section-number">3.4.1.5</span> Barplot:
+<code>barplot()</code>.</a></li>
+</ul></li>
+<li><a href="#simple-summaries-two-dimensions-and-beyond."
+id="toc-simple-summaries-two-dimensions-and-beyond."><span
+class="toc-section-number">3.4.2</span> Simple summaries: two dimensions
+and beyond.</a>
+<ul>
+<li><a href="#multiple-boxplots." id="toc-multiple-boxplots."><span
+class="toc-section-number">3.4.2.1</span> Multiple Boxplots.</a></li>
+<li><a href="#multiple-histograms." id="toc-multiple-histograms."><span
+class="toc-section-number">3.4.2.2</span> Multiple Histograms.</a></li>
+<li><a href="#scatterplots-using-plot-within-with-command."
+id="toc-scatterplots-using-plot-within-with-command."><span
+class="toc-section-number">3.4.2.3</span> Scatterplots, using
+<code>plot()</code> within <code>with()</code> command.</a>
+<ul>
+<li><a href="#scatterplot-using-color."
+id="toc-scatterplot-using-color."><span
+class="toc-section-number">3.4.2.3.1</span> Scatterplot using
+color.</a></li>
+<li><a href="#multiple-scatterplots-or-panel-plots."
+id="toc-multiple-scatterplots-or-panel-plots."><span
+class="toc-section-number">3.4.2.3.2</span> Multiple scatterplots or
+panel plots.</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="#further-resources." id="toc-further-resources."><span
+class="toc-section-number">3.5</span> Further resources.</a></li>
+</ul></li>
+<li><a href="#r-plotting-systems-a-generic-preview."
+id="toc-r-plotting-systems-a-generic-preview."><span
+class="toc-section-number">4</span> R plotting systems, a generic
+preview.</a>
+<ul>
+<li><a href="#the-base-plotting-system-or-artists-pallete-model."
+id="toc-the-base-plotting-system-or-artists-pallete-model."><span
+class="toc-section-number">4.1</span> The base plotting system or
+“artist’s pallete” model.</a>
+<ul>
+<li><a href="#downsides." id="toc-downsides."><span
+class="toc-section-number">4.1.1</span> Downsides.</a></li>
+</ul></li>
+<li><a href="#the-lattice-system." id="toc-the-lattice-system."><span
+class="toc-section-number">4.2</span> The lattice system.</a>
+<ul>
+<li><a href="#downsides.-1" id="toc-downsides.-1"><span
+class="toc-section-number">4.2.1</span> Downsides.</a></li>
+</ul></li>
+<li><a href="#the-ggplot2-system." id="toc-the-ggplot2-system."><span
+class="toc-section-number">4.3</span> The ggplot2 system.</a></li>
+<li><a href="#references." id="toc-references."><span
+class="toc-section-number">4.4</span> References.</a></li>
+</ul></li>
+<li><a href="#graphics-devices." id="toc-graphics-devices."><span
+class="toc-section-number">5</span> Graphics devices.</a>
+<ul>
+<li><a
+href="#list-of-graphical-devices-in-r-screen-device-and-file-devices."
+id="toc-list-of-graphical-devices-in-r-screen-device-and-file-devices."><span
+class="toc-section-number">5.1</span> List of graphical devices in R
+(screen device and file devices).</a></li>
+<li><a href="#the-process-of-making-a-plot."
+id="toc-the-process-of-making-a-plot."><span
+class="toc-section-number">5.2</span> The process of making a
+plot.</a></li>
+<li><a href="#how-does-a-plot-get-created"
+id="toc-how-does-a-plot-get-created"><span
+class="toc-section-number">5.3</span> How does a plot get created?</a>
+<ul>
+<li><a href="#screen-device-approach."
+id="toc-screen-device-approach."><span
+class="toc-section-number">5.3.1</span> Screen device approach.</a></li>
+<li><a href="#file-devices-approach."
+id="toc-file-devices-approach."><span
+class="toc-section-number">5.3.2</span> File devices approach.</a></li>
+</ul></li>
+<li><a href="#graphics-file-devices-vector-and-bitmap-devices."
+id="toc-graphics-file-devices-vector-and-bitmap-devices."><span
+class="toc-section-number">5.4</span> Graphics file devices:
+<code>vector</code> and <code>bitmap</code> devices.</a></li>
+<li><a
+href="#multiple-open-graphics-devices-checking-and-setting-the-current-device-dev.curr-dev.set."
+id="toc-multiple-open-graphics-devices-checking-and-setting-the-current-device-dev.curr-dev.set."><span
+class="toc-section-number">5.5</span> Multiple open graphics devices,
+checking and setting the current device: <code>dev.curr()</code>,
+<code>dev.set()</code>.</a></li>
+<li><a
+href="#copying-plots-to-another-device-dev.copy-dev.copy2pdf-dev.off."
+id="toc-copying-plots-to-another-device-dev.copy-dev.copy2pdf-dev.off."><span
+class="toc-section-number">5.6</span> Copying plots to another device:
+<code>dev.copy()</code>, <code>dev.copy2pdf()</code>,
+<code>dev.off()</code>.</a></li>
+</ul></li>
+<li><a href="#the-base-plotting-system."
+id="toc-the-base-plotting-system."><span
+class="toc-section-number">6</span> The base plotting system.</a>
+<ul>
+<li><a href="#again-the-two-phases-involved-in-a-base-plot."
+id="toc-again-the-two-phases-involved-in-a-base-plot."><span
+class="toc-section-number">6.1</span> Again, the two <em>phases</em>
+involved in a base plot.</a></li>
+<li><a href="#global-parameters-par."
+id="toc-global-parameters-par."><span
+class="toc-section-number">6.2</span> Global parameters:
+<code>par()</code>.</a></li>
+<li><a href="#simple-base-graphics."
+id="toc-simple-base-graphics."><span
+class="toc-section-number">6.3</span> Simple base graphics.</a>
+<ul>
+<li><a href="#histogram-hist." id="toc-histogram-hist."><span
+class="toc-section-number">6.3.1</span> Histogram:
+<code>hist()</code>.</a></li>
+<li><a href="#boxplot-boxplot.-1" id="toc-boxplot-boxplot.-1"><span
+class="toc-section-number">6.3.2</span> Boxplot:
+<code>boxplot()</code>.</a></li>
+<li><a href="#scatterplot-plot." id="toc-scatterplot-plot."><span
+class="toc-section-number">6.3.3</span> Scatterplot:
+<code>plot()</code>.</a></li>
+</ul></li>
+<li><a
+href="#some-important-base-graphics-parameters-continuing-par-explanation."
+id="toc-some-important-base-graphics-parameters-continuing-par-explanation."><span
+class="toc-section-number">6.4</span> Some important base graphics
+parameters: continuing <code>par()</code> explanation.</a></li>
+<li><a href="#base-plotting-functions.-diving-into-plot-function."
+id="toc-base-plotting-functions.-diving-into-plot-function."><span
+class="toc-section-number">6.5</span> Base plotting functions. Diving
+into <code>plot()</code> function.</a>
+<ul>
+<li><a href="#some-key-annotation-functions."
+id="toc-some-key-annotation-functions."><span
+class="toc-section-number">6.5.1</span> Some key annotation
+functions.</a></li>
+<li><a href="#the-type-n-paradigm." id="toc-the-type-n-paradigm."><span
+class="toc-section-number">6.5.2</span> The <code>type = "n"</code>
+paradigm.</a></li>
+<li><a href="#base-plot-with-regression-line-lm-and-abline."
+id="toc-base-plot-with-regression-line-lm-and-abline."><span
+class="toc-section-number">6.5.3</span> Base plot with regression line:
+<code>lm()</code> and <code>abline()</code>.</a></li>
+<li><a
+href="#multiple-base-plots-mfrow-mfcol-mar-oma-parameters-of-par."
+id="toc-multiple-base-plots-mfrow-mfcol-mar-oma-parameters-of-par."><span
+class="toc-section-number">6.5.4</span> Multiple base plots:
+<code>mfrow</code>, <code>mfcol</code>, <code>mar</code>,
+<code>oma</code> parameters of <code>par()</code>.</a></li>
+<li><a href="#built-in-examples-with-example-function."
+id="toc-built-in-examples-with-example-function."><span
+class="toc-section-number">6.5.5</span> Built in examples with
+<code>example()</code> function.</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">7</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="introduction." class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introduction.</h1>
+<p>The purpose of this course is to look at our <strong>tidy
+data</strong> and get a sense of <strong>what’s happening</strong>, what
+are the <em>kinds of plots</em> that we want to make (we’ll see the
+basic principles about making analytic graphics, which is one of the
+ways we can explore data).</p>
+<p>In other words, we’ll explore our data <strong>without</strong>
+having a precise or specific <strong>model about</strong>, in order to
+know what’s supposed to be going on <em>before</em> we do
+<em>modelling</em>, before we do <em>prediction</em>, before we do any
+sort of <em>inference</em>.</p>
+<p>Exploratory data analysis (EDA) is what occurs in the “editing room”
+of a research project or any data-based investigation. It is the
+<em>process of making the “rough cut”</em> for a data analysis, the
+purpose of which is very similar to that in the film editing room.</p>
+<p>The <strong>goals of EDA</strong> are many, but they include:</p>
+<ul>
+<li><em>Identifying relationships</em> between variables that are
+particularly interesting or unexpected.<br />
+</li>
+<li>Checking to see if there is any <em>evidence for or against</em> a
+<em>stated hypothesis</em>.<br />
+</li>
+<li>Checking for <em>problems with the collected data</em>, such as
+missing data or measurement error, or identifying certain areas where
+more data need to be collected.<br />
+</li>
+<li>Finer details of presentation of the data and evidence, important
+for the final product, are not necessarily the focus.</li>
+</ul>
+<p>EDA is <strong>important</strong> because it allows the investigator
+to make <strong>critical decisions</strong> about what is
+<strong>interesting to follow up on</strong> and what probably
+<strong>isn’t worth pursuing</strong> because the data just don’t
+provide the evidence (and might never provide the evidence, even with
+follow up).</p>
+<p>In few words, the <strong>goal of EDA</strong> is to:</p>
+<ul>
+<li><strong><em>show the data</em></strong>,<br />
+</li>
+<li><strong><em>summarize the evidence</em></strong>, and<br />
+</li>
+<li><strong><em>identify</em></strong> interesting patterns
+<strong><em>while eliminating</em></strong> ideas that likely won’t pan
+out.</li>
+</ul>
+<hr />
+</div>
+<div id="principles-of-analytic-graphics." class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Principles of Analytic
+Graphics.</h1>
+<p>Edward Tufte, in his <a href="https://www.edwardtufte.com">Beautiful
+Evidence, Graphics Press LLC</a>, discusses how to <strong>make
+informative and useful data graphics</strong> and lays out <strong>six
+principles</strong> that are important to achieving that goal:</p>
+<ol style="list-style-type: decimal">
+<li>Show comparisons.<br />
+</li>
+<li>Show causality, mechanism, explanation, systematic structure.<br />
+</li>
+<li>Show multivariate data.<br />
+</li>
+<li>Integrate evidence.<br />
+</li>
+<li>Describe and document the evidence.<br />
+</li>
+<li>Content, content, content.</li>
+</ol>
+<div id="first-principle-show-comparisons." class="section level2"
+number="2.1">
+<h2><span class="header-section-number">2.1</span> First principle: show
+comparisons.</h2>
+<p><em>Showing comparisons</em> is really the <strong>basis of all good
+scientific investigation</strong>.</p>
+<ul>
+<li>Evidence for a hypothesis is always relative to another
+<em>competing hypothesis</em>.<br />
+</li>
+<li>A good scientist is always asking <em>“Compared to What?”</em> when
+confronted with a scientific claim or statement.<br />
+</li>
+<li><em>Data graphics</em> should generally follow this <em>same
+principle</em>: should always be comparing at least two things.</li>
+</ul>
+<p>We’ll hear more about this when we study <strong>statistical
+inference</strong>: evidence for a hypothesis is always relative to
+another competing or alternative hipothesis.</p>
+<p>Typical <strong>example</strong> of this, are <em>graphics showing
+data</em> of both <em>treatment</em> and <em>control</em> groups in
+which the experiment was divided.</p>
+<p><img src="4_data/air_cleaner1.png" /> <img
+src="4_data/air_cleaner2.png" /></p>
+<ul>
+<li>The first boxplot shows the <em>relationship</em> between the
+<strong>use of an air cleaner</strong> and the <strong>number of
+symptom-free days</strong> of <strong>asthmatic children</strong>.<br />
+</li>
+<li>Since the box is above 0, the number of symptom-free days for
+children with asthma is bigger using the air cleaner.<br />
+</li>
+<li>While it’s somewhat informative, it’s also <em>somewhat
+cryptic</em>, since the <strong>y-axis* is claiming to <em>show</em> a
+<em>change in number</em> of <em>symptom-free days</em>. Wouldn’t it be
+better to </strong>show a comparison**?<br />
+</li>
+<li>So the second graphic shows <strong>two boxplots</strong>, the one
+on the left showing the results for a <strong>control group</strong>
+that doesn’t use an air cleaner alongside the previously shown
+boxplot.<br />
+</li>
+<li>This way, we can <em>clearly see</em> that using the air cleaner
+increases the number of symptom-free days for most asthmatic children.
+The plot on the right (using the air cleaner) is generally higher than
+the one on the left (the control group).</li>
+</ul>
+</div>
+<div
+id="second-principle-show-causality-mechanism-explanation-systematic-structure."
+class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Second principle:
+show causality, mechanism, explanation, systematic structure.</h2>
+<p>Generally, it’s difficult to prove that one thing causes another
+thing even with the most carefully collected data.</p>
+<p>But it’s still often useful for our <em>data graphics</em> to:</p>
+<ul>
+<li>indicate <strong>what we are thinking about in terms of
+cause</strong>;<br />
+</li>
+<li>show <strong>causality or a mechanism</strong> of <strong>how our
+theory of the data works</strong> (what we believe and how we believe
+the world works);<br />
+</li>
+<li>in summary, to show our <strong>causal framework</strong> for
+thinking <strong>about the question we</strong> <strong>are trying to
+answer</strong>.</li>
+</ul>
+<p>Such a display may <em>suggest hypotheses</em> or <em>refute
+them</em>, but most importantly, they will <em>raise new questions</em>
+that can be followed up with new data or analyses.</p>
+<p>Turning back to the <strong>air-cleaner example</strong>:</p>
+<p><img src="4_data/air_cleaner3.png" /></p>
+<ul>
+<li>This plot shows the dual boxplot we previously showed, but
+<strong>next to it</strong> we have a corresponding <strong>plot of
+changes</strong> in <strong>measures of particulate
+matter</strong>.<br />
+</li>
+<li>By showing the two sets of boxplots side by side we’re
+<em>explaining our theory</em> of <strong><em>why</em></strong> the
+<em>air cleaner</em> <strong><em>increases</em></strong> the number of
+<em>symptom-free days</em>.<br />
+</li>
+<li>The <em>hypothesis behind</em> air cleaners improving asthma
+morbidity in children is that the air cleaners <strong>remove airborne
+particles</strong> from the air.<br />
+</li>
+<li>And in fact we can see from the right-hand plot that on average in
+the control group, the level of particles actually increased a little
+bit <em>while</em> <strong>in the air cleaner</strong>
+<strong>group</strong> the <em>levels decreased on average</em>.<br />
+</li>
+<li>This <em>pattern shown</em> in the plot is <em>consistent</em> with
+the idea that air cleaners improve health by reducing airborne
+particles.<br />
+</li>
+<li>However, it is <strong>not conclusive proof</strong> of this idea
+because there <em>may be other</em> <em>unmeasured confounding
+factors</em> that can lower levels of particles and improve symptom-free
+days.</li>
+</ul>
+</div>
+<div id="third-principle-show-multivariate-data." class="section level2"
+number="2.3">
+<h2><span class="header-section-number">2.3</span> Third principle: show
+multivariate data.</h2>
+<p>The <strong>real world is multivariate</strong>. For anything that we
+might study, there are usually many attributes that we can measure.</p>
+<p>The point is that <em>data graphics</em> should attempt to show this
+information <strong>as much as</strong> <strong>possible</strong>,
+rather than reduce things down to one or two features that we can plot
+on a page.</p>
+<p>Let’s see an <strong>example</strong> where <em>restricting</em>
+ourselves <em>to two variables</em> leads us to an <em>incorrect
+conclusion</em>.</p>
+<p><img src="4_data/air_pollution1.png" /></p>
+<ul>
+<li>This plot shows the <em>relationship</em> between <em>air
+pollution</em> (x-axis) and <em>mortality rates</em> among the elderly
+(y-axis).<br />
+</li>
+<li>The <em>blue regression line</em> shows a <strong>surprising
+result</strong>: <em>as pollution increases</em>
+<strong><em>fewer</em></strong> <em>people die</em>.
+<ul>
+<li>We’ll learn about regression lines when we take the Regression
+Models course.</li>
+</ul></li>
+</ul>
+<p>Something has to be wrong. In fact, this is an example of
+<strong>Simpson’s paradox</strong>, or the <strong>Yule–Simpson
+effect</strong>.</p>
+<ul>
+<li><a
+href="http://en.wikipedia.org/wiki/Simpson%27s_paradox">Wikipedia</a>
+tells us that this “is a <em>paradox in probability and statistics</em>,
+in which <em>a trend that appears in different groups</em> of data
+<strong>disappears when these groups are combined</strong>”.</li>
+</ul>
+<p><img src="4_data/air_pollution2.png" /></p>
+<p>Now we can see that, in each of the plots above, the
+<em>relationship</em> is no more slightly positive but <em>instead
+slightly negative</em>, that is to say, as pollution increases
+<strong>more</strong> people die in all seasons.</p>
+</div>
+<div id="fourth-principle-integrate-evidence." class="section level2"
+number="2.4">
+<h2><span class="header-section-number">2.4</span> Fourth principle:
+integrate evidence.</h2>
+<p><em>Data graphics</em> should make use of <strong>many modes of data
+presentation simultaneously</strong>, not just the ones that are
+familiar to us or that the software can handle.</p>
+<p>This means <em>not limiting</em> ourselves to <em>one form of
+expression</em>.</p>
+<ul>
+<li>We can use words, numbers, images as well as diagrams.</li>
+</ul>
+<p>One should <em>never let the tools</em> available <em>drive the
+analysis</em>.</p>
+<ul>
+<li>One should integrate as much evidence on to a graphic as
+possible.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<p><img src="4_data/ama_plot.png" /></p>
+<ul>
+<li>This figure, taken from a paper published in the Journal of the AMA,
+shows the <em>relationship</em> between p<em>ollution</em> and
+<em>hospitalization of people with heart disease</em>.<br />
+</li>
+<li>The <em>solid circles</em> in the center portion indicate
+<strong>point estimates</strong> of percentage changes in
+hospitalization rates for different levels of pollution.<br />
+</li>
+<li>The <em>lines through the circles</em> indicate <strong>confidence
+intervals</strong> associated with these estimates (we’ll learn more
+about confidence intervals in te statistical inference course).<br />
+</li>
+<li>Then, on the <em>right side</em> of the figure there’s another
+<em>column of numbers</em>, one for each of the point estimates given.
+This column shows <strong>posterior probabilities</strong> that relative
+risk is greater than 0. This, in effect, is a measure of the strength of
+the evidence showing the correlation between pollution and
+hospitalization.<br />
+</li>
+<li>The point here is that <strong>all of this information</strong> is
+located <strong>in one picture</strong> so that the reader can see the
+strength of not only the correlations but the evidence as well.</li>
+</ul>
+</div>
+<div id="fifth-principle-describe-and-document-the-evidence."
+class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Fifth principle:
+describe and document the evidence.</h2>
+<p><em>Data graphics</em> should be appropriately documented with
+<strong>labels, scales and sources</strong>.</p>
+<p>A <em>general rule</em> about data graphics regards it’s
+<em>credibility</em>, that is to say, a data graphic should <strong>tell
+a complete story all by itself</strong>.</p>
+<ul>
+<li>We should not have to refer to extra text or descriptions when
+interpreting a plot, if possible.</li>
+</ul>
+<p>We might think that this level of documentation should be reserved
+for “final” plots as opposed to exploratory ones, but it’s good to get
+in the habit of documenting your evidence sooner rather than later.</p>
+</div>
+<div id="sixth-principle-content-content-content."
+class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Sixth principle:
+content, content, content.</h2>
+<p>Analytical presentations ultimately stand or fall depending on the
+quality, relevance, and integrity of their content.</p>
+<ul>
+<li>This includes the <strong>question being asked</strong> and the
+<strong>evidence presented</strong> in favor of certain hypotheses.</li>
+</ul>
+<p>No amount of visualization magic or bells and whistles can make poor
+data, or more importantly, a poorly formed question, shine with
+clarity.</p>
+<p>Starting with a <em>good question</em>, developing a <em>sound
+approach</em>, and <em>only presenting</em> information that is
+necessary for answering that question, is essential to every data
+graphic.</p>
+<hr />
+</div>
+</div>
+<div id="exploratory-graphs." class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Exploratory
+graphs.</h1>
+<p>Visualizing the data via graphics can be important <strong>at the
+beginning stages</strong> of data analysis to:</p>
+<ul>
+<li><em>Understand basic properties</em> of the data.<br />
+</li>
+<li><em>Find simple patterns</em> in data.<br />
+</li>
+<li><em>Suggest possible modeling strategies</em>.</li>
+</ul>
+<p>In <strong>later stages</strong> of an analysis, graphics can be used
+to:</p>
+<ul>
+<li><em>“Debug”</em> an analysis, if an unexpected (but not necessarily
+wrong) result occurs.<br />
+</li>
+<li>Ultimately, to <em>communicate</em> our findings to others.</li>
+</ul>
+<div id="characteristics-of-exploratory-graphs." class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> Characteristics of
+exploratory graphs.</h2>
+<p>We will make a distinction between <strong>exploratory
+graphs</strong> and <strong>final graphs</strong>.</p>
+<p>This distinction serves to <em>highlight the fact</em> that graphs
+are used for many <em>different purposes</em>.</p>
+<p><em>Exploratory graphs</em> are usually made very quickly and a lot
+of them are made in the process of checking out the data.</p>
+<ul>
+<li><p>The goal of making exploratory graphs is usually <em>developing a
+personal understanding</em> of the data and to <em>prioritize tasks for
+follow up</em>.<br />
+Exploratory plots let us <em>summarize</em> the data and
+<em>highlight</em> any broad features.</p></li>
+<li><p><em>Details</em> like axis orientation or legends, while present,
+are generally cleaned up and prettified if the graph is going to be used
+for communication later.</p></li>
+<li><p>Often <em>color</em> and <em>plot symbol size</em> are used to
+<em>convey various dimensions</em> of information.</p></li>
+</ul>
+</div>
+<div
+id="case-study-air-pollution-in-the-united-states-of-north-america.-a-key-question."
+class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Case study: air
+pollution in the United States of North America. A key question.</h2>
+<p>We will use a simple case study to demonstrate the kinds of simple
+graphs that can be useful in exploratory analyses.</p>
+<p>The data we will be using come from the <strong>U.S. Environmental
+Protection Agency (EPA)</strong>, which is the U.S. government agency
+that sets national air quality standards for outdoor <a
+href="http://www.epa.gov/air/criteria.html">air pollution</a>.</p>
+<p>One of the <strong>national ambient air quality standards</strong>
+concerns the <strong>long-term average</strong> <strong>level of fine
+particle pollution</strong>, also referred to as
+<strong><em>PM2.5</em></strong> that stands for <a
+href="https://www.epa.gov/pm-pollution/particulate-matter-pm-basics">particle
+matter less than or equal to 2.5 microns in aerodynamic
+diameter</a>.</p>
+<ul>
+<li>The standard says that the <em>annual mean, averaged over 3
+years</em> <strong><em>cannot exceed 12</em></strong>
+<strong><em>micrograms per cubic meter</em></strong>.</li>
+</ul>
+<p>Data on daily PM2.5 are available from the U.S. EPA web site, or
+specifically, the <a
+href="http://www.epa.gov/ttn/airs/airsaqs/detaildata/downloadaqsdata.htm">EPA
+Air Quality System</a> web site.</p>
+<p>One <strong>key question</strong> we are interested is:</p>
+<blockquote>
+<p>Are there any counties in the U.S. that exceed the national standard
+for fine particle pollution?</p>
+</blockquote>
+<p>This question has <strong>important consequences</strong> because
+counties that are found to be in violation of the national standards can
+face serious legal consequences.</p>
+<ul>
+<li>In particular, states that have counties in violation of the
+standards are required to create a <em>State Implementation Plan
+(SIP)</em> that shows how those counties will come within the national
+standards within a given period of time.</li>
+</ul>
+</div>
+<div id="loading-the-data." class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Loading the
+data.</h2>
+<p>We’ve already downloaded the <code>avgpm25.csv</code> file.</p>
+<ul>
+<li>This dataset contains the <strong>annual mean PM2.5 averaged over
+the period 2008 through 2010</strong>.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>class <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;character&quot;</span>, <span class="st">&quot;factor&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pollution <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;4_data/avgpm25.csv&quot;</span>, <span class="at">colClasses =</span> class)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>pollution <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(pollution)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>pollution</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 576 × 5</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    pm25 fips  region longitude latitude</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>fct<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>    <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span>  <span class="fl">9.77</span> <span class="dv">01003</span> east       <span class="sc">-</span><span class="fl">87.7</span>     <span class="fl">30.6</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span>  <span class="fl">9.99</span> <span class="dv">01027</span> east       <span class="sc">-</span><span class="fl">85.8</span>     <span class="fl">33.3</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> <span class="fl">10.7</span>  <span class="dv">01033</span> east       <span class="sc">-</span><span class="fl">87.7</span>     <span class="fl">34.7</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> <span class="fl">11.3</span>  <span class="dv">01049</span> east       <span class="sc">-</span><span class="fl">85.8</span>     <span class="fl">34.5</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> <span class="fl">12.1</span>  <span class="dv">01055</span> east       <span class="sc">-</span><span class="fl">86.0</span>     <span class="fl">34.0</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> <span class="fl">10.8</span>  <span class="dv">01069</span> east       <span class="sc">-</span><span class="fl">85.4</span>     <span class="fl">31.2</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> <span class="fl">11.6</span>  <span class="dv">01073</span> east       <span class="sc">-</span><span class="fl">86.8</span>     <span class="fl">33.5</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> <span class="fl">11.3</span>  <span class="dv">01089</span> east       <span class="sc">-</span><span class="fl">86.6</span>     <span class="fl">34.7</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span>  <span class="fl">9.41</span> <span class="dv">01097</span> east       <span class="sc">-</span><span class="fl">88.1</span>     <span class="fl">30.7</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="fl">11.4</span>  <span class="dv">01103</span> east       <span class="sc">-</span><span class="fl">86.9</span>     <span class="fl">34.5</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 566 more rows</span></span></code></pre></div>
+<ul>
+<li>Each row contains:
+<ul>
+<li>the average <code>pm25</code> level;<br />
+</li>
+<li>the 5-digit <code>fips</code> code indicating the county (the first
+two digits indicate the state and the other three digits indicates the
+county);<br />
+</li>
+<li>the <code>region</code> of the country in which the county
+resides;<br />
+</li>
+<li>the <code>longitude</code> and <code>latitude</code> of the
+area.</li>
+</ul></li>
+</ul>
+</div>
+<div id="back-to-the-question." class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Back to the
+question.</h2>
+<p>How can we see if any counties exceed the standard of 12 micrograms
+per cubic meter?</p>
+<div id="simple-summaries-one-dimension." class="section level3"
+number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> Simple summaries:
+one dimension.</h3>
+<p>For <strong>one dimensional summarize</strong>, there are number of
+<strong>options in R</strong>.</p>
+<ul>
+<li><strong>Five-number summary</strong>: <code>fivenum()</code>,
+<code>quantile()</code> and <code>summary()</code>.
+<ul>
+<li>This gives the minimum, 25th percentile, median, 75th percentile,
+maximum of the data and is a quick check on the distribution of the
+data.<br />
+</li>
+</ul></li>
+<li><strong>Boxplots</strong>: <code>boxplot()</code>.
+<ul>
+<li>Boxplots are a <em>visual representation</em> of the five-number
+summary plus a bit more information.<br />
+</li>
+<li>In particular, boxplots commonly plot <em>outliers</em> that go
+beyond the bulk of the data.<br />
+</li>
+</ul></li>
+<li><strong>Barplot</strong>: <code>barplot()</code>.
+<ul>
+<li>Barplots are useful for <em>visualizing categorical data</em>, with
+the number of entries for each category being proportional to the height
+of the bar.<br />
+</li>
+<li>Think “pie chart” but actually useful.<br />
+</li>
+</ul></li>
+<li><strong>Histograms</strong>: <code>hist()</code> and
+<code>rug()</code>.
+<ul>
+<li>Histograms show the <em>complete empirical distribution</em> of the
+data, beyond the five data points shown by the boxplots.<br />
+</li>
+<li>Here, you can easily check <em>skewness</em> (sesgadez) of the data,
+<em>symmetry</em>, <em>multi-modality</em> and other features.<br />
+</li>
+</ul></li>
+<li><strong>Density plot</strong>: <code>density()</code>.
+<ul>
+<li>This function computes a <em>non-parametric estimate</em> of the
+distribution of a variable.</li>
+</ul></li>
+</ul>
+<div id="five-number-summaries-fivenum-quantile-and-summary."
+class="section level4" number="3.4.1.1">
+<h4><span class="header-section-number">3.4.1.1</span> Five number
+summaries: <code>fivenum()</code>, <code>quantile()</code> and
+<code>summary()</code>.</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fivenum)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)  </span></code></pre></div>
+<p>This function takes a <strong>vector of numbers</strong> as input
+and, as we said, it gives the <strong>minimum</strong>, <strong>25th
+percentile</strong>, <strong>median</strong>, <strong>75th
+percentile</strong>, <strong>maximum</strong> of the data.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fivenum</span>(pollution<span class="sc">$</span>pm25)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="fl">3.382626</span>  <span class="fl">8.547590</span> <span class="fl">10.046697</span> <span class="fl">11.356829</span> <span class="fl">18.440731</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(pollution<span class="sc">$</span>pm25)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="dv">0</span><span class="sc">%       25%</span>       <span class="dv">50</span><span class="sc">%       75%</span>      <span class="dv">100</span>% </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a> <span class="fl">3.382626</span>  <span class="fl">8.548799</span> <span class="fl">10.046697</span> <span class="fl">11.356012</span> <span class="fl">18.440731</span> </span></code></pre></div>
+<p>For <strong>interactive work</strong>, it’s often a <strong>bit nice
+to use the <code>summary()</code> function</strong>, which has a default
+method for <em>numeric vectors</em>.</p>
+<ul>
+<li>In addition to the five-number summary, the <code>summary()</code>
+function <strong>also gives</strong> <strong>the mean</strong> of the
+data, which can be compared to the <strong>median</strong> to identify
+any <em>skewness</em> in the data.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pollution<span class="sc">$</span>pm25)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fl">3.383</span>   <span class="fl">8.549</span>  <span class="fl">10.047</span>   <span class="fl">9.836</span>  <span class="fl">11.356</span>  <span class="fl">18.441</span> </span></code></pre></div>
+<ul>
+<li>Given that the <em>mean</em> is <strong>fairly close</strong> to the
+<em>median</em>, there doesn’t appear to be a dramatic amount of
+<em>skewness</em> in the distribution of PM2.5 in this dataset.</li>
+</ul>
+</div>
+<div id="boxplot-boxplot." class="section level4" number="3.4.1.2">
+<h4><span class="header-section-number">3.4.1.2</span> Boxplot:
+<code>boxplot()</code>.</h4>
+<p>The boxplot shows us the <em>same quartile data</em> that
+<code>summary</code>, <code>quantile</code> and <code>fivenum</code>
+did.</p>
+<ul>
+<li>The <strong>lower and upper edges of the box</strong> respectively
+show the values of the <code>25th</code> and <code>75th</code>
+quantiles.<br />
+</li>
+<li>The <strong>horizontal line inside</strong> the box represents the
+<code>median</code>.<br />
+</li>
+<li>The <strong>height of the box</strong> is the <strong>inter-quartile
+range</strong> (IQR), the difference between the <code>25th</code> and
+<code>75th</code> quantiles.<br />
+</li>
+<li>Boxplot has a <strong><code>range</code> parameter</strong>, which
+<em>default value</em> <strong>is 1.5</strong>.<br />
+</li>
+<li>The <strong>“whiskers”</strong> (bigotes) that stick out above and
+below the box relate to the range parameter of boxplot. They have a
+<strong>length of 1.5 times the IQR</strong> (that is to say, the
+whiskers are drawn to be a length of <code>range x IQR</code>).
+<ul>
+<li>This shows us roughly how many, if any, data points are
+<strong>outliers</strong>, that is, beyond this range of values.<br />
+</li>
+<li>Outliers are plotted separately as an individual points.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pollution<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ul>
+<li>We can see that there are a few points on both the high and the low
+end that appear to be <strong>outliers</strong>.<br />
+</li>
+<li>It appears that the <strong>high points</strong> are <strong>all
+above the level of 15</strong>, so we can <em>take</em> <em>a look at
+those data points directly</em>.
+<ul>
+<li>Note that although the current national ambient air quality standard
+is 12 micrograms per cubic meter, it used to be 15.<br />
+</li>
+</ul></li>
+<li>An unnecessary <em>detail</em> at this stage: we can see a complete
+list of 657 available colors in R, by typing <code>colors()</code>.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(pollution, pm25 <span class="sc">&gt;</span> <span class="dv">15</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 8 × 5</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>   pm25 fips  region longitude latitude</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>fct<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>    <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="fl">16.2</span> <span class="dv">06019</span> west       <span class="sc">-</span><span class="fl">120.</span>     <span class="fl">36.6</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  <span class="fl">15.8</span> <span class="dv">06029</span> west       <span class="sc">-</span><span class="fl">119.</span>     <span class="fl">35.3</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>  <span class="fl">18.4</span> <span class="dv">06031</span> west       <span class="sc">-</span><span class="fl">120.</span>     <span class="fl">36.2</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>  <span class="fl">16.7</span> <span class="dv">06037</span> west       <span class="sc">-</span><span class="fl">118.</span>     <span class="fl">34.1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>  <span class="fl">15.0</span> <span class="dv">06047</span> west       <span class="sc">-</span><span class="fl">121.</span>     <span class="fl">37.2</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>  <span class="fl">17.4</span> <span class="dv">06065</span> west       <span class="sc">-</span><span class="fl">117.</span>     <span class="fl">33.8</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>  <span class="fl">16.3</span> <span class="dv">06099</span> west       <span class="sc">-</span><span class="fl">121.</span>     <span class="fl">37.6</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>  <span class="fl">16.2</span> <span class="dv">06107</span> west       <span class="sc">-</span><span class="fl">119.</span>     <span class="fl">36.2</span></span></code></pre></div>
+<ul>
+<li>These counties are <strong>all in the western U.S.</strong> and in
+fact are <strong>all in California</strong> because the first two digits
+of the <code>fips</code> code are <code>06</code>.</li>
+</ul>
+<div id="a-quick-map-from-maps-package." class="section level5"
+number="3.4.1.2.1">
+<h5><span class="header-section-number">3.4.1.2.1</span> A quick
+<code>map()</code> from <code>maps</code> package.</h5>
+<p>Because we have <code>longitude</code>s and <code>latitude</code>s,
+ee can make a quick map of these counties to get a sense of where they
+are in California.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">&#39;maps&#39;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>The following object is masked from <span class="st">&#39;package:plyr&#39;</span><span class="sc">:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    ozone</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;california&quot;</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">filter</span>(pollution, pm25 <span class="sc">&gt;</span> <span class="dv">15</span>), <span class="fu">points</span>(longitude, latitude))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<ul>
+<li><p>At this point, we might <strong>decide to follow up</strong> on
+these counties, <strong>or ignore</strong> them if we are interested in
+other features.</p></li>
+<li><p>Since these counties appear to have very high levels, relative to
+the distribution of levels in the other counties in the U.S., they may
+be worth following up on if we are interested in describing counties
+that are potentially in violation of the standards.</p></li>
+<li><p>Notice that the plot/map above <strong>is not very
+pretty</strong>, but it was <em>made quickly</em> and it gave us a sense
+of where these outlying counties were located and conveyed enough
+information to help decide if we are willing to follow up or
+not.</p></li>
+</ul>
+</div>
+</div>
+<div id="histogram-hist-and-rug." class="section level4"
+number="3.4.1.3">
+<h4><span class="header-section-number">3.4.1.3</span> Histogram:
+<code>hist()</code> and <code>rug()</code>.</h4>
+<p>A histogram is useful to look at <strong>when we want to see more
+detail</strong> on the <strong>full distribution</strong> of the
+data.</p>
+<ul>
+<li>The boxplot is <em>quick and handy</em>, but fundamentally only
+gives us a bit of information.<br />
+</li>
+<li>Specifically, <strong>how many entries</strong> (counties in our
+example) <strong>fall into each bucket</strong> of measurments.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(pollution<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li>The distribution shows a high concentration of counties in the
+neighborhood of 9 to 12 micrograms per cubic meter.</li>
+</ul>
+<p>We can get a <strong>little more detail</strong> if we use the
+<code>rug()</code> function to show us (through density of tick
+marks):</p>
+<ul>
+<li><strong>how many data points</strong> are in <em>each bucket</em>,
+and<br />
+</li>
+<li><strong>where they lie</strong> <em>within the bucket</em>.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(pollution<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(pollution<span class="sc">$</span>pm25)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li>The large cluster of data points in the 9 to 12 range is perhaps not
+surprising in this context.</li>
+</ul>
+<div id="the-hist-default-algorithm-and-its-breaks-argument."
+class="section level5" number="3.4.1.3.1">
+<h5><span class="header-section-number">3.4.1.3.1</span> The
+<code>hist()</code> default algorithm and it’s <code>breaks</code>
+argument.</h5>
+<p>The <code>hist()</code> function has a <em>default algorithm</em> for
+determining the <strong>number of bars</strong> to use in the histogram
+<strong>based on the density of the data</strong>.</p>
+<ul>
+<li>See <code>?nclass.Sturges</code></li>
+</ul>
+<p>However, we can <strong>override</strong> the default option by
+setting the <code>breaks</code> argument to the <strong>number of
+buckets to split the data into</strong>.</p>
+<ul>
+<li>Let’s use more bars to try to get more detail.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(pollution<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>, <span class="at">breaks =</span> <span class="dv">100</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(pollution<span class="sc">$</span>pm25)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<ul>
+<li><p>Now we see that there’s a <strong>rather large spike</strong> at
+<em>9 micrograms per cubic meter</em>.</p></li>
+<li><p>This histogram with more buckets is not nearly as smooth as the
+preceding one. In fact, it’s a <em>little too noisy to see the
+distribution clearly</em>.</p>
+<ul>
+<li>When we’re plotting histograms we might have to <strong>experiment
+with <code>breaks</code></strong> to get a good idea of our data’s
+distribution.</li>
+</ul></li>
+<li><p><strong>Notice</strong> how <code>rug()</code> <em>automatically
+adjusted</em> its pocket size to that of the last plot plotted.</p></li>
+</ul>
+</div>
+</div>
+<div id="overlaying-features-abline." class="section level4"
+number="3.4.1.4">
+<h4><span class="header-section-number">3.4.1.4</span> Overlaying
+features: <code>abline()</code>.</h4>
+<p>Once we <em>start seeing interesting features</em> in our data, it’s
+often useful to lay down <strong>annotations on our plots</strong> as
+<strong>reference points</strong> or <strong>markers</strong>.</p>
+<p>For example in our <strong>boxplot above</strong>, we might want to
+draw a <strong>horizontal line at 12</strong> where the national
+standard is.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pollution<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">12</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li>We can see that a reasonable portion of the distribution as
+displayed by the boxplot is above the line (i.e. potentially in
+violation of the standard).</li>
+</ul>
+<p>While the boxplot gives a sense, the <strong>histogram might be
+better suited </strong>to visualizing the data here. Let’s <strong>draw
+two lines</strong>, one <em>at the median</em> of the data and one
+<em>at 12</em>, the level of the legal standard.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(pollution<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">12</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">median</span>(pollution<span class="sc">$</span>pm25), <span class="at">col =</span> <span class="st">&quot;magenta&quot;</span>, <span class="at">lwd =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<ul>
+<li>Notice that for the vertical lines, <strong>we can use both</strong>
+<em>color</em> (<code>col</code>) and <em>line width</em>
+(<code>lwd</code>) to indicate different components of information.</li>
+</ul>
+</div>
+<div id="barplot-barplot." class="section level4" number="3.4.1.5">
+<h4><span class="header-section-number">3.4.1.5</span> Barplot:
+<code>barplot()</code>.</h4>
+<p>As we said, the barplot is <strong>useful for summarizing categorical
+data</strong>.</p>
+<p>Here we have <em>one categorical variable</em>, the
+<code>region</code> in which a county resides (east or west).</p>
+<ul>
+<li>We can see how many western and eastern counties there are with
+<code>barplot()</code>.<br />
+</li>
+<li>We use the <code>table()</code> function to do <strong>the actual
+tabulation</strong> of how many counties there are in each region.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(pollution<span class="sc">$</span>region) <span class="sc">%&gt;%</span> <span class="fu">barplot</span>(<span class="at">col =</span> <span class="st">&quot;wheat&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<ul>
+<li>We can see quite clearly that there are many more counties in the
+eastern U.S. in this dataset than in the western U.S.</li>
+</ul>
+</div>
+</div>
+<div id="simple-summaries-two-dimensions-and-beyond."
+class="section level3" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Simple summaries:
+two dimensions and beyond.</h3>
+<p>For investigating data in two dimensions and beyond, there is an
+array of additional tools.</p>
+<p>Some of the <strong>key approaches</strong> in two dimensions
+are:</p>
+<ul>
+<li><strong>Multiple or overlayed 1-D plots</strong>:
+<code>Lattice</code>, <code>ggplot2</code>.
+<ul>
+<li>Using <em>multiple boxplots</em> or <em>multiple histograms</em> can
+be useful for seeing the relationship between two variables, especially
+when one is naturally categorical.<br />
+</li>
+</ul></li>
+<li><strong>Scatterplots</strong>.
+<ul>
+<li>Scatterplots are the <em>natural tool</em> for visualizing <em>two
+continuous variables</em>.<br />
+</li>
+<li>Transformations of the variables (e.g. log or square-root
+transformation) may be necessary for effective visualization.<br />
+</li>
+</ul></li>
+<li><strong>Smooth scatterplots</strong>.
+<ul>
+<li>Similar in concept to scatterplots but rather <em>plots a 2-D
+histogram</em> of the data.<br />
+</li>
+<li>Can be useful for scatterplots that may contain <em>many many data
+points</em>.</li>
+</ul></li>
+</ul>
+<p>For visualizing data in <strong>more than 2 dimensions</strong>,
+without resorting to 3-D animations, we can often <em>combine the
+tools</em> that we’ve already learned:</p>
+<ul>
+<li><strong>Overlayed or multiple 2-D plots</strong>,
+<strong>conditioning plots</strong> (<code>coplots</code>).
+<ul>
+<li>A conditioning plot, or coplot, shows the <em>relationship between
+two variables as a</em> <em>third (or more) variable changes</em>.<br />
+</li>
+<li>For example, we might want to see how the relationship between air
+pollution levels and mortality changes with the season of the year.
+Here, air pollution and mortality are the two primary variables and
+season is the third variable varying in the background.<br />
+</li>
+</ul></li>
+<li>Use <strong>color, size, shape</strong> to add dimensions.
+<ul>
+<li>Plotting points with different colors or shapes is useful for
+indicating <em>a third</em> <em>dimension</em>, where different colors
+can indicate different categories or ranges of something.<br />
+</li>
+<li>Plotting symbols with different sizes can also achieve the same
+effect when the <em>third dimension is continuous</em>.<br />
+</li>
+</ul></li>
+<li><strong>Spinning/interactive plots</strong>.
+<ul>
+<li>Spinning plots can be used to <em>simulate 3-D plots</em> by
+allowing the user to essentially quickly cycle through many different
+2-D projections so that the plot feels 3-D.<br />
+</li>
+<li>These are sometimes helpful to capture unusual structure in the
+data, but rarely used.<br />
+</li>
+</ul></li>
+<li><strong>Actual 3-D plots</strong> (not that useful).
+<ul>
+<li>Actual 3-D plots (for example, requiring 3-D glasses) are relatively
+few and far between and are generally impractical for communicating to a
+large audience.<br />
+</li>
+<li>Of course, this may change in the future with improvements in
+technology.</li>
+</ul></li>
+</ul>
+<div id="multiple-boxplots." class="section level4" number="3.4.2.1">
+<h4><span class="header-section-number">3.4.2.1</span> Multiple
+Boxplots.</h4>
+<p>One of the simplest ways to show the relationship between two
+variables (in this case, <em>one</em> <em>categorical</em> and <em>one
+continuous</em>) is to show <strong>side-by-side boxplots</strong>.</p>
+<p>The <code>boxplot()</code> function can take <strong>a
+<code>formula</code></strong>:</p>
+<ul>
+<li><p>The <strong>left hand side</strong> indicates the <em>variable
+for which</em> we want to <em>create the boxplot</em>, a
+<strong><em>continuous</em></strong> variable.</p></li>
+<li><p>The <strong>right hand side</strong> indicates the <em>variable
+that stratifies</em> the left hand side into categories.</p></li>
+<li><p>We use the R formula <code>y ~ x</code> to <strong>show that
+<code>y</code> depends on <code>x</code></strong>.</p></li>
+</ul>
+<p>Using the pollution dataset, we can show the <em>difference in pm2.5
+levels</em> between the <em>eastern</em> and <em>western</em> parts of
+the U.S. with the <code>boxplot()</code> function.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pm25 <span class="sc">~</span> region, <span class="at">data =</span> pollution, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<ul>
+<li><p>Two for the price of one!</p></li>
+<li><p>Since the <code>region</code> variable only has two categories,
+we end up with two boxplots.</p></li>
+<li><p>We can see <em>rather clearly</em> that the levels in eastern
+counties are on average higher than the levels in western
+counties.</p></li>
+</ul>
+<p>In general, <strong>side-by-side boxplots</strong> are
+<strong>useful</strong> because we can often <em>fit many on a page</em>
+to get a <em>rich sense of any trends or changes</em> in a variable.</p>
+<ul>
+<li>Their <em>compact format</em> allow you to visualize a lot of data
+in a small space.</li>
+</ul>
+</div>
+<div id="multiple-histograms." class="section level4" number="3.4.2.2">
+<h4><span class="header-section-number">3.4.2.2</span> Multiple
+Histograms.</h4>
+<p>Similarly we can plot multiple histograms in one plot, though to do
+this we have to use <em>more than one R command</em>.</p>
+<p>It can sometimes be useful to plot multiple histograms to <strong>see
+changes in the shape</strong> <strong>of the distribution</strong> of a
+variable <strong>across different categories</strong>, much like
+boxplot.</p>
+<ul>
+<li>However, the <em>number of histograms</em> that we can effectively
+put <em>on a page is limited</em>.</li>
+</ul>
+<p>Here is the distribution of pm2.5 in the eastern and western regions
+of the U.S.</p>
+<ul>
+<li>First we have to <em>set up the plot window</em> with the
+<code>par()</code> command, which specifies <em>how we want to lay out
+the plots</em>.
+<ul>
+<li>We want one plot above the other, so we set up the plot window for
+two rows and one column with the <code>mfrow</code> argument.<br />
+</li>
+<li>And we also use par to specify margins, by assigning to it’s
+<code>mar</code> argument, a 4-long vector which indicates the number of
+lines for the bottom, left, top and right.<br />
+</li>
+</ul></li>
+<li>Then, we’ll use <code>subset()</code> to pull off the data we want
+to plot.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">subset</span>(pollution, region <span class="sc">==</span> <span class="st">&quot;east&quot;</span>)<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">subset</span>(pollution, region <span class="sc">==</span> <span class="st">&quot;west&quot;</span>)<span class="sc">$</span>pm25, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<ul>
+<li>We can see that the pm2.5 in the <em>western</em> U.S. tends to be
+<strong>right-skewed</strong> (sesgado a la derecha) with some outlying
+counties with very high levels.<br />
+</li>
+<li>The pm2.5 in the <em>east</em> tends to be
+<strong>left-skewed</strong> (sesgado a la izquierda), some counties
+having very low levels.</li>
+</ul>
+</div>
+<div id="scatterplots-using-plot-within-with-command."
+class="section level4" number="3.4.2.3">
+<h4><span class="header-section-number">3.4.2.3</span> Scatterplots,
+using <code>plot()</code> within <code>with()</code> command.</h4>
+<p>As we said, for <strong>continuous variables</strong>, the
+<strong>most common visualization technique</strong> is the scatterplot,
+which <em>simply maps each variable</em> to an <em>x- or y-axis</em>
+coordinate.</p>
+<p>Let’s do a scatterplot of <code>latitude</code> and
+<code>pm2.5</code>, which can be made with the <code>plot()</code>
+function.</p>
+<p>More in particular, we’ll call <code>plot()</code> <strong>from
+inside the <code>with()</code>command</strong>.</p>
+<ul>
+<li><p><code>with()</code> <strong><em>evaluates “an R expression in an
+environment constructed from data”</em></strong>.</p></li>
+<li><p>We’ll use <code>pollution</code> as the first argument to
+<code>with()</code> and the call to <code>plot()</code> as the
+second.</p></li>
+<li><p>This allows us to <strong>avoid typing <code>pollution$</code>
+before</strong> the arguments to <code>plot()</code>, so it <em>saves us
+some typing</em> and <em>adds to our base of R knowledge</em>.</p></li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(pollution, <span class="fu">plot</span>(latitude, pm25))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">12</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<ul>
+<li>As we go from south to north in the U.S., we can see that the
+highest levels of <code>pm2.5</code> tend to be in the middle region of
+the country.</li>
+</ul>
+<div id="scatterplot-using-color." class="section level5"
+number="3.4.2.3.1">
+<h5><span class="header-section-number">3.4.2.3.1</span> Scatterplot
+using color.</h5>
+<p>If we wanted to <strong>add a third dimension</strong> to the
+scatterplot above, say the <code>region</code> variable indicating east
+and west, we could <em>use color</em> to highlight that dimension.</p>
+<p>Here we <em>color the circles</em> in the plot to indicate
+<code>east</code> (<em>black</em>) or <code>west</code>
+(<em>red</em>).</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(pollution, <span class="fu">plot</span>(latitude, pm25, <span class="at">col =</span> region))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">12</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(pollution<span class="sc">$</span>region)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;east&quot;</span> <span class="st">&quot;west&quot;</span></span></code></pre></div>
+<ul>
+<li>It may be confusing at first to figure out which color gets mapped
+to which region. We can find out by looking directly at the
+<code>levels</code> of the region variable.<br />
+</li>
+<li>We see that the <em>first level</em> is “east” and the <em>second
+level</em> is “west”. So the color for “east” will get <em>mapped to
+1</em> and the color for “west” will get <em>mapped to 2</em>.<br />
+</li>
+<li>For <strong>plotting functions</strong>:
+<ul>
+<li><code>col = 1</code> is <em>black</em> (the default color),<br />
+</li>
+<li><code>col = 2</code> is <em>red</em>.</li>
+</ul></li>
+</ul>
+</div>
+<div id="multiple-scatterplots-or-panel-plots." class="section level5"
+number="3.4.2.3.2">
+<h5><span class="header-section-number">3.4.2.3.2</span> Multiple
+scatterplots or panel plots.</h5>
+<p>Using multiple scatterplots can be necessary <strong>when overlaying
+points</strong> with different colors or shapes <strong>is
+confusing</strong> (sometimes because of the volume of data).</p>
+<p>Separating the plots out can sometimes make visualization easier.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(pollution, region <span class="sc">==</span> <span class="st">&quot;west&quot;</span>), <span class="fu">plot</span>(latitude, pm25, <span class="at">main =</span> <span class="st">&quot;West&quot;</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(pollution, region <span class="sc">==</span> <span class="st">&quot;east&quot;</span>), <span class="fu">plot</span>(latitude, pm25, <span class="at">main =</span> <span class="st">&quot;East&quot;</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>These kinds of plots are <strong>generally easier to make</strong>
+with either the <code>lattice</code> or <code>ggplot2</code> system,
+which we will learn about in greater detail later.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Lattice.</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(pm25 <span class="sc">~</span> latitude <span class="sc">|</span> region, <span class="at">data =</span> pollution)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="do">## ggplot2.</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(latitude, pm25, <span class="at">data =</span> pollution, <span class="at">facets =</span> . <span class="sc">~</span> region)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+</div>
+</div>
+</div>
+</div>
+<div id="further-resources." class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Further
+resources.</h2>
+<ul>
+<li><a href="https://www.r-graph-gallery.com/">R Graph Gallery</a>
+<ul>
+<li>This is collection of charts made with the R programming
+language.<br />
+</li>
+<li>Hundreds of charts are displayed in several sections, always with
+their reproducible code available.<br />
+</li>
+<li>The gallery makes a focus on the <code>tidyverse</code> and
+<code>ggplot2</code>.</li>
+</ul></li>
+<li><a href="http://www.r-bloggers.com/">R Bloggers</a></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="r-plotting-systems-a-generic-preview." class="section level1"
+number="4">
+<h1><span class="header-section-number">4</span> R plotting systems, a
+generic preview.</h1>
+<p>There are <strong>three different plotting systems</strong> in R and
+they each have different characteristics and modes of operation.</p>
+<ul>
+<li>The <strong>base</strong> plotting system, the
+<strong>lattice</strong> system and the <strong>ggplot2</strong>
+system.</li>
+</ul>
+<div id="the-base-plotting-system-or-artists-pallete-model."
+class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> The base plotting
+system or “artist’s pallete” model.</h2>
+<p>The base plotting system is the <strong>original plotting system for
+R</strong>, sometimes referred to as <strong>the “artist’s palette”
+model</strong>.</p>
+<p>The <strong>core plotting and graphics engine</strong> in R is
+encapsulated in the following packages:</p>
+<ul>
+<li><code>graphics</code>:
+<ul>
+<li>contains plotting functions like <code>plot()</code>,
+<code>hist()</code>, <code>boxplot()</code> and <em>many
+others</em>.<br />
+</li>
+</ul></li>
+<li><code>grDevices</code>:
+<ul>
+<li>contains all the code implementing the various <em>graphics
+devices</em> (we’ll see this in more detail later).</li>
+</ul></li>
+</ul>
+<p>The <strong>main idea of this system</strong> is to start with blank
+canvas and build up from there:</p>
+<ul>
+<li><p>In more R-specific terms, we typically <em>start with
+<code>plot()</code> function</em> (or similar plot creating function) to
+initiate a plot.</p></li>
+<li><p>And then, <strong>annotate the plot</strong> with various
+annotation functions: <code>text</code>, <code>lines</code>,
+<code>points</code>, <code>axis</code>.</p></li>
+</ul>
+<p>The base plotting system <strong>mirrors how we</strong> sometimes
+<strong>think of building</strong> plots and <strong>analyzing</strong>
+data.</p>
+<p>For <strong>example</strong>, we might look at a <em>simple
+scatterplot</em> and <em>then decide to add</em> a linear regression
+line or a smoother to it to highlight the trends.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(airquality)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, {</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Temp, Ozone)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lines</span>(<span class="fu">loess.smooth</span>(Temp, Ozone))</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<ul>
+<li>The <code>plot()</code> function creates the initial plot and draws
+the points (circles) on the canvas.<br />
+</li>
+<li>The <code>lines()</code> function is used to annotate or add to the
+plot; in this case it <strong>adds</strong> a <strong>loess
+smoother</strong> to the scatterplot.
+<ul>
+<li><em>Loess</em> is a short for <em>Local Regression</em>, and it’s
+the most common method used to smoothen a volatile time series (a
+non-parametric method where least squares regression is performed in
+localized subsets, which makes it a suitable candidate for smoothing any
+numerical vector).</li>
+</ul></li>
+</ul>
+<p>Another <strong>example</strong>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(cars)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Create the plot / draw canvas.</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(cars, <span class="fu">plot</span>(speed, dist))</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Add annotation.</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Speed vs. Stopping distance&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div id="downsides." class="section level3" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Downsides.</h3>
+<p>One downside with constructing base plots is that <strong>we can’t go
+backwards</strong> once the plot has started.</p>
+<ul>
+<li><p>So it’s possible that we could start down the road of
+constructing a plot and <em>realize</em> <em>later</em> that we
+<em>don’t have enough room to add a y-axis label</em> or <em>readjust
+margins</em> or <em>fix a misspelled caption</em>, etc.</p></li>
+<li><p>There is then a <strong>need to plan in advance</strong> to make
+sure, for example, that we’ve set our margins to be the right size to
+fit all of the annotations that we may want to include.</p></li>
+</ul>
+<p>Another downside is that <strong>it’s difficult to describe or
+translate a plot to others</strong> because there’s <strong>no clear
+graphical language or grammar</strong> that can be used to communicate
+what we’ve done.</p>
+<ul>
+<li><p>The only real way to describe what we’ve done in a base plot is
+to <em>just list</em> the <em>series of commands/functions</em> that
+we’ve executed.</p></li>
+<li><p>So a <em>finished plot</em> will be a <em>series of R
+commands</em> and that’s <em>difficult to translate</em> <em>into a
+different system</em>.</p></li>
+</ul>
+</div>
+</div>
+<div id="the-lattice-system." class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> The lattice
+system.</h2>
+<p>The lattice plotting system is implemented using the following
+packages:</p>
+<ul>
+<li><code>lattice</code> package: contains code for producing Trellis
+graphics, which are independent of the <code>base</code> graphics
+system.
+<ul>
+<li>Includes functions like <code>xyplot()</code>,
+<code>bwplot()</code>, <code>levelplot()</code>.<br />
+</li>
+</ul></li>
+<li><code>grid</code> package: implements a different graphic system
+independent of the <code>base</code> system.
+<ul>
+<li>The <code>lattice</code> package builts on top of
+<code>grid</code>.<br />
+</li>
+<li>We seldom call functions from the <code>grid</code> package
+directly.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span></code></pre></div>
+<p>With this system, plots are <strong>created with a single function
+call</strong>, such as <code>xyplot()</code> or
+<code>bwplot()</code>.</p>
+<ul>
+<li><p>There is <em>no real distinction</em> between <em>functions that
+create or initiate</em> plots and <em>functions that annotate</em> plots
+because it all happens at once.</p></li>
+<li><p>One consecuence of this feature that further differentiates
+lattice from base plotting is that <strong>things like margins and
+spacing</strong> are <strong>set automatically</strong>. In fact this is
+possible because entire plot is specified at once via a single function
+call, so all of the available information needed to figure out the
+spacing and margins is already there.</p></li>
+</ul>
+<p>Lattice plots tend to be most <strong>useful</strong> for
+<strong>conditioning types of plots</strong>, i.e. looking at <em>how
+<code>y</code> changes with <code>x</code> across levels of
+<code>z</code></em>.</p>
+<ul>
+<li>The variable <code>z</code> <em>might be</em> a <em>categorical</em>
+variable of our data.</li>
+</ul>
+<p>This system is <strong>also good</strong> for <strong>putting many
+plots on a screen at once</strong>.</p>
+<ul>
+<li>It allows us to <em>squeeze a lot of information</em> into a
+<em>single window or page</em>, looking at <strong>multi-dimensional
+data</strong> in a glance.</li>
+</ul>
+<p><strong>Example</strong> of a lattice plot that looks at the
+relationship between <code>life expectancy</code> and
+<code>income</code> and how that relationship varies by
+<code>region</code> in the United States.</p>
+<ul>
+<li>We’ll use the R formula <code>Life.Exp ~ Income | region</code>,
+which indicates we’re plotting life expectancy as it depends on income
+for each region.</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>state <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(state.x77, <span class="at">region =</span> state.region)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(Life.Exp <span class="sc">~</span> Income <span class="sc">|</span> region, <span class="at">data =</span> state, <span class="at">layout =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xyplot</span>(Life.Exp <span class="sc">~</span> Income <span class="sc">|</span> region, <span class="at">data =</span> state, <span class="at">layout =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<ul>
+<li><p>We can see that the entire plot was generated by the call to
+<code>xyplot()</code> and all of the data for the plot were stored in
+the state data frame.</p></li>
+<li><p>The plot itself contains four panels —one for each region— and
+within each panel is a scatterplot of life expectancy and
+income.</p></li>
+<li><p>The <strong>notion of panels</strong> comes up a lot with lattice
+plots because we typically have <em>many panels</em>, each panel
+typically <em>representing a condition</em> like
+<code>region</code>.</p></li>
+</ul>
+<div id="downsides.-1" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Downsides.</h3>
+<p>One downside with the lattice system is that <strong>it can sometimes
+be very awkward</strong> to <strong>specify an entire plot</strong> in a
+<strong>single function call</strong>.</p>
+<ul>
+<li>We end up with functions with many many arguments in those
+cases.</li>
+</ul>
+<p>Also, <strong>annotation in panels</strong> in plots is <strong>not
+especially intuitive</strong> and can be <strong>difficult to
+explain</strong>.</p>
+<ul>
+<li>In particular, the use of <strong>custom panel functions and
+subscripts</strong> can be <strong>difficult</strong> <strong>to
+wield</strong> and requires <strong>intense preparation</strong>.</li>
+</ul>
+<p>Finally, once a plot is created, we <strong>cannot “add” to the
+plot</strong> (but of course we can just make it again with
+modifications).</p>
+</div>
+</div>
+<div id="the-ggplot2-system." class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> The ggplot2
+system.</h2>
+<p>The ggplot2 plotting system <strong>attempts to split the
+difference</strong> between <code>base</code> and <code>lattice</code>
+in a number of ways.</p>
+<ul>
+<li>It <strong>automatically deals with spacings, text, titles</strong>
+(as <code>lattice</code> does) <em>but also</em> <strong>allows us to
+annotate by “adding”</strong> to a plot (as <code>base</code>
+does).<br />
+</li>
+<li>It’s the best of both worlds.</li>
+</ul>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<p>Superficially, the <code>ggplot2</code> functions are
+<em>similar</em> to <code>lattice</code>, but the system is
+<em>generally easier</em> and <em>more intuitive</em> to use.</p>
+<p>The <em>defaults</em> used in ggplot2 make many choices for us, but
+we can <em>still customize</em> plots to our heart’s desire.</p>
+<p>The package is based on a <em>“grammar of graphics”</em> (hence
+<strong>the <code>gg</code> in the name</strong>), so we can <em>control
+the aesthetics</em> of our plots.</p>
+<p>Let’s see an <strong>example</strong> now with a <em>simple (single)
+command</em>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mpg)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(displ, hwy, <span class="at">data =</span> mpg)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<ul>
+<li><p>The <code>qplot()</code> function in ggplot2 is what we use to
+<strong>“quickly get some data on the<strong>
+</strong>screen”</strong>.</p></li>
+<li><p>There are additional functions in ggplot2 that allow you to make
+arbitrarily sophisticated plots.</p></li>
+</ul>
+</div>
+<div id="references." class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> References.</h2>
+<ul>
+<li>Paul Murrell (2011), <em>R Graphics</em>, CRC Press.<br />
+</li>
+<li>Hadley Wickham (2009), <em>ggplot2</em>, Springer.<br />
+</li>
+<li>Deepayan Sarkar (2008), <em>Lattice: Multivariate Data Visualization
+with R</em>, Springer.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="graphics-devices." class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Graphics devices.</h1>
+<p>A graphics device is <strong>something where we can make a plot
+appear</strong>. Examples include:</p>
+<ul>
+<li>A window on your computer (<em>screen device</em>).<br />
+</li>
+<li>A PDF file (<em>file device</em>).<br />
+</li>
+<li>A PNG or JPEG file (<em>file device</em>).<br />
+</li>
+<li>A scalable vector graphics (SVG) file (<em>file device</em>).</li>
+</ul>
+<div id="list-of-graphical-devices-in-r-screen-device-and-file-devices."
+class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> List of graphical
+devices in R (screen device and file devices).</h2>
+<p>The help command <code>?Devices</code> gives us the list of devices
+supported by our installation of R.</p>
+<div class="figure">
+<img src="4_data/graphical_devices.jpg" alt="" />
+<p class="caption">Graphical devices’ R documentation</p>
+</div>
+<ul>
+<li><p>The code for most of the key graphics devices is implemented in
+the <code>grDevices</code> package, which comes with a standard R
+installation and is typically loaded by default.</p></li>
+<li><p>There are also graphics devices that have been created by users
+and these are aviailable through packages on CRAN.</p></li>
+</ul>
+<p>The most common place for a plot to be “sent” is the <em>screen
+device</em>.</p>
+<ul>
+<li>On Unix/Linux the screen device is launched with <code>x11()</code>
+function.<br />
+</li>
+<li>On a Mac the screen device is launched with the
+<code>quartz()</code> function.<br />
+</li>
+<li>On Windows the screen device is launched with <code>windows()</code>
+function.</li>
+</ul>
+<p>For <strong>quick visualizations</strong> and <strong>exploratory
+analysis</strong>, usually you want to use the <em>screen
+device</em>.</p>
+<ul>
+<li>Functions like <code>plot()</code> in base, <code>xyplot()</code> in
+lattice, or <code>qplot()</code> in ggplot2 will <em>default to</em>
+sending a plot to the <em>screen device</em>.</li>
+</ul>
+<p>For <strong>plots</strong> that may be <strong>printed out</strong>
+or be <strong>incorporated into a document</strong> (such as papers,
+reports or slide presentations), usually a <em>file device</em> is more
+appropriate.</p>
+<ul>
+<li>There are <em>many different file devices</em> to choose from and
+exactly which one to use in a given situation is something we discuss
+later.</li>
+</ul>
+</div>
+<div id="the-process-of-making-a-plot." class="section level2"
+number="5.2">
+<h2><span class="header-section-number">5.2</span> The process of making
+a plot.</h2>
+<p>When making a plot one must first make a few considerations (not
+necessarily in this order):</p>
+<ul>
+<li>Where will the plot be made? On <em>the screen</em> or in <em>a
+file?</em><br />
+</li>
+<li>How will the plot be used?
+<ul>
+<li>Is the plot for <em>viewing temporarily on the screen?</em></li>
+<li>Will it be <em>presented in a web browser?</em></li>
+<li>Will it eventually end up in a <em>paper</em> that might be
+printed?</li>
+<li>Are you using it in a <em>presentation?</em></li>
+</ul></li>
+<li>Is there a large <em>amount of data</em> going into the plot? Or is
+it just a few points?</li>
+<li>Do you need to be able to <em>dynamically resize</em> the
+graphic?</li>
+<li>What <strong>graphics system</strong> will you use:
+<code>base</code>, <code>lattice</code> or <code>ggplot2</code>?
+<ul>
+<li>These generally cannot be mixed.</li>
+</ul></li>
+</ul>
+<p><code>Base</code> graphics are usually <strong>constructed
+piecemeal</strong> (por partes):</p>
+<ul>
+<li>Each aspect of the plot is handled separately <em>through a series
+of function calls</em>.<br />
+</li>
+<li>This is <em>sometimes conceptually simpler</em> and allows plotting
+to <em>mirror</em> the <em>thought process</em>.</li>
+</ul>
+<p><code>Lattice</code> graphics are usually <strong>created in a single
+function call</strong>:</p>
+<ul>
+<li>All of the <em>graphics parameters</em> have to be <em>specified at
+once</em>.<br />
+</li>
+<li>Specifying everything at once <em>allows</em> R to <em>automatically
+calculate</em> the necessary <em>spacings</em> and <em>font
+sizes</em>.</li>
+</ul>
+<p>The <code>ggplot2</code> system <strong>combines concepts</strong>
+from both <code>base</code> and <code>lattice</code> graphics but uses
+an independent implementation.</p>
+</div>
+<div id="how-does-a-plot-get-created" class="section level2"
+number="5.3">
+<h2><span class="header-section-number">5.3</span> How does a plot get
+created?</h2>
+<p>There are <strong>two basic approaches</strong> to plotting.</p>
+<div id="screen-device-approach." class="section level3" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Screen device
+approach.</h3>
+<p>The <strong>first and most common approach</strong> involves:</p>
+<ol style="list-style-type: decimal">
+<li><p><em>Call a plotting function</em> like <code>plot()</code>,
+<code>xyplot()</code> or <code>qplot()</code>.</p></li>
+<li><p>The <em>plot appears</em> on the screen device.</p></li>
+<li><p><em>Annotate</em> the plot if necessary.</p></li>
+<li><p>Enjoy.</p></li>
+</ol>
+<p>Here’s <strong>an example</strong> of this process in making a plot
+with the <code>plot()</code> function.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Make plot appear on screen device.</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(faithful, <span class="fu">plot</span>(eruptions, waiting))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Annotte with a title.</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Old Faithful Geyser data&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+<div id="file-devices-approach." class="section level3" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> File devices
+approach.</h3>
+<p>The <strong>second basic approach</strong> to plotting is most
+commonly used for <em>file devices</em>:</p>
+<ol style="list-style-type: decimal">
+<li><p><em>Explicitly launch</em> a graphics device.</p></li>
+<li><p><em>Call a plotting function</em> to make a plot (notice: if we
+are using a file device, no plot will appear on the screen).</p></li>
+<li><p><em>Annotate</em> the plot if necessary.</p></li>
+<li><p><em>Explicitly close</em> graphics device with
+<code>dev.off()</code> (<strong><em>this is very
+important!</em></strong>).</p></li>
+</ol>
+<p>Here’s <strong>an example</strong> of how to make a <em>plot</em>
+that gets <em>saved in a PDF file</em>.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Open PDF device; create &#39;myplot.pdf&#39; in my data working directory.</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="at">file =</span> <span class="st">&quot;4_data/myplot.pdf&quot;</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Create plot and send to a file (no plot appears on the screen).</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(faithful, <span class="fu">plot</span>(eruptions, waiting))</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Annotate plot; still nothing on screen.</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Old Faithful Geyser data&quot;</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Close the PDF file device.</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.cur</span>()</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>pdf </span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span> </span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> </span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.cur</span>()</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> </span></code></pre></div>
+</div>
+</div>
+<div id="graphics-file-devices-vector-and-bitmap-devices."
+class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Graphics file
+devices: <code>vector</code> and <code>bitmap</code> devices.</h2>
+<p>There are <strong>two basic types</strong> of <em>file devices</em>
+to consider: <code>vector</code> and <code>bitmap</code> devices.</p>
+<ul>
+<li><p><code>Vector</code> formats are good for <em>line drawings</em>
+and plots with <em>solid colors</em> using a <em>modest number of
+points</em>.</p></li>
+<li><p><code>Bitmap</code> formats are good for plots with a <em>large
+number of points</em>, <em>natural scenes</em> or <em>web-based</em>
+plots.</p></li>
+</ul>
+<p>Some of the <strong>key <code>vector</code> formats</strong> are:</p>
+<ul>
+<li><code>pdf</code>:
+<ul>
+<li>useful for <em>line-type</em> graphics, resizes well, usually
+portable;<br />
+</li>
+<li><em>not efficient</em> if a plot has <em>many
+objects/points</em>.</li>
+</ul></li>
+<li><code>svg</code>:
+<ul>
+<li>XML-based scalable vector graphics;<br />
+</li>
+<li>supports <em>animation</em> and <em>interactivity</em>;<br />
+</li>
+<li>potentially useful for <em>web-based plots</em>.<br />
+</li>
+</ul></li>
+<li><code>win.metafile</code>:
+<ul>
+<li>Windows metafile format (only on Windows).<br />
+</li>
+</ul></li>
+<li><code>postscript</code>:
+<ul>
+<li><em>older format</em>, also resizes well, usually portable;<br />
+</li>
+<li>can be used to create <em>encapsulated</em> postscript files;<br />
+</li>
+<li>Windows systems often don’t have a postscript viewer.</li>
+</ul></li>
+</ul>
+<p>Some examples of <strong>bitmap formats</strong> are:</p>
+<ul>
+<li><code>png</code>:
+<ul>
+<li>stands for Portable Network Graphics, good for <em>line
+drawings</em> or <em>images with solid colors</em>;<br />
+</li>
+<li>uses <em>lossless compression</em> (like the old GIF format);<br />
+</li>
+<li><em>most web browsers</em> can read this format
+<em>natively</em>;<br />
+</li>
+<li>good for plotting <em>many many many points</em>;<br />
+</li>
+<li>does <em>not resize well</em>.<br />
+</li>
+</ul></li>
+<li><code>jpeg</code>:
+<ul>
+<li>good for <em>photographs</em> or <em>natural scenes</em>;</li>
+<li><em>not great</em> for <em>line drawings</em>;<br />
+</li>
+<li>uses <em>lossy compression</em>;</li>
+<li>can be read by <em>almost any computer</em> and <em>any web
+browser</em>;<br />
+</li>
+<li>good for plotting <em>many many many points</em>.<br />
+</li>
+</ul></li>
+<li><code>tiff</code>:
+<ul>
+<li>older <em>lossless compression</em> meta-format.<br />
+</li>
+</ul></li>
+<li><code>bmp</code>:
+<ul>
+<li>a <em>native Windows</em> bitmapped format.</li>
+</ul></li>
+</ul>
+</div>
+<div
+id="multiple-open-graphics-devices-checking-and-setting-the-current-device-dev.curr-dev.set."
+class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Multiple open
+graphics devices, checking and setting the current device:
+<code>dev.curr()</code>, <code>dev.set()</code>.</h2>
+<p>It <strong>is possible</strong> to <em>open multiple graphics
+devices</em> (screen, file, or both), for example when viewing multiple
+plots at once.</p>
+<ul>
+<li><p>Plotting can only occur on <em>one graphics device at a
+time</em>, though.</p></li>
+<li><p>Every <em>open</em> graphics device is <em>assigned an
+integer</em> <strong><em>starting with 2</em></strong> (there’s
+<strong><em>no graphics device 1</em></strong>).</p></li>
+</ul>
+<p>The <strong>currently active graphics device</strong> can be found by
+calling <code>dev.cur()</code>.</p>
+<p>You can <strong>change the active graphics device</strong> with
+<code>dev.set(&lt;integer&gt;)</code>.</p>
+<ul>
+<li><code>&lt;integer&gt;</code> is the number associated with the
+graphics device you want to switch to.</li>
+</ul>
+</div>
+<div id="copying-plots-to-another-device-dev.copy-dev.copy2pdf-dev.off."
+class="section level2" number="5.6">
+<h2><span class="header-section-number">5.6</span> Copying plots to
+another device: <code>dev.copy()</code>, <code>dev.copy2pdf()</code>,
+<code>dev.off()</code>.</h2>
+<p>Copying a plot to another device <strong>can be useful</strong>
+because some plots require a lot of code and it <em>can be a pain</em>
+to type all that in again for a different device.</p>
+<ul>
+<li><p>Notice that copying a plot <strong>is not an exact
+operation</strong>, so the result may not be identical to the
+original.</p></li>
+<li><p>In particular, when copying from the <em>screen device</em> to a
+<em>file</em>, depending on the size of the file device, <em>many
+annotations</em> such as axis labels <em>may not look
+right</em>.</p></li>
+</ul>
+<p>The <code>dev.copy()</code> command can be used to copy a plot
+<em>from one device to another</em>.</p>
+<p>The <code>dev.copy2pdf()</code> function is used
+<em>specifically</em> to copy a plot <em>from the current device</em>
+(usually the screen device) <em>to a PDF file</em>.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(datasets)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Create plot on screen device and add a main title.</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(faithful, <span class="fu">plot</span>(eruptions, waiting))</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Old Faithvul Geyser data&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Copy my plot to a PNG file.</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.copy</span>(png, <span class="at">file =</span> <span class="st">&quot;4_data/geyserplot.png&quot;</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span> </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Don&#39;t forget to close the PNG device!</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>png </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> </span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="the-base-plotting-system." class="section level1" number="6">
+<h1><span class="header-section-number">6</span> The base plotting
+system.</h1>
+<p>As we saw, the core base plotting and graphics engine in R is
+encapsulated in the following packages:</p>
+<ul>
+<li>the <code>grDevices</code> package, contains the functionality for
+sending plots to various output devices.<br />
+</li>
+<li>the <code>graphics</code> package, contains the code for actually
+constructing and annotating plots.</li>
+</ul>
+<p>Now we’ll focus on using the base plotting system to create graphics
+<strong>on the screen</strong> <strong>device</strong>.</p>
+<div id="again-the-two-phases-involved-in-a-base-plot."
+class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Again, the two
+<em>phases</em> involved in a base plot.</h2>
+<p>We know that creating a base plot involves two <em>phases</em>:</p>
+<ol style="list-style-type: decimal">
+<li><em>Inizializing</em> a new plot.
+<ul>
+<li>Calling <code>plot(x, y)</code> or <code>hist()</code> will:
+<ul>
+<li><em>launch</em> a <em>graphic device</em> (if one is not already
+open), and<br />
+</li>
+<li><em>draw</em> a <em>new plot</em> on the device.<br />
+</li>
+</ul></li>
+<li>If the arguments to <code>plot()</code> or <code>hist()</code> are
+not of some special class, then the <em>default method</em> is
+called.<br />
+</li>
+</ul></li>
+<li><em>Annotating</em> an existing plot.
+<ul>
+<li>Annotation functions like <code>text()</code>,
+<code>abline()</code>, <code>points()</code>, etc. to <em>add</em> or to
+<em>modify</em> an existing plot.</li>
+</ul></li>
+</ol>
+<p><strong>Notice:</strong> most of the base plotting functions have
+<em>many arguments</em>, for example, setting the title, labels of axes,
+plot character, etc.</p>
+<ul>
+<li>some of the parameters can be <em>set when we call</em> the
+function, or<br />
+</li>
+<li>they can be <em>added later</em> in a separate function call.</li>
+</ul>
+</div>
+<div id="global-parameters-par." class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Global parameters:
+<code>par()</code>.</h2>
+<p>The base graphics system has <strong>many global parameters</strong>
+that can set and tweaked.</p>
+<p>These parameters are <strong>documented in <code>?par</code></strong>
+and are used to control the <strong>global behavior of plots</strong>,
+such as the <em>margins</em>, <em>axis orientation</em> and other
+details.</p>
+<ul>
+<li>We can use <code>par()</code> to <strong>set parameters</strong> OR
+to <strong>find out what values</strong> are already set.</li>
+</ul>
+<p>To <strong>reset to the defaults</strong>: use <code>dev.off()</code>
+or <code>plot.new()</code>.</p>
+</div>
+<div id="simple-base-graphics." class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Simple base
+graphics.</h2>
+<div id="histogram-hist." class="section level3" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Histogram:
+<code>hist()</code>.</h3>
+<p>If we run the following example and <em>our graphics window</em> is
+not already open, it <em>should open once</em> we <em>call</em> the
+<code>hist()</code> function.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(datasets)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="do">## We are interested in the Ozone variable.</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(airquality<span class="sc">$</span>Ozone)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">NA</span> <span class="cn">NA</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Draw a new plot on the screen device (a simple histogram to see</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="do">## the distribution of the measurements).</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(airquality<span class="sc">$</span>Ozone)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+</div>
+<div id="boxplot-boxplot.-1" class="section level3" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Boxplot:
+<code>boxplot()</code>.</h3>
+<p>We already know that <code>boxplot()</code> takes as its <em>first
+argument</em> a <strong><em>formula</em></strong>.</p>
+<ul>
+<li><p>The formula has <em>form</em> of
+<code>y-axis ∼ x-axis</code>.</p></li>
+<li><p>Anytime we see a <code>∼</code> in R, it’s a
+<em>formula</em>.</p></li>
+</ul>
+<p>For example, let’s plot the <strong><code>Ozone</code>
+levels</strong> in New York <strong>by <code>Month</code></strong>:</p>
+<ul>
+<li>With the <code>table()</code> command we can see that the data
+covers 5 months, May through September.<br />
+</li>
+<li>We want a boxplot of <code>Ozone</code> <em>as a function of</em>
+the <code>Month</code> in which the measurements were taken.
+<ul>
+<li>So we’ll use the R formula <code>Ozone ~ Month</code> as the first
+argument of <code>boxplot()</code>.</li>
+<li>We could first transform the <code>Month</code> variable <strong>in
+to a factor</strong> before we use it in the <strong>right hand
+side</strong> of the formula. If we don’t, <code>boxplot()</code> will
+treat that variable as continuous (which in our example it makes no
+difference).</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(airquality<span class="sc">$</span>Month)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span>  <span class="dv">6</span>  <span class="dv">7</span>  <span class="dv">8</span>  <span class="dv">9</span> </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span> <span class="dv">30</span> <span class="dv">31</span> <span class="dv">31</span> <span class="dv">30</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="do">## airquality &lt;- transform(airquality, Month = factor(Month))</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Ozone <span class="sc">~</span> Month, airquality,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Month&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Ozone (ppb)&quot;</span>,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.axis =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">col.lab =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">&quot;Ozone through months in New York City&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<ul>
+<li><strong>Notice:</strong> <code>boxplot</code>, unlike
+<code>hist</code>, <strong>does NOT specify</strong> a
+<code>title</code> and <code>axis labels</code> for us
+<strong>automatically</strong>.
+<ul>
+<li>We had to set all that by ourselves.<br />
+</li>
+</ul></li>
+<li>The monthly boxplots show some interesting features.
+<ul>
+<li>First, the <em>levels</em> of ozone tend to be <em>highest in July
+and August</em>.<br />
+</li>
+<li>Second, the <em>variability</em> of ozone is <em>also highest in
+July and August</em>.<br />
+</li>
+<li>This phenomenon is common with <strong>environmental data</strong>
+where <strong>the mean</strong> and <strong>the variance</strong> are
+<em>often related</em> to each other.</li>
+</ul></li>
+</ul>
+</div>
+<div id="scatterplot-plot." class="section level3" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Scatterplot:
+<code>plot()</code>.</h3>
+<p><em>Generally</em>, the <code>plot()</code> function <strong>takes
+two vectors of numbers</strong>:</p>
+<ul>
+<li>one for the <em>x-axis coordinates</em>, and<br />
+</li>
+<li>one for the <em>y-axis coordinates</em>.</li>
+</ul>
+<p>Here is a simple scatterplot made with the <code>plot()</code>
+function.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, <span class="fu">plot</span>(Wind, Ozone))</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Ozone and Wind in New York City&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><em>However</em>, <code>plot()</code> is what’s called a
+<strong>generic function</strong> in R, which means its behavior can
+change depending on what kinds of data are passed to the function.</p>
+<ul>
+<li>We won’t go into detail about that behavior for now.</li>
+</ul>
+<p>The <strong>type of plot</strong> to be drawn, can be specified
+through the <strong><code>type</code> argument</strong> to
+<code>plot()</code>. Possible types are:</p>
+<ul>
+<li><code>p</code> for points,<br />
+</li>
+<li><code>l</code> for lines,<br />
+</li>
+<li><code>b</code> for both,<br />
+</li>
+<li><code>c</code> for the lines part alone of <code>b</code>,<br />
+</li>
+<li><code>o</code> for both ‘overplotted’,<br />
+</li>
+<li><code>h</code> for ‘histogram’ like (or ‘high-density’) vertical
+lines,<br />
+</li>
+<li><code>s</code> for stair steps,<br />
+</li>
+<li><code>S</code> for other steps,<br />
+</li>
+<li><code>n</code> for no plotting.</li>
+</ul>
+<p>We’ll focus on the <strong>default behavior</strong> of the
+<code>plot()</code> function.</p>
+<ul>
+<li>Notice here that <code>plot()</code> <em>automatically creates
+labels</em> for the <em>x- and y-axis</em>, from the names of the
+variables* (i.e. <code>Wind</code> and <code>Ozone</code>).
+<ul>
+<li>It <em>doesn’t automatically create a title</em>, though.<br />
+</li>
+</ul></li>
+<li>This can be useful when we are making plots quickly, but it demands
+that we have useful descriptive names for our variables and R
+objects.</li>
+</ul>
+</div>
+</div>
+<div
+id="some-important-base-graphics-parameters-continuing-par-explanation."
+class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Some important base
+graphics parameters: continuing <code>par()</code> explanation.</h2>
+<p>Many base plotting functions <strong>share</strong> a <strong>set of
+global parameters</strong>.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">par</span>())</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">72</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">par</span>())</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;xlog&quot;</span>      <span class="st">&quot;ylog&quot;</span>      <span class="st">&quot;adj&quot;</span>       <span class="st">&quot;ann&quot;</span>       <span class="st">&quot;ask&quot;</span>       <span class="st">&quot;bg&quot;</span>       </span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;bty&quot;</span>       <span class="st">&quot;cex&quot;</span>       <span class="st">&quot;cex.axis&quot;</span>  <span class="st">&quot;cex.lab&quot;</span>   <span class="st">&quot;cex.main&quot;</span>  <span class="st">&quot;cex.sub&quot;</span>  </span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;cin&quot;</span>       <span class="st">&quot;col&quot;</span>       <span class="st">&quot;col.axis&quot;</span>  <span class="st">&quot;col.lab&quot;</span>   <span class="st">&quot;col.main&quot;</span>  <span class="st">&quot;col.sub&quot;</span>  </span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;cra&quot;</span>       <span class="st">&quot;crt&quot;</span>       <span class="st">&quot;csi&quot;</span>       <span class="st">&quot;cxy&quot;</span>       <span class="st">&quot;din&quot;</span>       <span class="st">&quot;err&quot;</span>      </span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;family&quot;</span>    <span class="st">&quot;fg&quot;</span>        <span class="st">&quot;fig&quot;</span>       <span class="st">&quot;fin&quot;</span>       <span class="st">&quot;font&quot;</span>      <span class="st">&quot;font.axis&quot;</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] <span class="st">&quot;font.lab&quot;</span>  <span class="st">&quot;font.main&quot;</span> <span class="st">&quot;font.sub&quot;</span>  <span class="st">&quot;lab&quot;</span>       <span class="st">&quot;las&quot;</span>       <span class="st">&quot;lend&quot;</span>     </span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] <span class="st">&quot;lheight&quot;</span>   <span class="st">&quot;ljoin&quot;</span>     <span class="st">&quot;lmitre&quot;</span>    <span class="st">&quot;lty&quot;</span>       <span class="st">&quot;lwd&quot;</span>       <span class="st">&quot;mai&quot;</span>      </span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] <span class="st">&quot;mar&quot;</span>       <span class="st">&quot;mex&quot;</span>       <span class="st">&quot;mfcol&quot;</span>     <span class="st">&quot;mfg&quot;</span>       <span class="st">&quot;mfrow&quot;</span>     <span class="st">&quot;mgp&quot;</span>      </span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] <span class="st">&quot;mkh&quot;</span>       <span class="st">&quot;new&quot;</span>       <span class="st">&quot;oma&quot;</span>       <span class="st">&quot;omd&quot;</span>       <span class="st">&quot;omi&quot;</span>       <span class="st">&quot;page&quot;</span>     </span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] <span class="st">&quot;pch&quot;</span>       <span class="st">&quot;pin&quot;</span>       <span class="st">&quot;plt&quot;</span>       <span class="st">&quot;ps&quot;</span>        <span class="st">&quot;pty&quot;</span>       <span class="st">&quot;smo&quot;</span>      </span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] <span class="st">&quot;srt&quot;</span>       <span class="st">&quot;tck&quot;</span>       <span class="st">&quot;tcl&quot;</span>       <span class="st">&quot;usr&quot;</span>       <span class="st">&quot;xaxp&quot;</span>      <span class="st">&quot;xaxs&quot;</span>     </span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] <span class="st">&quot;xaxt&quot;</span>      <span class="st">&quot;xpd&quot;</span>       <span class="st">&quot;yaxp&quot;</span>      <span class="st">&quot;yaxs&quot;</span>      <span class="st">&quot;yaxt&quot;</span>      <span class="st">&quot;ylbias&quot;</span>   </span></code></pre></div>
+<p>There are <strong>a boatload (72) of parameters</strong> that
+<code>par()</code> gives us access to.</p>
+<p>Here are a <em>few key ones</em>:</p>
+<ul>
+<li><code>pch</code>:
+<ul>
+<li>the <em>plotting character</em> or <em>plotting symbol</em>
+(<strong>default</strong> is <em>open circle</em>).<br />
+</li>
+<li>the <code>pchShow()</code> function gives all the symbol codes
+available.<br />
+</li>
+</ul></li>
+<li><code>lty</code>:
+<ul>
+<li>the <em>line type</em> (<strong>default</strong> is <em>solid
+line</em>);</li>
+<li>can be dashed, dotted, etc.<br />
+</li>
+</ul></li>
+<li><code>lwd</code>:
+<ul>
+<li>the <em>line width</em>, specified as an <em>integer
+multiple</em>.<br />
+</li>
+</ul></li>
+<li><code>col</code>:
+<ul>
+<li>the <em>plotting color</em>, specified as a <em>number</em>,
+<em>string</em> or <em>hex code</em>;<br />
+</li>
+<li>the <code>colors()</code> function gives us a vector of colors by
+name.<br />
+</li>
+</ul></li>
+<li><code>xlab</code>:
+<ul>
+<li>character string for the x-axis label.<br />
+</li>
+</ul></li>
+<li><code>ylab</code>:
+<ul>
+<li>character string for the y-axis label.</li>
+</ul></li>
+</ul>
+<p>The <code>par()</code> function is used to <strong>specify the global
+graphics parameters</strong> that affect <strong>all plots in an R
+session</strong>.</p>
+<p>The <strong>following parameters can be overridden</strong> when they
+are specified <em>as arguments</em> to specific plotting functions:</p>
+<ul>
+<li><code>las</code>:
+<ul>
+<li>the <em>orientation of the axis labels</em> on the plot.<br />
+</li>
+</ul></li>
+<li><code>bg</code>, <code>fg</code>:
+<ul>
+<li>the <em>background color</em> and the <em>foreground
+color</em>.<br />
+</li>
+</ul></li>
+<li><code>mar</code>:
+<ul>
+<li>the <em>margin size</em>.<br />
+</li>
+<li>The various margin parameters, like <code>mar</code>, are specified
+by setting <strong>a value</strong> for <strong>each side</strong> of
+the plot.<br />
+</li>
+<li>Each number tells <em>how many lines of text</em> to leave at each
+side.<br />
+</li>
+<li>The numbers are <em>assigned clockwise starting at the bottom</em>.
+<ul>
+<li><strong>Side 1</strong> is the <em>bottom</em> of the plot.<br />
+</li>
+<li><strong>Side 2</strong> is the <em>left hand side</em>.<br />
+</li>
+<li><strong>Side 3</strong> is the <em>top</em>.<br />
+</li>
+<li><strong>Side 4</strong> is the <em>right hand side</em>.<br />
+</li>
+</ul></li>
+<li>The <strong>default</strong> for the inner margin is <em>c(5.1, 4.1,
+4.1, 2.1)</em>.<br />
+</li>
+</ul></li>
+<li><code>oma</code>:
+<ul>
+<li>the <em>outer margin size</em>.<br />
+</li>
+<li>The <strong>default</strong> is <em>0 for all sides</em>.<br />
+</li>
+</ul></li>
+<li><code>mfrow</code>:
+<ul>
+<li>number of <em>plots per row, column</em> (plots are <strong>filled
+row-wise</strong>).<br />
+</li>
+</ul></li>
+<li><code>mfcol</code>:
+<ul>
+<li>number of <em>plots per row, column</em> (plots are <strong>filled
+column-wise</strong>).<br />
+</li>
+</ul></li>
+<li><code>pin</code>:
+<ul>
+<li>plot dimensions in inches.</li>
+</ul></li>
+</ul>
+<p>We can <strong>see the default values</strong> for global graphics
+parameters by calling the <code>par()</code> function and
+<em>passing</em> the <em>name of the parameter in quotes</em>.</p>
+<ul>
+<li>Alternatively, we can run the command with the <code>$</code>
+syntax: <code>par()$&lt;parameter&gt;</code></li>
+</ul>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="st">&quot;lty&quot;</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;solid&quot;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>()<span class="sc">$</span>col</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;black&quot;</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="st">&quot;pch&quot;</span>)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>()<span class="sc">$</span>bg</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;white&quot;</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>()<span class="sc">$</span>fg</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;black&quot;</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="st">&quot;mar&quot;</span>)</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">5.1</span> <span class="fl">4.1</span> <span class="fl">4.1</span> <span class="fl">2.1</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="st">&quot;mfrow&quot;</span>)</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1</span> <span class="dv">1</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>()<span class="sc">$</span>pin</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">5.76</span> <span class="fl">3.16</span></span></code></pre></div>
+</div>
+<div id="base-plotting-functions.-diving-into-plot-function."
+class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Base plotting
+functions. Diving into <code>plot()</code> function.</h2>
+<p>The <strong>most basic</strong> base plotting function is
+<code>plot()</code>.</p>
+<ul>
+<li>It makes a <em>scatterplot</em> or <em>other type</em> of plot
+depending on the <strong>class of the object</strong> being
+plotted.</li>
+</ul>
+<p><em>Calling</em> <code>plot()</code> will draw a plot <em>on the
+screen device</em> (and open the screen device if not already open).</p>
+<p>After that, <em>annotation functions</em> can be called to add to the
+already-made plot.</p>
+<div id="some-key-annotation-functions." class="section level3"
+number="6.5.1">
+<h3><span class="header-section-number">6.5.1</span> Some key annotation
+functions.</h3>
+<ul>
+<li><code>lines()</code>:
+<ul>
+<li><em>add lines</em> to a plot, given a vector of <code>x</code>
+values and a corresponding vector of <code>y</code> values (or a
+2-column matrix);<br />
+</li>
+<li>this function <em>just connects the dots</em>.<br />
+</li>
+</ul></li>
+<li><code>points()</code>:
+<ul>
+<li><em>add points</em> to a plot.<br />
+</li>
+</ul></li>
+<li><code>text()</code>:
+<ul>
+<li><em>add text labels</em> <strong>inside</strong> a plot using
+<em>specified <code>x, y</code> coordinates</em>.<br />
+</li>
+</ul></li>
+<li><code>legend()</code>:
+<ul>
+<li><em>add legends</em> <strong>inside</strong> a plot, in an
+<code>x, y</code> arbitrary position or in a position specified by a
+keyword (“bottomright”, “bottom”, “bottomleft”, “left”, “topleft”,
+“top”, “topright”, “right” and “center”).<br />
+</li>
+</ul></li>
+<li><code>title()</code>:
+<ul>
+<li><em>add annotations</em> <strong>outside</strong> a plot, to
+<code>x, y</code> <em>axis labels, title, subtitle,</em> <em>outer
+margin</em>.<br />
+</li>
+</ul></li>
+<li><code>mtext()</code>:
+<ul>
+<li><em>add arbitrary text</em> to the <em>margins</em> (inner or outer)
+of the plot.<br />
+</li>
+<li>This function is important for adding text annotations that aren’t
+specific to a single plot in an arrange of multiple plots.<br />
+</li>
+</ul></li>
+<li><code>axis()</code>:
+<ul>
+<li>adding <em>axis ticks/labels</em>.</li>
+</ul></li>
+</ul>
+<p>Here’s an <strong>example</strong> of creating a base plot and then
+adding some annotation (a <code>title</code>, a <code>text</code>, a
+<code>legend</code>).</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(datasets)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Make the initial plot.</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, <span class="fu">plot</span>(Wind, Ozone))</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Add a title, text, legend.</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Ozone and Wind in New York City&quot;</span>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="st">&quot;twilight zone&quot;</span>)                     <span class="co"># this lablel will be centered on x coodinate.</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;right&quot;</span>, <span class="at">legend =</span> <span class="st">&quot;Data&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><strong>Alternatively</strong>, we can:</p>
+<ul>
+<li>start with the same plot as above and <strong>add the title right
+away</strong> using <strong>the <code>main</code></strong>
+<strong>argument to <code>plot()</code></strong>;<br />
+</li>
+<li><strong>then annotate</strong> using the <code>points()</code>
+command to <em>coloring blue</em> the <em>data points</em> corresponding
+to the <em>month of May</em>.</li>
+</ul>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, <span class="fu">plot</span>(Wind, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Wind in New York City&quot;</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(airquality, Month <span class="sc">==</span> <span class="dv">5</span>), <span class="fu">points</span>(Wind, Ozone, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+</div>
+<div id="the-type-n-paradigm." class="section level3" number="6.5.2">
+<h3><span class="header-section-number">6.5.2</span> The
+<code>type = "n"</code> paradigm.</h3>
+<p>When constructing the initial plot, we can use <strong>the option
+<code>type = "n"</code></strong> in the call to <code>plot()</code>.</p>
+<ul>
+<li><p>This is a <em>common paradigm</em> by which <code>plot()</code>
+will draw everything in the plot <em>except</em> for the <em>data
+points</em> inside the plot window.</p></li>
+<li><p>Then we can use annotation functions like <code>points()</code>
+to <em>add data points</em>.</p></li>
+</ul>
+<p>So let’s make <strong>example</strong> of this paradigm:</p>
+<ul>
+<li>first <em>create</em> the plot <em>without drawing the data
+points</em>;<br />
+</li>
+<li>then add <em>blue points</em> for data points of May and <em>red
+points</em> for all other data points;<br />
+</li>
+<li>finally, we add a legend with the <code>legend()</code> function
+explaining the meaning of the different colors in the plot.</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, <span class="fu">plot</span>(Wind, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Wind in New York City&quot;</span>, <span class="at">type =</span> <span class="st">&quot;n&quot;</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(airquality, Month <span class="sc">==</span> <span class="dv">5</span>), <span class="fu">points</span>(Wind, Ozone, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">pch =</span> <span class="dv">17</span>))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(airquality, Month <span class="sc">!=</span> <span class="dv">5</span>), <span class="fu">points</span>(Wind, Ozone, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">pch =</span> <span class="dv">8</span>))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">17</span>, <span class="dv">8</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;May&quot;</span>, <span class="st">&quot;Other Months&quot;</span>))</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">median</span>(airquality<span class="sc">$</span>Wind), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><strong>Another example</strong> on the fly:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Data.</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Grouping -factor- variable, with 2 levels: &quot;male&quot; and &quot;female&quot;.</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">gl</span>(<span class="dv">2</span>, <span class="dv">50</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>))</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(g)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a> Factor w<span class="sc">/</span> <span class="dv">2</span> levels <span class="st">&quot;male&quot;</span>,<span class="st">&quot;female&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot points by groups, sequentially.</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y, <span class="at">type =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x[g <span class="sc">==</span> <span class="st">&quot;male&quot;</span>], y[g <span class="sc">==</span> <span class="st">&quot;male&quot;</span>], <span class="at">col =</span> <span class="st">&quot;salmon&quot;</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x[g <span class="sc">==</span> <span class="st">&quot;female&quot;</span>], y[g <span class="sc">==</span> <span class="st">&quot;female&quot;</span>], <span class="at">col =</span> <span class="st">&quot;green&quot;</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;salmon&quot;</span>, <span class="st">&quot;green&quot;</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+</div>
+<div id="base-plot-with-regression-line-lm-and-abline."
+class="section level3" number="6.5.3">
+<h3><span class="header-section-number">6.5.3</span> Base plot with
+regression line: <code>lm()</code> and <code>abline()</code>.</h3>
+<p>It’s <strong>fairly common</strong> to make a scatterplot and then
+<strong>want to draw</strong> a <strong>simple linear</strong>
+<strong>regression line</strong> through the data.</p>
+<p>This can be done with the <code>abline()</code> and <code>lm()</code>
+functions.</p>
+<ul>
+<li>Below, we first make the plot (as above).
+<ul>
+<li>Note that in the <strong>call to <code>plot()</code></strong>, we
+set <code>pch = 20</code> to change the plotting symbol to a <em>filled
+circle</em>.<br />
+</li>
+</ul></li>
+<li>Then we <strong>fit</strong> a <strong>simple linear regression
+model</strong> using the <code>lm()</code> function.
+<ul>
+<li>Here, we try to model <em>Ozone as a function of Wind</em>.<br />
+</li>
+</ul></li>
+<li>Then we take the output of <code>lm()</code> and <strong>pass it to
+the <code>abline()</code> function</strong> which automatically takes
+the information from the model object and <em>calculates</em> the
+corresponding <em>regression line</em>.</li>
+</ul>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, <span class="fu">plot</span>(Wind, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Wind in New York City&quot;</span>, </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">pch =</span> <span class="dv">20</span>))</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit a simple linear regression model.</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Wind, airquality)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Draw regression line on plot.</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+</div>
+<div id="multiple-base-plots-mfrow-mfcol-mar-oma-parameters-of-par."
+class="section level3" number="6.5.4">
+<h3><span class="header-section-number">6.5.4</span> Multiple base
+plots: <code>mfrow</code>, <code>mfcol</code>, <code>mar</code>,
+<code>oma</code> parameters of <code>par()</code>.</h3>
+<p>Making <strong>multiple plots side by side</strong> is a <em>useful
+way</em> to <em>visualize many relationships</em> between variables and
+<em>identify patterns</em> in the data, with <em>static 2-D
+plots</em>.</p>
+<p>In order to do this, <strong>the <code>mfrow</code> and
+<code>mfcol</code> parameters</strong> set by the <code>par()</code>
+function <strong>are critical</strong>.</p>
+<ul>
+<li><em>Both</em> parameters take <em>two numbers</em>: the <em>number
+of rows</em> of plots followed by the <em>number of columns</em>.<br />
+</li>
+<li>The multiple plots will be <em>arranged in a matrix-like
+pattern</em>.<br />
+</li>
+<li>The <em>only difference</em> between the two parameters is that:
+<ul>
+<li>if <code>mfrow</code> is set, then the plots will be <em>drawn
+row-wise</em>;<br />
+</li>
+<li>if <code>mfcol</code> is set, the plots will be <em>drawn
+column-wise</em>.</li>
+</ul></li>
+</ul>
+<p>In the <strong>example below</strong>:</p>
+<ul>
+<li>We make two plots:
+<ul>
+<li>one of <code>Ozone</code> and <code>Wind</code>;<br />
+</li>
+<li>another with <code>Ozone</code> and <code>Solar.R</code>.<br />
+</li>
+</ul></li>
+<li>We set <code>par(mfrow = c(1, 2))</code>, which indicates that we
+want <em>one row</em> of plots and <em>two columns</em> of plots.</li>
+</ul>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, {</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Wind, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Wind&quot;</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Solar.R, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Solar Radiation&quot;</span>)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><strong>Another example</strong> tweaking also margins:</p>
+<ul>
+<li>Create <em>three plots in a row</em> by setting
+<code>par(mfrow = c(1, 3))</code>.<br />
+</li>
+<li>Also <em>change the plot margins</em> with the <code>mar</code>
+parameter, in particular, <em>reduce</em> the default value of each of
+the inner margins in order to <em>have room for some outer
+text</em>.<br />
+</li>
+<li>Also <em>modify the outer margin</em> via the <code>oma</code>
+parameter to create a <em>little more space</em> for the plots and to
+<em>place them closer together</em>.<br />
+</li>
+<li>Finally, use the <code>mtext()</code> function to create an
+<em>overall title</em> for the panel of plots.</li>
+</ul>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airquality, {</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Wind, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Wind&quot;</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Solar.R, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Solar Radiation&quot;</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">plot</span>(Temp, Ozone, <span class="at">main =</span> <span class="st">&quot;Ozone and Temperature&quot;</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mtext</span>(<span class="st">&quot;Ozone and Weather in New York City&quot;</span>, <span class="at">outer =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module1_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+</div>
+<div id="built-in-examples-with-example-function."
+class="section level3" number="6.5.5">
+<h3><span class="header-section-number">6.5.5</span> Built in examples
+with <code>example()</code> function.</h3>
+<p>This function runs all the R code from the <em>Examples</em> part of
+a <em>given topic</em> of <em>R’s online help documentation</em>.</p>
+<p>So, if we do:</p>
+<pre><code>example(points)</code></pre>
+<p>it will launch and run all the example code belonging to
+<em>points</em> topic.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="session-info." class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Session Info.</h1>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] maps_3.<span class="fl">3.0</span>        stringr_1.<span class="fl">4.0</span>     lubridate_1.<span class="fl">9.2</span>   quantmod_0.<span class="fl">4.20</span>  </span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] TTR_0.<span class="fl">24.2</span>        xts_0.<span class="fl">12.1</span>        zoo_1<span class="fl">.8</span><span class="dv">-9</span>         readr_2.<span class="fl">0.1</span>      </span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] tidyr_1.<span class="fl">2.0</span>       dplyr_1.<span class="fl">0.8</span>       reshape2_1.<span class="fl">4.4</span>    Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>      </span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] ggplot2_3.<span class="fl">3.5</span>     Formula_1<span class="fl">.2</span><span class="dv">-3</span>     survival_3<span class="fl">.4</span><span class="dv">-0</span>    lattice_0<span class="fl">.20</span><span class="dv">-45</span>  </span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] jpeg_0<span class="fl">.1-8.1</span>      gitignore_0.<span class="fl">1.3</span>   rhdf5_2.<span class="fl">30.1</span>      httr_1.<span class="fl">4.2</span>       </span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] httpuv_1.<span class="fl">6.3</span>      sqldf_0<span class="fl">.4</span><span class="dv">-11</span>      RSQLite_2.<span class="fl">2.0</span>     gsubfn_0<span class="fl">.7</span>       </span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] proto_1.<span class="fl">0.0</span>       DBI_1.<span class="fl">1.1</span>         data.table_1.<span class="fl">14.0</span> jsonlite_1.<span class="fl">7.2</span>   </span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] XML_3<span class="fl">.99-0.3</span>      xlsx_0.<span class="fl">6.3</span>        plyr_1.<span class="fl">8.6</span>       </span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        bit64_4.<span class="fl">0.5</span>         RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> </span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] tools_3.<span class="fl">6.3</span>         backports_1.<span class="fl">4.1</span>     bslib_0.<span class="fl">3.0</span>        </span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] utf8_1.<span class="fl">2.2</span>          R6_2.<span class="fl">5.1</span>            rpart_4.<span class="fl">1.19</span>       </span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    nnet_7<span class="fl">.3</span><span class="dv">-18</span>        </span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] withr_2.<span class="fl">5.0</span>         tidyselect_1.<span class="fl">2.0</span>    gridExtra_2<span class="fl">.3</span>      </span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] bit_4.<span class="fl">0.4</span>           curl_4.<span class="fl">3.2</span>          compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] chron_2<span class="fl">.3</span><span class="dv">-55</span>        cli_3.<span class="fl">6.0</span>           formatR_1<span class="fl">.14</span>       </span>
+<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] htmlTable_2.<span class="fl">0.1</span>     labeling_0.<span class="fl">4.2</span>      sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] scales_1.<span class="fl">1.1</span>        checkmate_2.<span class="fl">0.0</span>     askpass_1<span class="fl">.1</span>        </span>
+<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] digest_0.<span class="fl">6.29</span>       foreign_0<span class="fl">.8</span><span class="dv">-76</span>      rmarkdown_2<span class="fl">.11</span>     </span>
+<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     pkgconfig_2.<span class="fl">0.3</span>     htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] fastmap_1.<span class="fl">1.0</span>       highr_0<span class="fl">.9</span>           htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] rlang_1.<span class="fl">0.6</span>         rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] jquerylib_0.<span class="fl">1.4</span>     generics_0.<span class="fl">1.2</span>      acepack_1.<span class="fl">4.1</span>      </span>
+<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] magrittr_2.<span class="fl">0.2</span>      Matrix_1<span class="fl">.5</span><span class="dv">-1</span>        Rcpp_1.<span class="fl">0.7</span>         </span>
+<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] munsell_0.<span class="fl">5.0</span>       Rhdf5lib_1.<span class="fl">8.0</span>      fansi_1.<span class="fl">0.2</span>        </span>
+<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] clipr_0.<span class="fl">7.1</span>         lifecycle_1.<span class="fl">0.3</span>     stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] yaml_2.<span class="fl">2.1</span>          grid_3.<span class="fl">6.3</span>          blob_1.<span class="fl">2.2</span>         </span>
+<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>    crayon_1.<span class="fl">5.0</span>        splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] xlsxjars_0.<span class="fl">6.1</span>      hms_1.<span class="fl">1.0</span>           knitr_1<span class="fl">.41</span>         </span>
+<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] pillar_1.<span class="fl">7.0</span>        tcltk_3.<span class="fl">6.3</span>         glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb46-53"><a href="#cb46-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] evaluate_0<span class="fl">.19</span>       latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb46-54"><a href="#cb46-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           tzdb_0.<span class="fl">3.0</span>          gtable_0.<span class="fl">3.0</span>       </span>
+<span id="cb46-55"><a href="#cb46-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] openssl_2.<span class="fl">0.5</span>       purrr_0.<span class="fl">3.4</span>         assertthat_0.<span class="fl">2.1</span>   </span>
+<span id="cb46-56"><a href="#cb46-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] xfun_0<span class="fl">.36</span>           later_1.<span class="fl">3.0</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb46-57"><a href="#cb46-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] rJava_0<span class="fl">.9</span><span class="dv">-13</span>        memoise_1.<span class="fl">1.0</span>       cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb46-58"><a href="#cb46-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] timechange_0.<span class="fl">2.0</span>    ellipsis_0.<span class="fl">3.2</span>     </span></code></pre></div>
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

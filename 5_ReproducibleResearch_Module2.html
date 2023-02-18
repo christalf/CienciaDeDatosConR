@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Reproducible Research Course - Module 2</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Reproducible Research Course - Module
+2</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#markdown." id="toc-markdown."><span
+class="toc-section-number">1</span> Markdown.</a>
+<ul>
+<li><a href="#what-is-markdown" id="toc-what-is-markdown"><span
+class="toc-section-number">1.1</span> What is Markdown?</a></li>
+<li><a href="#markdown-key-feature."
+id="toc-markdown-key-feature."><span
+class="toc-section-number">1.2</span> Markdown key feature.</a></li>
+<li><a href="#markdown-syntax." id="toc-markdown-syntax."><span
+class="toc-section-number">1.3</span> Markdown syntax.</a>
+<ul>
+<li><a href="#italics." id="toc-italics."><span
+class="toc-section-number">1.3.1</span> Italics.</a></li>
+<li><a href="#bold" id="toc-bold"><span
+class="toc-section-number">1.3.2</span> Bold</a></li>
+<li><a href="#headings" id="toc-headings"><span
+class="toc-section-number">1.3.3</span> Headings</a></li>
+<li><a href="#unordered-lists" id="toc-unordered-lists"><span
+class="toc-section-number">1.3.4</span> Unordered Lists</a></li>
+<li><a href="#ordered-lists" id="toc-ordered-lists"><span
+class="toc-section-number">1.3.5</span> Ordered Lists</a></li>
+<li><a href="#inline-links." id="toc-inline-links."><span
+class="toc-section-number">1.3.6</span> Inline links.</a></li>
+<li><a href="#advanced-linking-akin-inserting-footnotes."
+id="toc-advanced-linking-akin-inserting-footnotes."><span
+class="toc-section-number">1.3.7</span> Advanced Linking, akin inserting
+footnotes.</a></li>
+<li><a href="#newlines" id="toc-newlines"><span
+class="toc-section-number">1.3.8</span> Newlines</a></li>
+</ul></li>
+<li><a href="#markdown-resources" id="toc-markdown-resources"><span
+class="toc-section-number">1.4</span> Markdown Resources</a></li>
+</ul></li>
+<li><a href="#r-markdown." id="toc-r-markdown."><span
+class="toc-section-number">2</span> R Markdown.</a></li>
+<li><a href="#using-knitr-for-reproducible-reports."
+id="toc-using-knitr-for-reproducible-reports."><span
+class="toc-section-number">3</span> Using <code>knitr</code> for
+reproducible reports.</a>
+<ul>
+<li><a
+href="#pros-and-cons-of-literate-statistical-programming-for-writing-reports."
+id="toc-pros-and-cons-of-literate-statistical-programming-for-writing-reports."><span
+class="toc-section-number">3.1</span> Pros and Cons of literate
+statistical programming for writing reports.</a></li>
+<li><a href="#what-should-knitr-be-ideal-for-and-not"
+id="toc-what-should-knitr-be-ideal-for-and-not"><span
+class="toc-section-number">3.2</span> What should <code>knitr</code> be
+ideal for? and not?</a></li>
+<li><a
+href="#how-to-process-r-markdown-files-if-were-not-using-rstudio."
+id="toc-how-to-process-r-markdown-files-if-were-not-using-rstudio."><span
+class="toc-section-number">3.3</span> How to process R Markdown files if
+we’re not using RStudio.</a></li>
+<li><a href="#what-precisely-happens-when-we-process-a-knitr-document."
+id="toc-what-precisely-happens-when-we-process-a-knitr-document."><span
+class="toc-section-number">3.4</span> What precisely happens when we
+process a <code>knitr</code> document.</a></li>
+<li><a href="#code-chunks-syntax." id="toc-code-chunks-syntax."><span
+class="toc-section-number">3.5</span> Code chunks syntax.</a></li>
+<li><a href="#inline-code." id="toc-inline-code."><span
+class="toc-section-number">3.6</span> Inline code.</a></li>
+<li><a
+href="#chunk-options-hiding-the-code-the-prepended-symbols-andor-the-results."
+id="toc-chunk-options-hiding-the-code-the-prepended-symbols-andor-the-results."><span
+class="toc-section-number">3.7</span> Chunk options: hiding the code,
+the prepended <code>##</code> symbols and/or the results.</a></li>
+<li><a href="#a-brief-example." id="toc-a-brief-example."><span
+class="toc-section-number">3.8</span> A brief example.</a></li>
+<li><a href="#incorporating-graphics."
+id="toc-incorporating-graphics."><span
+class="toc-section-number">3.9</span> Incorporating graphics.</a>
+<ul>
+<li><a
+href="#knitr-embeds-the-figure-into-the-html-document-as-base-64-encoding-string."
+id="toc-knitr-embeds-the-figure-into-the-html-document-as-base-64-encoding-string."><span
+class="toc-section-number">3.9.1</span> <code>knitr</code> embeds the
+figure into the HTML document as base 64 encoding string.</a></li>
+</ul></li>
+<li><a href="#making-tables-with-xtable-package."
+id="toc-making-tables-with-xtable-package."><span
+class="toc-section-number">3.10</span> Making tables with
+<code>xtable</code> package.</a>
+<ul>
+<li><a href="#example-making-an-html-table-of-regression-coeficients."
+id="toc-example-making-an-html-table-of-regression-coeficients."><span
+class="toc-section-number">3.10.1</span> Example: making an HTML table
+of regression coeficients.</a></li>
+</ul></li>
+<li><a href="#setting-global-options-the-opts_chunk-variable-in-knitr."
+id="toc-setting-global-options-the-opts_chunk-variable-in-knitr."><span
+class="toc-section-number">3.11</span> Setting global options: the
+<code>opts_chunk</code> variable in <code>knitr</code>.</a></li>
+<li><a href="#caching-computations-the-cache-chunk-option."
+id="toc-caching-computations-the-cache-chunk-option."><span
+class="toc-section-number">3.12</span> Caching computations: the
+<code>cache</code> chunk option.</a>
+<ul>
+<li><a href="#some-caveats-to-caching."
+id="toc-some-caveats-to-caching."><span
+class="toc-section-number">3.12.1</span> Some caveats to
+caching.</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">4</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="markdown." class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Markdown.</h1>
+<div id="what-is-markdown" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> What is
+Markdown?</h2>
+<p>The name “Mark<em>down</em>” is a play on the name of
+“mark<em>up</em>” languages.</p>
+<p>Markdown essentially is:</p>
+<ul>
+<li><p>A <strong>tool for writing for the web</strong>.</p></li>
+<li><p>A <strong>simplified version of “markup”
+languages</strong>.</p></li>
+</ul>
+<p>In words of its creator <a
+href="http://daringfireball.net/projects/markdown/"><strong>John Gruber,
+creator of Markdown</strong></a>:</p>
+<blockquote>
+<p><em>“Markdown is a text-to-HTML conversion tool for web writers.
+Markdown allows you to write using an easy-to-read, easy-to-write plain
+text format, then convert it to structurally valid XHTML (or
+HTML)”.</em></p>
+</blockquote>
+<p>However, since its inception, Markdown <strong>has evolved to be
+widely adopted for a variety of purposes</strong>, far beyond writing
+for the web.</p>
+</div>
+<div id="markdown-key-feature." class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Markdown key
+feature.</h2>
+<p>Its key feature is that it <strong>can be read as-is</strong>,
+without any special formatting.</p>
+<ul>
+<li><em>Many markup languages</em>, like <code>HTML</code> or
+<code>LaTeX</code>, require that numerous formatting elements (tags) be
+included in the text to instruct the program that will be formatting the
+text for reading on how to display the text.<br />
+</li>
+<li>While this gives great control over the look and feel of the text to
+the writer, it can greatly <strong>obscure the source text
+itself</strong>, making the text difficult to read and edit.<br />
+</li>
+<li>With HTML, some of the tag clutter was removed with the use of
+cascading style sheets (CSS), but there is still quite a bit of clutter
+in most HTML documents.</li>
+</ul>
+<p>The benefit of Markdown for writers is that it allows one to
+<strong>focus on writing as opposed to formatting</strong>.</p>
+<ul>
+<li>It has <em>simple and minimal yet intuitive formatting elements</em>
+and can be <em>easily converted</em> to valid HTML (and other formats)
+using existing tools.</li>
+</ul>
+</div>
+<div id="markdown-syntax." class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Markdown syntax.</h2>
+<div id="italics." class="section level3" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Italics.</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>*This text will appear italicized!*  </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>_so will this text_</span></code></pre></div>
+<p><em>This text will appear italicized!</em><br />
+<em>so will this text</em></p>
+</div>
+<div id="bold" class="section level3" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Bold</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>**This text will appear bold!**  </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>__as will this text__</span></code></pre></div>
+<p><strong>This text will appear bold!</strong><br />
+<strong>as will this text</strong></p>
+</div>
+<div id="headings" class="section level3" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Headings</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># This is a primary heading (think &lt;h1&gt; in HTML)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## This is a secondary heading</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">### This is a tertiary heading</span></span></code></pre></div>
+</div>
+<div id="unordered-lists" class="section level3" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> Unordered
+Lists</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>first item in list  </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>second item in list  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>third item in list  </span></code></pre></div>
+<ul>
+<li>first item in list<br />
+</li>
+<li>second item in list<br />
+</li>
+<li>third item in list</li>
+</ul>
+</div>
+<div id="ordered-lists" class="section level3" number="1.3.5">
+<h3><span class="header-section-number">1.3.5</span> Ordered Lists</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>first item in list  </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>second item in list  </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>third item in list  </span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>first item in list<br />
+</li>
+<li>second item in list<br />
+</li>
+<li>third item in list</li>
+</ol>
+<blockquote>
+<p><strong>Notice</strong>: you don’t have to worry about the specific
+ordering of the <em>numbers</em> in the ordered list. As long as there
+are numbers there, Markdown will put them in the right order.</p>
+</blockquote>
+<p>So, the following Markdown source:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>first item in list</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>second item in list</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Whoops! Forgot one</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>third item in list</span></code></pre></div>
+<p>will get processed as:</p>
+<ol style="list-style-type: decimal">
+<li>first item in list</li>
+<li>second item in list</li>
+<li>Whoops! Forgot one</li>
+<li>third item in list</li>
+</ol>
+</div>
+<div id="inline-links." class="section level3" number="1.3.6">
+<h3><span class="header-section-number">1.3.6</span> Inline links.</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>The number one school of the public health is the <span class="co">[</span><span class="ot">Johns Hopkins Bloomberg School of Public Health</span><span class="co">](http://www.jhsph.edu/)</span>.</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>The first thing you always want to do is <span class="co">[</span><span class="ot">Download R</span><span class="co">](http://www.r-project.org/)</span>.</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>The second thing you want to do is get <span class="co">[</span><span class="ot">RStudio</span><span class="co">](http://www.rstudio.com/)</span>.</span></code></pre></div>
+<p>The number one school of the public health is the <a
+href="http://www.jhsph.edu/">Johns Hopkins Bloomberg School of Public
+Health</a>.</p>
+<p>The first thing you always want to do is <a
+href="http://www.r-project.org/">Download R</a>.</p>
+<p>The second thing you want to do is get <a
+href="http://www.rstudio.com/">RStudio</a>.</p>
+</div>
+<div id="advanced-linking-akin-inserting-footnotes."
+class="section level3" number="1.3.7">
+<h3><span class="header-section-number">1.3.7</span> Advanced Linking,
+akin inserting footnotes.</h3>
+<p>Occasionally, we have to put so <strong>many links</strong> into a
+document that the document starts getting difficult to read because of
+all the URLs.</p>
+<p>In that case, there is an alternate approach to linking that is
+<strong>akin to inserting footnotes</strong>.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">    I spend so much time reading [R bloggers][1] and [Simply Statistics][2]!  </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in">    [1]: http://www.r-bloggers.com/   &quot;R bloggers&quot;  </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">    [2]: http://simplystatistics.org/ &quot;Simply Statistics&quot;  </span></span></code></pre></div>
+<p>I spend so much time reading <a href="http://www.r-bloggers.com/"
+title="R bloggers">R bloggers</a> and <a
+href="http://simplystatistics.org/" title="Simply Statistics">Simply
+Statistics</a>!</p>
+<ul>
+<li>In the above text, the full links can be placed at the bottom of a
+document for convenience.<br />
+</li>
+<li>The resulting formatted text is identical using both approaches,
+however, the source text will be easier to read because it is less
+cluttered.</li>
+</ul>
+</div>
+<div id="newlines" class="section level3" number="1.3.8">
+<h3><span class="header-section-number">1.3.8</span> Newlines</h3>
+<p>Newlines require a <strong>double space</strong> <em>after</em> the
+<em>end of a line</em>.</p>
+<p>Example <strong><em>without</em></strong> double space at the end of
+the first line.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>First line</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Second line  </span></code></pre></div>
+<p>First line Second line</p>
+<p>Example <strong><em>with</em></strong> double space at the end of the
+first line.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>First line  </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>Second line</span></code></pre></div>
+<p>First line<br />
+Second line</p>
+</div>
+</div>
+<div id="markdown-resources" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Markdown
+Resources</h2>
+<ul>
+<li><p><a href="http://daringfireball.net/projects/markdown/basics">The
+Offical Markdown Documentation</a></p></li>
+<li><p><a
+href="https://help.github.com/articles/github-flavored-markdown">Github’s
+Markdown Guide</a></p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="r-markdown." class="section level1" number="2">
+<h1><span class="header-section-number">2</span> R Markdown.</h1>
+<p>R markdown is the <em>integration</em> of <strong>R code</strong>
+with <strong>Markdown</strong>.</p>
+<ul>
+<li><p>Documents written in R Markdown have <strong>R code nested inside
+of them</strong>, which allows one to to create documents containing
+“live” R code.</p></li>
+<li><p>We’ll see below the syntax to introduce <em>code
+chunks</em>.</p></li>
+</ul>
+<p>R Markdown files <em>cannot be evaluated</em> using <strong>standard
+Markdown tools</strong>.</p>
+<ul>
+<li><p>Rather, R code is evaluated as part of the processing of the
+Markdown before the traditional Markdown tools are called.</p></li>
+<li><p>In fact, the processing of a R markdown file starts with its
+<em>conversion</em> to <strong>standard markdown</strong>, and that
+first step can be done using the <a
+href="http://yihui.name/knitr/"><code>knitr</code></a> package in
+R.</p></li>
+<li><p>Results from R code are inserted into Markdown document. Markdown
+can subsequently be converted to HTML using the <a
+href="https://github.com/rstudio/markdown"><code>markdown</code></a>
+package in R, but you <em>seldom</em> have to call this package
+explicitly.</p></li>
+</ul>
+<p>The use of R Markdown to <strong><em>create reproducible
+reports</em></strong> is now a <strong><em>core tool in literate
+statistical programming</em></strong> and has largely replaced previous
+tools. The key reason for its usefulness is:</p>
+<ul>
+<li>The <em>simplicity</em> of Markdown as the main documentation
+language.<br />
+</li>
+<li>The <em>powerful support</em> provided by the <code>knitr</code>
+package.<br />
+</li>
+<li>And the <em>integration</em> of R Markdown <em>into widely used
+products</em> like <code>RStudio</code>.
+<ul>
+<li>R Markdown –&gt; Markdown –&gt; HTML work flow can be easily
+managing using RStudio.</li>
+</ul></li>
+</ul>
+<p>One <strong>co-benefit</strong> of using R Markdown is that
+<strong>any basic text editor can be used</strong> to create a
+document.</p>
+<ul>
+<li>No special editing tools are needed (the editor that comes with
+RStudio, for example, is quite reasonable).</li>
+</ul>
+<p>The <em>R Markdown to Markdown to HTML</em> <strong>work
+flow</strong> can be <em>easily managed</em> using <a
+href="http://rstudio.org/"><code>R Studio</code></a> (but is not
+required).</p>
+<p>Lastly, R Markdown documents have the benefit that they are
+<strong>purely textual documents</strong> that can <strong><em>play well
+with version control systems</em></strong> that are primarily designed
+to track changes in text files.</p>
+<hr />
+</div>
+<div id="using-knitr-for-reproducible-reports." class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Using
+<code>knitr</code> for reproducible reports.</h1>
+<p>There are a <strong>number of challenges</strong> to making
+reproducible report writing a reality.</p>
+<ul>
+<li><em>Authors</em> must undertake considerable effort to put data and
+results on the web or at least to make them available to a wide
+audience.<br />
+</li>
+<li><em>Readers</em> must download those data and results individually
+and piece together which data go with which code sections.<br />
+</li>
+<li>Often <em>both</em> authors and readers must manually interact with
+websites, in a highly non-automated process.<br />
+</li>
+<li>Finally, there is often <em>no single document</em> to integrate
+data analysis with textual representations, so the data, code, and text
+are not linked together in a coherent manner.</li>
+</ul>
+<p>A <strong>general solution</strong> that attempts to address some of
+these challenges is <strong>literate statistical programming</strong>, a
+concept we introduced earlier.</p>
+<div
+id="pros-and-cons-of-literate-statistical-programming-for-writing-reports."
+class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Pros and Cons of
+literate statistical programming for writing reports.</h2>
+<p>There are both advantages and disadvantages to using a literate
+programming system for writing reports.</p>
+<p>Some of the <strong>advantages</strong> are that:</p>
+<ul>
+<li><em>Text and code</em> are all in <em>one place</em> and placed in a
+<em>logical order</em> as dictated by the flow of the data
+analysis.<br />
+</li>
+<li><em>Results</em> are <em>automatically updated</em> to reflect
+external changes to data, code, etc.<br />
+</li>
+<li><em>Code is live</em>: this helps to serve as a built in regression
+test when building a document (if we can’t run the code, we can’t build
+the document).</li>
+</ul>
+<p>Some <strong>disadvantages</strong>:</p>
+<ul>
+<li>Text and code all in one place can, <em>sometimes</em>, make
+documents <em>difficult to read</em>, especially if there is a lot of
+code.
+<ul>
+<li>It might make sense to place code in a separate file, but then we
+are introducing more com- plexity and more chances for
+non-reproducibility.<br />
+</li>
+</ul></li>
+<li>The <em>processing</em> of documents <em>can be very slow</em>,
+especially if the document is long.
+<ul>
+<li>However, there are now tools that can help with that
+(somewhat).<br />
+</li>
+<li>In general, literate statistical programming tools are awkward to
+use for very long or very complex documents. In those cases, it’s better
+to use literate programming tools in conjunction with other tools, like
+Makefiles.</li>
+</ul></li>
+</ul>
+</div>
+<div id="what-should-knitr-be-ideal-for-and-not" class="section level2"
+number="3.2">
+<h2><span class="header-section-number">3.2</span> What should
+<code>knitr</code> be ideal for? and not?</h2>
+<p>Generally speaking, <code>knitr</code> <strong>should be ideal
+for</strong>:</p>
+<ul>
+<li>Manuals.<br />
+</li>
+<li>Short/medium-length technical documents.<br />
+</li>
+<li>Tutorials.<br />
+</li>
+<li>Reports, especially if they will be generated periodically with
+updated data.<br />
+</li>
+<li>Data preprocessing documents and summaries.</li>
+</ul>
+<p>On the other hand, <code>knitr</code> is <strong><em>not
+particularly</em></strong> <strong>well-suited for</strong>:</p>
+<ul>
+<li>Very long research articles.<br />
+</li>
+<li>Documenting very complex and time-consuming computations.<br />
+</li>
+<li>Documents that require precise formatting (although this is more an
+issue with using Markdown than it is with using knitr ).</li>
+</ul>
+</div>
+<div id="how-to-process-r-markdown-files-if-were-not-using-rstudio."
+class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> How to process R
+Markdown files if we’re not using RStudio.</h2>
+<p>If we’re not using RStudio, we can still process R Markdown documents
+with the knitr package <em>directly</em>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">knit2html</span>(<span class="st">&quot;document.Rmd&quot;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">browseURL</span>(<span class="st">&quot;document.html&quot;</span>)</span></code></pre></div>
+<p>As we know, to do this <strong>in RSutudio</strong>, we just have to
+<em>click on the <code>knit to HTML</code> button</em>.</p>
+</div>
+<div id="what-precisely-happens-when-we-process-a-knitr-document."
+class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> What precisely
+happens when we process a <code>knitr</code> document.</h2>
+<p>When we process a <code>knitr</code> document here’s what happens
+<strong>under the hood</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>We write the RMarkdown document (with a <code>.Rmd</code>
+extension)<br />
+</li>
+<li><code>knitr</code> produces a Markdown document (with a
+<code>.md</code> extension)<br />
+</li>
+<li><code>knitr</code> converts the Markdown document into
+<code>HTML</code> (by default)</li>
+</ol>
+<p>The process is <code>.Rmd</code> to <code>.md</code> to
+<code>.html</code>.</p>
+<ul>
+<li>In principle there should be three documents when the process is
+complete, but <code>RStudio</code> <strong>deletes the intermediary
+<code>.md</code> file</strong> by default.<br />
+</li>
+<li>We can turn this behavior off if we need the <code>.md</code>
+file.</li>
+</ul>
+<p>We <strong>should NOT edit (or even save) the <code>.md</code> or
+<code>.html</code> documents</strong> <strong><em>until we are
+finished</em></strong> (these documents will be overwritten the next
+time we knit the <code>.Rmd</code> file).</p>
+</div>
+<div id="code-chunks-syntax." class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Code chunks
+syntax.</h2>
+<p>Code chunks begin with <strong>```{r}</strong> and end with just
+<strong>```</strong>.</p>
+<ul>
+<li>Any R code that we include in a document must be contained within
+these delimiters, unless we have inline code.</li>
+</ul>
+<center>
+<img src="5_data/code_chunk.png" style="width:55.0%" />
+</center>
+<p>Code chunks <strong>can have names</strong>, which is useful when we
+start incorporating graphics (graphics file names are based on the code
+chunk name).</p>
+<ul>
+<li>The name goes right after the <code>r</code>, like this: ```{r
+firstchunk} … ```</li>
+</ul>
+<p>Finally, <em>by default</em>, code in a code chunk is <strong>echoed
+back out</strong> to the document, as will the results of the
+computation (if there are results to print).</p>
+<ul>
+<li><p>The output, also <em>by default</em>, is
+<strong>prepended</strong> with <strong>two pound symbols</strong>
+<code>##</code>.</p></li>
+<li><p>This is there so that if we happen to be copying code from the
+HTML output and pasting it into the R console, we just copy and paste
+the code and don’t accidently paste the output too (the output will be
+commented out in the R console).</p></li>
+</ul>
+<center>
+<img src="5_data/code_chunk_2.png" style="width:55.0%" />
+</center>
+</div>
+<div id="inline-code." class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Inline code.</h2>
+<p>Occasionally, it’s useful to put some <strong>computations within a
+sentence</strong>.</p>
+<ul>
+<li>For example, we may be quoting a <em>specific numerical results</em>
+in the middle of a paragraph.<br />
+</li>
+<li>Rather than try to copy and paste the result into the paragraph,
+it’s better to just do the computation right there in the text.</li>
+</ul>
+<p>The syntax to do this is use <strong>`r</strong> and end with
+<strong>`</strong>, putting the code in between (tipically the name a of
+a variable or a simple expression).</p>
+</div>
+<div
+id="chunk-options-hiding-the-code-the-prepended-symbols-andor-the-results."
+class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Chunk options: hiding
+the code, the prepended <code>##</code> symbols and/or the results.</h2>
+<p>We can <strong>turn off</strong> the <strong>default
+behaviors</strong> of <em>echoing the code</em>, <em>prepending the ##
+symbols</em> and/or <em>showing the excecution result itself</em>, by
+setting the corrisponding options:</p>
+<ul>
+<li><p><code>echo = FALSE</code> turns off code echoing.</p></li>
+<li><p><code>comment = NA</code> turns off prepending the ## symbols in
+the execution result.</p></li>
+<li><p><code>results = "hide"</code> turns off the excecution
+result.</p></li>
+</ul>
+<p>We can also make these options settings as <em>global settings</em>,
+using the <code>opts_chunk$set()</code> method at the top of our
+document:</p>
+<ul>
+<li><code>knitr::opts_chunk$set(echo = FALSE, comment = NA, results = "hide")</code></li>
+</ul>
+</div>
+<div id="a-brief-example." class="section level2" number="3.8">
+<h2><span class="header-section-number">3.8</span> A brief example.</h2>
+<p>Let’s quote, as inline code, the <em>current time</em> and a
+<em>random Normal variate</em> as our “favorite” number (without echoing
+the corrisponding code).</p>
+<center>
+<img src="5_data/brief_example1.png" style="width:65.0%" />
+</center>
+<p>Here’s the output.</p>
+<center>
+<img src="5_data/brief_example2.png" style="width:65.0%" />
+</center>
+</div>
+<div id="incorporating-graphics." class="section level2" number="3.9">
+<h2><span class="header-section-number">3.9</span> Incorporating
+graphics.</h2>
+<p>Of course, incorporating data graphics with <code>knitr</code> is
+<em>straightforward</em>. By default, <strong>nothing special</strong>
+needs to be done.</p>
+<ul>
+<li>We can just put the plotting code in a code chunk and the plot will
+be inserted into the resulting HTML document.</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">sd =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p>Here’s scatterplot of the data.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y, <span class="at">main =</span> <span class="st">&quot;My Simulated Data&quot;</span>)</span></code></pre></div>
+<p><img src="5_ReproducibleResearch_Module2_files/figure-html/scatterplot-1.png" width="672" /></p>
+<div
+id="knitr-embeds-the-figure-into-the-html-document-as-base-64-encoding-string."
+class="section level3" number="3.9.1">
+<h3><span class="header-section-number">3.9.1</span> <code>knitr</code>
+embeds the figure into the HTML document as base 64 encoding
+string.</h3>
+<p>By default, when <code>knitr</code> creates the HTML document, it
+embeds the figure into the HTML document (into the image tag) as base 64
+encoded string, instead of pointing to the actual file.</p>
+<p>This is useful sometimes because <em>it makes the resulting HTML
+document stand alone</em>.</p>
+<ul>
+<li>We can email it to a colleague and they will be able to view it
+without having to worry about any external dependencies like image
+files.</li>
+</ul>
+<p>However, it does make the <em>resulting HTML much larger</em> than it
+needs to be (and makes it totally unreadable).</p>
+<ul>
+<li>That said, given that the HTML is not meant to be read directly and
+is just auto-generated by knitr, it’s not clear that there are many
+downsides to this approach.</li>
+</ul>
+</div>
+</div>
+<div id="making-tables-with-xtable-package." class="section level2"
+number="3.10">
+<h2><span class="header-section-number">3.10</span> Making tables with
+<code>xtable</code> package.</h2>
+<p>Tables can be made in R Markdown documents with the <strong>help of
+the <code>xtable</code> package</strong>.</p>
+<p>Tables can be notoriously nonreproducible if they are made by hand.
+Luckly, the <code>xtable</code> package can <strong>take tabular
+information</strong> and <strong>format it nicely</strong> in either
+<code>HTML</code> or <code>LaTeX</code>.</p>
+<div id="example-making-an-html-table-of-regression-coeficients."
+class="section level3" number="3.10.1">
+<h3><span class="header-section-number">3.10.1</span> Example: making an
+HTML table of regression coeficients.</h3>
+<p>In the code below, we <strong>fit a multiple linear regression
+model</strong> and <strong>then create a table of the regression
+coefficients</strong>.</p>
+<ul>
+<li>Essentially, this is the <em>output</em> that is generated by the
+<code>summary()</code> function when called on <code>lm</code>
+objects.</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Wind <span class="sc">+</span> Temp <span class="sc">+</span> Solar.R, <span class="at">data =</span> airquality)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Call<span class="sc">:</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(<span class="at">formula =</span> Ozone <span class="sc">~</span> Wind <span class="sc">+</span> Temp <span class="sc">+</span> Solar.R, <span class="at">data =</span> airquality)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>Residuals<span class="sc">:</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    Min      1Q  Median      3Q     Max </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">40.485</span> <span class="sc">-</span><span class="fl">14.219</span>  <span class="sc">-</span><span class="fl">3.551</span>  <span class="fl">10.097</span>  <span class="fl">95.619</span> </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>Coefficients<span class="sc">:</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>             Estimate Std. Error t value <span class="fu">Pr</span>(<span class="sc">&gt;</span><span class="er">|</span>t<span class="sc">|</span>)    </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>(Intercept) <span class="sc">-</span><span class="fl">64.34208</span>   <span class="fl">23.05472</span>  <span class="sc">-</span><span class="fl">2.791</span>  <span class="fl">0.00623</span> <span class="sc">**</span> </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>Wind         <span class="sc">-</span><span class="fl">3.33359</span>    <span class="fl">0.65441</span>  <span class="sc">-</span><span class="fl">5.094</span> <span class="fl">1.52e-06</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>Temp          <span class="fl">1.65209</span>    <span class="fl">0.25353</span>   <span class="fl">6.516</span> <span class="fl">2.42e-09</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>Solar.R       <span class="fl">0.05982</span>    <span class="fl">0.02319</span>   <span class="fl">2.580</span>  <span class="fl">0.01124</span> <span class="sc">*</span>  </span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>Signif. codes<span class="sc">:</span>  <span class="dv">0</span> <span class="st">&#39;***&#39;</span> <span class="fl">0.001</span> <span class="st">&#39;**&#39;</span> <span class="fl">0.01</span> <span class="st">&#39;*&#39;</span> <span class="fl">0.05</span> <span class="st">&#39;.&#39;</span> <span class="fl">0.1</span> <span class="st">&#39; &#39;</span> <span class="dv">1</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>Residual standard error<span class="sc">:</span> <span class="fl">21.18</span> on <span class="dv">107</span> degrees of freedom</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">42</span> observations deleted due to missingness)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>Multiple R<span class="sc">-</span>squared<span class="sc">:</span>  <span class="fl">0.6059</span>,    Adjusted R<span class="sc">-</span>squared<span class="sc">:</span>  <span class="fl">0.5948</span> </span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>F<span class="sc">-</span>statistic<span class="sc">:</span> <span class="fl">54.83</span> on <span class="dv">3</span> and <span class="dv">107</span> DF,  p<span class="sc">-</span>value<span class="sc">:</span> <span class="er">&lt;</span> <span class="fl">2.2e-16</span></span></code></pre></div>
+<p>Here’s a table of regression coefficients.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xtable)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">&#39;xtable&#39;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">&#39;package:Hmisc&#39;</span><span class="sc">:</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    label, label<span class="ot">&lt;-</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>xt <span class="ot">&lt;-</span> <span class="fu">xtable</span>(<span class="fu">summary</span>(fit))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(xt, <span class="at">type =</span> <span class="st">&quot;html&quot;</span>)</span></code></pre></div>
+<!-- html table generated in R 3.6.3 by xtable 1.8-4 package -->
+<!-- Sat Feb 18 08:08:13 2023 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Estimate
+</th>
+<th>
+Std. Error
+</th>
+<th>
+t value
+</th>
+<th>
+Pr(&gt;|t|)
+</th>
+</tr>
+<tr>
+<td align="right">
+(Intercept)
+</td>
+<td align="right">
+-64.3421
+</td>
+<td align="right">
+23.0547
+</td>
+<td align="right">
+-2.79
+</td>
+<td align="right">
+0.0062
+</td>
+</tr>
+<tr>
+<td align="right">
+Wind
+</td>
+<td align="right">
+-3.3336
+</td>
+<td align="right">
+0.6544
+</td>
+<td align="right">
+-5.09
+</td>
+<td align="right">
+0.0000
+</td>
+</tr>
+<tr>
+<td align="right">
+Temp
+</td>
+<td align="right">
+1.6521
+</td>
+<td align="right">
+0.2535
+</td>
+<td align="right">
+6.52
+</td>
+<td align="right">
+0.0000
+</td>
+</tr>
+<tr>
+<td align="right">
+Solar.R
+</td>
+<td align="right">
+0.0598
+</td>
+<td align="right">
+0.0232
+</td>
+<td align="right">
+2.58
+</td>
+<td align="right">
+0.0112
+</td>
+</tr>
+</table>
+<ul>
+<li><strong>Notice</strong> that in the chunk options we specified
+<code>results="asis"</code>.<br />
+</li>
+<li>This is because <code>xtable</code> generates its own HTML output,
+so it <strong>doesn’t have to be subsequently converted</strong> into
+HTML by <code>knitr</code>.</li>
+</ul>
+<p>This is <strong>just one simple example</strong> of how
+<code>xtable</code> can be used to <em>generate HTML tables</em>.</p>
+<ul>
+<li>There are <strong>many other options</strong> that can be configured
+in the <code>print()</code> method for <code>xtable</code> objects and
+the help page is worth exploring.</li>
+</ul>
+</div>
+</div>
+<div id="setting-global-options-the-opts_chunk-variable-in-knitr."
+class="section level2" number="3.11">
+<h2><span class="header-section-number">3.11</span> Setting global
+options: the <code>opts_chunk</code> variable in
+<code>knitr</code>.</h2>
+<p>Sometimes we want to set an option that <strong>applies to all
+chunks</strong> in your document.</p>
+<ul>
+<li>This can be done by modifying the <strong><code>opts_chunk</code>
+variable</strong>, which is a <strong><em>global variable</em></strong>
+in the <code>knitr</code> package.</li>
+</ul>
+<p>Usually, this is done by <strong>creating a code chunk</strong>
+somewhere in the <strong>beginning of the document</strong> (before any
+other code chunks in the document) and modifying the
+<code>opts_chunk</code> object.</p>
+<p>For example, as we saw erlier, if we wanted the default to be that
+all chunks <strong>do NOT echo</strong> their code and <strong>always
+hide their results</strong>, we could set:</p>
+<ul>
+<li><code>knitr::opts_chunk$set(echo=FALSE, results="hide")</code></li>
+</ul>
+<p>Global options <strong>can always be overridden</strong> by any
+specific options that are set in at the chunk level.</p>
+</div>
+<div id="caching-computations-the-cache-chunk-option."
+class="section level2" number="3.12">
+<h2><span class="header-section-number">3.12</span> Caching
+computations: the <code>cache</code> chunk option.</h2>
+<p>Earlier we mentioned that <code>knitr</code> is perhaps not so useful
+if we are writing a <strong>very long document</strong> or one involving
+<strong>complex computations</strong>.</p>
+<ul>
+<li>If our code chunks are quick and not too numerous, then having to
+knit the document every time is not such a burden. But otherwise, it can
+be painful to have to sit there and wait for every computation to run
+every single time.</li>
+</ul>
+<p><strong><em>However</em></strong>, there is one <strong>tool that can
+be useful</strong> and may help you circumvent some of these
+problems.</p>
+<p>So, the <strong>basic issue</strong> is that if we have a long
+document or one involving lengthy computations, then every time we want
+to view your document in the pretty formatted version, we <strong>need
+to re-compile</strong> the document, meaning you <strong>need to
+re-run</strong> all the computations.</p>
+<p><strong>Chunk caching</strong> is one way to avoid these lengthy
+computations.</p>
+<ul>
+<li><p>By setting the <code>cache = TRUE</code> chunk option, the chunk
+is <strong>ran once</strong>, then the <strong>output is stored in a
+database</strong> in our working directory.</p></li>
+<li><p>Then, when we re-knit the document, instead of running the code
+in that particular chunk, knitr simply re-loads the stored output from
+the database.</p></li>
+<li><p>It’s kind of like a <strong>chunk-level version of
+memoization</strong>.</p></li>
+<li><p>However, <strong>if the code in the chunk</strong>
+<strong><em>changes</em></strong> at all, <strong><code>knitr</code> can
+detect this</strong> and will <em>re-run the code</em> (and store the
+reuslts again).</p></li>
+</ul>
+<div id="some-caveats-to-caching." class="section level3"
+number="3.12.1">
+<h3><span class="header-section-number">3.12.1</span> Some caveats to
+caching.</h3>
+<p>In particular, by default, <strong>dependencies between chunks are
+not checked</strong>.</p>
+<ul>
+<li>If the results of a cached chunk depend on a previous chunk that has
+been modified, those <strong>changes will not necessarily propagate
+down</strong> to later cached chunks.</li>
+</ul>
+<p>Also, <strong>chunks with significant side effects</strong>, such as
+those writing output to files or interacting with the external
+environment in any way, <strong>may not be cacheable</strong>.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="session-info." class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Session Info.</h1>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] xtable_1<span class="fl">.8</span><span class="dv">-4</span>       kernlab_0<span class="fl">.9</span><span class="dv">-29</span>     R.utils_2.<span class="fl">10.1</span>     R.oo_1.<span class="fl">24.0</span>       </span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] R.methodsS3_1.<span class="fl">8.1</span>  impute_1.<span class="fl">60.0</span>      RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> maps_3.<span class="fl">3.0</span>        </span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] stringr_1.<span class="fl">4.0</span>      lubridate_1.<span class="fl">9.2</span>    quantmod_0.<span class="fl">4.20</span>    TTR_0.<span class="fl">24.2</span>        </span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] xts_0.<span class="fl">12.1</span>         zoo_1<span class="fl">.8</span><span class="dv">-9</span>          readr_2.<span class="fl">0.1</span>        tidyr_1.<span class="fl">2.0</span>       </span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] dplyr_1.<span class="fl">0.8</span>        reshape2_1.<span class="fl">4.4</span>     Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>        ggplot2_3.<span class="fl">3.5</span>     </span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] Formula_1<span class="fl">.2</span><span class="dv">-3</span>      survival_3<span class="fl">.4</span><span class="dv">-0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>    jpeg_0<span class="fl">.1-8.1</span>      </span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] gitignore_0.<span class="fl">1.3</span>    rhdf5_2.<span class="fl">30.1</span>       httr_1.<span class="fl">4.2</span>         httpuv_1.<span class="fl">6.3</span>      </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] sqldf_0<span class="fl">.4</span><span class="dv">-11</span>       RSQLite_2.<span class="fl">2.0</span>      gsubfn_0<span class="fl">.7</span>         proto_1.<span class="fl">0.0</span>       </span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] DBI_1.<span class="fl">1.1</span>          data.table_1.<span class="fl">14.0</span>  jsonlite_1.<span class="fl">7.2</span>     XML_3<span class="fl">.99-0.3</span>      </span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] xlsx_0.<span class="fl">6.3</span>         plyr_1.<span class="fl">8.6</span>        </span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    ellipsis_0.<span class="fl">3.2</span>      htmlTable_2.<span class="fl">0.1</span>    </span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] bit64_4.<span class="fl">0.5</span>         fansi_1.<span class="fl">0.2</span>         splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] knitr_1<span class="fl">.41</span>          rJava_0<span class="fl">.9</span><span class="dv">-13</span>        cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           clipr_0.<span class="fl">7.1</span>         compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] backports_1.<span class="fl">4.1</span>     assertthat_0.<span class="fl">2.1</span>    Matrix_1<span class="fl">.5</span><span class="dv">-1</span>       </span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] fastmap_1.<span class="fl">1.0</span>       cli_3.<span class="fl">6.0</span>           later_1.<span class="fl">3.0</span>        </span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] formatR_1<span class="fl">.14</span>        acepack_1.<span class="fl">4.1</span>       htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] tools_3.<span class="fl">6.3</span>         gtable_0.<span class="fl">3.0</span>        glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] Rcpp_1.<span class="fl">0.7</span>          jquerylib_0.<span class="fl">1.4</span>     vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        xfun_0<span class="fl">.36</span>           xlsxjars_0.<span class="fl">6.1</span>     </span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] timechange_0.<span class="fl">2.0</span>    lifecycle_1.<span class="fl">0.3</span>     scales_1.<span class="fl">1.1</span>       </span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] vroom_1.<span class="fl">5.5</span>         hms_1.<span class="fl">1.0</span>           promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>   </span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] parallel_3.<span class="fl">6.3</span>      yaml_2.<span class="fl">2.1</span>          curl_4.<span class="fl">3.2</span>         </span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] memoise_1.<span class="fl">1.0</span>       gridExtra_2<span class="fl">.3</span>       sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] rpart_4.<span class="fl">1.19</span>        latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] highr_0<span class="fl">.9</span>           checkmate_2.<span class="fl">0.0</span>     chron_2<span class="fl">.3</span><span class="dv">-55</span>       </span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] rlang_1.<span class="fl">0.6</span>         pkgconfig_2.<span class="fl">0.3</span>     evaluate_0<span class="fl">.19</span>      </span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] purrr_0.<span class="fl">3.4</span>         Rhdf5lib_1.<span class="fl">8.0</span>      htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] labeling_0.<span class="fl">4.2</span>      bit_4.<span class="fl">0.4</span>           tidyselect_1.<span class="fl">2.0</span>   </span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] magrittr_2.<span class="fl">0.2</span>      R6_2.<span class="fl">5.1</span>            generics_0.<span class="fl">1.2</span>     </span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] pillar_1.<span class="fl">7.0</span>        foreign_0<span class="fl">.8</span><span class="dv">-76</span>      withr_2.<span class="fl">5.0</span>        </span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         nnet_7<span class="fl">.3</span><span class="dv">-18</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] crayon_1.<span class="fl">5.0</span>        KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span>  utf8_1.<span class="fl">2.2</span>         </span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] tzdb_0.<span class="fl">3.0</span>          rmarkdown_2<span class="fl">.11</span>      grid_3.<span class="fl">6.3</span>         </span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] blob_1.<span class="fl">2.2</span>          digest_0.<span class="fl">6.29</span>       openssl_2.<span class="fl">0.5</span>      </span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] munsell_0.<span class="fl">5.0</span>       viridisLite_0.<span class="fl">4.0</span>   bslib_0.<span class="fl">3.0</span>        </span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>[<span class="dv">82</span>] tcltk_3.<span class="fl">6.3</span>         askpass_1<span class="fl">.1</span>        </span></code></pre></div>
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

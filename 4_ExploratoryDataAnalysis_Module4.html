@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Data Analysis Course - Module 4</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis Course - Module
+4</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a
+href="#eda-clustering-case-study-understanding-human-activity-with-smart-phones."
+id="toc-eda-clustering-case-study-understanding-human-activity-with-smart-phones."><span
+class="toc-section-number">1</span> EDA Clustering Case Study:
+Understanding Human Activity with Smart Phones.</a>
+<ul>
+<li><a href="#the-human-activity-recongnition-dataset."
+id="toc-the-human-activity-recongnition-dataset."><span
+class="toc-section-number">1.1</span> The human activity recongnition
+dataset.</a>
+<ul>
+<li><a href="#loading-only-a-subset-of-this-dataset."
+id="toc-loading-only-a-subset-of-this-dataset."><span
+class="toc-section-number">1.1.1</span> Loading only a subset of this
+dataset.</a></li>
+</ul></li>
+<li><a
+href="#our-main-target-recognizing-the-type-of-activities-based-on-a-set-of-measurments."
+id="toc-our-main-target-recognizing-the-type-of-activities-based-on-a-set-of-measurments."><span
+class="toc-section-number">1.2</span> Our main target: recognizing the
+type of activities based on a set of measurments.</a></li>
+<li><a href="#plotting-average-acceleration-for-first-subject."
+id="toc-plotting-average-acceleration-for-first-subject."><span
+class="toc-section-number">1.3</span> Plotting average acceleration for
+first subject.</a></li>
+<li><a
+href="#clustering-based-just-on-average-acceleration-of-the-first-subject."
+id="toc-clustering-based-just-on-average-acceleration-of-the-first-subject."><span
+class="toc-section-number">1.4</span> Clustering based just on average
+acceleration (of the first subject).</a></li>
+<li><a href="#plotting-max-acceleration-for-the-first-subject."
+id="toc-plotting-max-acceleration-for-the-first-subject."><span
+class="toc-section-number">1.5</span> Plotting max acceleration for the
+first subject.</a></li>
+<li><a href="#clustering-based-on-maximum-acceleration."
+id="toc-clustering-based-on-maximum-acceleration."><span
+class="toc-section-number">1.6</span> Clustering based on maximum
+acceleration.</a></li>
+<li><a href="#singular-value-decomposition."
+id="toc-singular-value-decomposition."><span
+class="toc-section-number">1.7</span> Singular Value
+Decomposition.</a></li>
+<li><a href="#find-maximum-contributor."
+id="toc-find-maximum-contributor."><span
+class="toc-section-number">1.8</span> Find maximum contributor.</a></li>
+<li><a href="#new-clustering-with-maximum-contributor."
+id="toc-new-clustering-with-maximum-contributor."><span
+class="toc-section-number">1.9</span> New clustering with maximum
+contributor.</a></li>
+<li><a href="#k-means-clustering-nstart1-first-try."
+id="toc-k-means-clustering-nstart1-first-try."><span
+class="toc-section-number">1.10</span> K-means clustering (nstart=1,
+first try).</a></li>
+<li><a href="#k-means-clustering-nstart1-second-try"
+id="toc-k-means-clustering-nstart1-second-try"><span
+class="toc-section-number">1.11</span> K-means clustering (nstart=1,
+second try)</a></li>
+<li><a href="#k-means-clustering-nstart100-first-try"
+id="toc-k-means-clustering-nstart100-first-try"><span
+class="toc-section-number">1.12</span> K-means clustering (nstart=100,
+first try)</a></li>
+<li><a href="#k-means-clustering-nstart100-second-try"
+id="toc-k-means-clustering-nstart100-second-try"><span
+class="toc-section-number">1.13</span> K-means clustering (nstart=100,
+second try)</a>
+<ul>
+<li><a href="#plotting-cluster-center-of-laying-variable."
+id="toc-plotting-cluster-center-of-laying-variable."><span
+class="toc-section-number">1.13.1</span> Plotting cluster center of
+“laying” variable.</a></li>
+<li><a href="#plotting-cluster-center-of-walk-variable."
+id="toc-plotting-cluster-center-of-walk-variable."><span
+class="toc-section-number">1.13.2</span> Plotting cluster center of
+“walk” variable.</a></li>
+</ul></li>
+<li><a href="#in-summary." id="toc-in-summary."><span
+class="toc-section-number">1.14</span> In summary.</a></li>
+<li><a href="#cleaning-disk" id="toc-cleaning-disk"><span
+class="toc-section-number">1.15</span> Cleaning disk</a></li>
+</ul></li>
+<li><a
+href="#eda-case-study-changes-in-fine-particle-air-pollution-in-the-us."
+id="toc-eda-case-study-changes-in-fine-particle-air-pollution-in-the-us."><span
+class="toc-section-number">2</span> EDA Case Study: Changes in Fine
+Particle Air Pollution in the US.</a>
+<ul>
+<li><a href="#synopsis-the-question."
+id="toc-synopsis-the-question."><span
+class="toc-section-number">2.1</span> Synopsis, the question.</a></li>
+<li><a href="#loading-and-processing-the-raw-data."
+id="toc-loading-and-processing-the-raw-data."><span
+class="toc-section-number">2.2</span> Loading and processing the raw
+data.</a>
+<ul>
+<li><a href="#unzipping-the-data" id="toc-unzipping-the-data"><span
+class="toc-section-number">2.2.1</span> Unzipping the data</a></li>
+<li><a
+href="#reading-in-the-1999-data-identifying-the-pm2.5-column-and-checking-the-missing-values."
+id="toc-reading-in-the-1999-data-identifying-the-pm2.5-column-and-checking-the-missing-values."><span
+class="toc-section-number">2.2.2</span> Reading in the 1999 data,
+identifying the PM2.5 column and checking the missing values.</a></li>
+<li><a
+href="#reading-in-the-2012-data-identifying-the-pm2.5-column-and-checking-the-missing-values."
+id="toc-reading-in-the-2012-data-identifying-the-pm2.5-column-and-checking-the-missing-values."><span
+class="toc-section-number">2.2.3</span> Reading in the 2012 data,
+identifying the PM2.5 column and checking the missing values.</a></li>
+<li><a href="#combining-into-a-single-data-frame."
+id="toc-combining-into-a-single-data-frame."><span
+class="toc-section-number">2.2.4</span> Combining into a single data
+frame.</a></li>
+</ul></li>
+<li><a href="#results." id="toc-results."><span
+class="toc-section-number">2.3</span> Results.</a>
+<ul>
+<li><a href="#entire-us-analysis." id="toc-entire-us-analysis."><span
+class="toc-section-number">2.3.1</span> Entire US analysis.</a></li>
+<li><a href="#changes-in-pm-at-an-individual-monitor."
+id="toc-changes-in-pm-at-an-individual-monitor."><span
+class="toc-section-number">2.3.2</span> Changes in PM at an individual
+monitor.</a></li>
+<li><a href="#changes-in-state-wide-pm-levels."
+id="toc-changes-in-state-wide-pm-levels."><span
+class="toc-section-number">2.3.3</span> Changes in state-wide PM
+levels.</a></li>
+</ul></li>
+<li><a href="#cleaning-disk-1" id="toc-cleaning-disk-1"><span
+class="toc-section-number">2.4</span> Cleaning disk</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">3</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div
+id="eda-clustering-case-study-understanding-human-activity-with-smart-phones."
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> EDA Clustering Case
+Study: Understanding Human Activity with Smart Phones.</h1>
+<p>In this case study, is about exploratory data analysis techniques and
+how to use them, on a dataset that involves using smart phones, to
+predict human activities.</p>
+<p>Remember, in any exploratory data analysis:</p>
+<ul>
+<li>We have to have a sense of what we’re looking for and what might be
+the key priorities that we want to get out of our dataset.<br />
+</li>
+<li>That will help us guide what we are looking at and how we approach
+it.<br />
+</li>
+<li>As we know, the basic idea of exploratory data analysis is that we
+want to produce a rough cut of the analysis that we ultimately maybe
+want to do, so maybe this isn’t going to be perfect, its not going to
+have all the right bells and whistles to it. But it’s going to give us a
+rough idea of what kind of information we’re going to be able to extract
+out of our dataset and what kinds of questions you’re going to be able
+to feasibly answer and what questions might not really be possible to
+answer with the given dataset.</li>
+</ul>
+<p>So let’s take a look at the Samsung dataset in this example and see
+what we can find.</p>
+<div id="the-human-activity-recongnition-dataset."
+class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> The human activity
+recongnition dataset.</h2>
+<p>The dataset comes from the <strong>University of California Irvine
+(UCI) machine learning archive</strong>.</p>
+<p><img src="4_data/UCI_MachineLearningRepository.png" /></p>
+<ul>
+<li>The actual dataset was was produced using Galaxy S2
+smartphones.<br />
+</li>
+<li>The idea is that in each of these phones, there’s an accelerometer
+and a gyroscope.<br />
+</li>
+<li>It helps us to understand the three dimensional position and
+acceleration of a person, assuming that they are holding their
+phone.<br />
+</li>
+<li>More precisely, the files belonging to the human activity
+recognition dataset were built from the recordings of 30 subjects
+performing activities of daily living (ADL) while carrying a
+waist-mounted smartphone with embedded inertial sensors.</li>
+</ul>
+<p>In the <a
+href="http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones">UCI
+machine learning repository</a> we can find the full description of this
+dataset.</p>
+<div id="loading-only-a-subset-of-this-dataset." class="section level3"
+number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Loading only a
+subset of this dataset.</h3>
+<p>For the purposes of the clustering example that we want to make, we
+are going to work with a subset of the human activity recongnition
+dataset (the training subset of data).</p>
+<ul>
+<li>The full original dataset can be downloaded from <a
+href="https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip">this
+link</a></li>
+</ul>
+<p>The <strong>following script</strong>:</p>
+<ul>
+<li>Downloads the entire dataset (if it isn’t downloaded yet).<br />
+</li>
+<li>Loads only the files that contains the training data.
+<ul>
+<li>The full dataset is randomly partitioned into two sets, where 70% of
+the volunteers was selected for generating the training data and 30% the
+test data.<br />
+</li>
+<li>The training data has 7352 observations.<br />
+</li>
+</ul></li>
+<li>Those files are processed to get a data frame that has the <em>563
+variables</em>:
+<ul>
+<li><em>561 variables</em> loaded from the <code>X_train.txt</code> file
+(they represent a specific measurment coming from the accelerometer and
+gyroscope 3-axial raw time domanin signals, later filtered and separated
+into body and gravity signals, subsequently derived to obtain Jerk
+signals and finally submitted to a Fast Fourier Transform to produce
+other freqency domain signals). The complete list of these 561
+measurments is in the <code>features.txt</code> file.<br />
+</li>
+<li>A <em>subject variable</em> (with a range from 1 to 30) identifying
+the subject who performed the activity (loaded from the
+<code>subject_train.txt</code> file).<br />
+</li>
+<li>And a <em>activity variable</em> that specifies one of the six
+activities involved in the experiment (taken from the coded activities
+in the <code>y_train.txt</code> file):
+<ul>
+<li><strong>laying, sitting, standing, walking, walking down and walking
+up</strong>.<br />
+</li>
+</ul></li>
+</ul></li>
+<li>Finally, it saves the final data frame into the
+<code>samsungData.rda</code> file.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Download the dataset.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">&lt;-</span> <span class="st">&quot;4_data&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Name of the file to be downloaded.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>datasetFile <span class="ot">&lt;-</span> <span class="st">&quot;dataset.zip&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Complete pathname of the file to be downloaded.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>datasetPath <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, datasetFile)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(datasetPath)) {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        dataUrl <span class="ot">&lt;-</span> <span class="st">&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">download.file</span>(dataUrl, <span class="at">destfile =</span> datasetPath, <span class="at">method =</span> <span class="st">&quot;curl&quot;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        dateDownloaded <span class="ot">&lt;-</span> <span class="fu">date</span>()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>zipContent <span class="ot">&lt;-</span> <span class="fu">unzip</span>(datasetPath, <span class="at">exdir =</span> datadir)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>zipContent</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;4_data/UCI HAR Dataset/activity_labels.txt&quot;</span>                         </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a> [<span class="dv">2</span>] <span class="st">&quot;4_data/UCI HAR Dataset/features.txt&quot;</span>                                </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] <span class="st">&quot;4_data/UCI HAR Dataset/features_info.txt&quot;</span>                           </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] <span class="st">&quot;4_data/UCI HAR Dataset/README.txt&quot;</span>                                  </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/body_acc_x_test.txt&quot;</span>   </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a> [<span class="dv">6</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/body_acc_y_test.txt&quot;</span>   </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/body_acc_z_test.txt&quot;</span>   </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">8</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/body_gyro_x_test.txt&quot;</span>  </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/body_gyro_y_test.txt&quot;</span>  </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/body_gyro_z_test.txt&quot;</span>  </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/total_acc_x_test.txt&quot;</span>  </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">12</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/total_acc_y_test.txt&quot;</span>  </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/Inertial Signals/total_acc_z_test.txt&quot;</span>  </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">14</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/subject_test.txt&quot;</span>                       </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">15</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/X_test.txt&quot;</span>                             </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] <span class="st">&quot;4_data/UCI HAR Dataset/test/y_test.txt&quot;</span>                             </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/body_acc_x_train.txt&quot;</span> </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">18</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/body_acc_y_train.txt&quot;</span> </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/body_acc_z_train.txt&quot;</span> </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">20</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/body_gyro_x_train.txt&quot;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/body_gyro_y_train.txt&quot;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/body_gyro_z_train.txt&quot;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">23</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/total_acc_x_train.txt&quot;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">24</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/total_acc_y_train.txt&quot;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/Inertial Signals/total_acc_z_train.txt&quot;</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">26</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/subject_train.txt&quot;</span>                     </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">27</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/X_train.txt&quot;</span>                           </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] <span class="st">&quot;4_data/UCI HAR Dataset/train/y_train.txt&quot;</span>                           </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>xvals <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;4_data/UCI HAR Dataset/train/X_train.txt&quot;</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>yvals <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;4_data/UCI HAR Dataset/train/y_train.txt&quot;</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>features <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;4_data/UCI HAR Dataset/features.txt&quot;</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>subject <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;4_data/UCI HAR Dataset/train/subject_train.txt&quot;</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="do">## Naming the 561 measurements.</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(xvals) <span class="ot">&lt;-</span> features[, <span class="dv">2</span>]</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="do">## Geting an integer vector of coded activities.</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>yvals <span class="ot">&lt;-</span> yvals[, <span class="dv">1</span>]</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="do">## Decoding the activities (transfoming yvals into a character vector).</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>yvals[yvals<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;walk&quot;</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>yvals[yvals<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="st">&quot;walkup&quot;</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>yvals[yvals<span class="sc">==</span><span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;walkdown&quot;</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>yvals[yvals<span class="sc">==</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="st">&quot;sitting&quot;</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>yvals[yvals<span class="sc">==</span><span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="st">&quot;standing&quot;</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>yvals[yvals<span class="sc">==</span><span class="dv">6</span>] <span class="ot">&lt;-</span> <span class="st">&quot;laying&quot;</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xvals)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;data.frame&quot;</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(xvals)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">7352</span>  <span class="dv">561</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="do">## Adding subject and activity columns</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>xvals<span class="sc">$</span>subject <span class="ot">&lt;-</span> subject[, <span class="dv">1</span>]</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>xvals<span class="sc">$</span>activity <span class="ot">&lt;-</span> yvals</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(xvals)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">7352</span>  <span class="dv">563</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="do">## Saving the final data frame and cleaning the ram.</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>samsungData <span class="ot">&lt;-</span> xvals</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(samsungData, <span class="at">file =</span> <span class="st">&quot;4_data/samsungData.rda&quot;</span>)</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(xvals, yvals, features, subject, samsungData)</span></code></pre></div>
+</div>
+</div>
+<div
+id="our-main-target-recognizing-the-type-of-activities-based-on-a-set-of-measurments."
+class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Our main target:
+recognizing the type of activities based on a set of measurments.</h2>
+<p>We’re interested in questions such as:</p>
+<ul>
+<li><strong>“Is the correlation between the measurements and activities
+good enough to train a machine?”</strong> so that <strong>“Given a set
+of 561 measurements, would a trained machine be able to determine which
+of the 6 activities the person was doing?”</strong></li>
+</ul>
+<p>We can begin inspecting:</p>
+<ul>
+<li><p>The first 12 features and finding that they refere to body
+acceleration (it’s mean, standard deviation, mean absolute deviation
+-mad- and the maximum).</p></li>
+<li><p>Also, we can look at the six possible activities that we want to
+be able to separate out based on the features collected by the
+accelerometer and the gyroscope.</p></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;4_data/samsungData.rda&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(samsungData)[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;tBodyAcc-mean()-X&quot;</span> <span class="st">&quot;tBodyAcc-mean()-Y&quot;</span> <span class="st">&quot;tBodyAcc-mean()-Z&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] <span class="st">&quot;tBodyAcc-std()-X&quot;</span>  <span class="st">&quot;tBodyAcc-std()-Y&quot;</span>  <span class="st">&quot;tBodyAcc-std()-Z&quot;</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;tBodyAcc-mad()-X&quot;</span>  <span class="st">&quot;tBodyAcc-mad()-Y&quot;</span>  <span class="st">&quot;tBodyAcc-mad()-Z&quot;</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] <span class="st">&quot;tBodyAcc-max()-X&quot;</span>  <span class="st">&quot;tBodyAcc-max()-Y&quot;</span>  <span class="st">&quot;tBodyAcc-max()-Z&quot;</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(samsungData<span class="sc">$</span>activity)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  laying  sitting standing     walk walkdown   walkup </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1407</span>     <span class="dv">1286</span>     <span class="dv">1374</span>     <span class="dv">1226</span>      <span class="dv">986</span>     <span class="dv">1073</span> </span></code></pre></div>
+</div>
+<div id="plotting-average-acceleration-for-first-subject."
+class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Plotting average
+acceleration for first subject.</h2>
+<p>So one thing we can do really quickly is just to look at the average
+acceleration for the first subject.</p>
+<ul>
+<li>First, we <em>convert the activity (character) variable</em> into a
+<strong>factor variable</strong>.<br />
+</li>
+<li>Then we <em>subset out</em> all the observations regarding the first
+subject.<br />
+</li>
+<li>And finally we plot the first and the second measurments of that
+subject.
+<ul>
+<li>The <em>mean of the body acceleration in the x direction</em>.<br />
+</li>
+<li>The <em>mean of the body acceleration in the y direction</em>.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>samsungData <span class="ot">&lt;-</span> <span class="fu">transform</span>(samsungData, <span class="at">activity =</span> <span class="fu">factor</span>(activity))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sub1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(samsungData, subject <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(sub1)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">347</span> <span class="dv">563</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sub1[, <span class="dv">1</span>], <span class="at">col =</span> sub1<span class="sc">$</span>activity, <span class="at">ylab =</span> <span class="fu">names</span>(sub1)[<span class="dv">1</span>])</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sub1[, <span class="dv">2</span>], <span class="at">col =</span> sub1<span class="sc">$</span>activity, <span class="at">ylab =</span> <span class="fu">names</span>(sub1)[<span class="dv">2</span>])</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">unique</span>(sub1<span class="sc">$</span>activity), <span class="at">col =</span> <span class="fu">unique</span>(sub1<span class="sc">$</span>activity),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">pch =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<ul>
+<li>We’ve mapped the color aesthetics to the activities variable.<br />
+</li>
+<li>But on the left hand plot, we can’t tell which activity is
+which.<br />
+</li>
+<li>So on the right hand plot, we’ve added a legend.<br />
+</li>
+<li>And, as we can see, the mean body acceleration is <strong>relatively
+uninteresting</strong> for things like <strong>standing, sitting and
+laying</strong>.<br />
+</li>
+<li>But for things like <strong>walking, walking down and walking
+up</strong>, there’s <strong>much more variability</strong> in the mean
+body acceleration, particularley <strong>in the X
+dimension</strong>.</li>
+</ul>
+</div>
+<div
+id="clustering-based-just-on-average-acceleration-of-the-first-subject."
+class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Clustering based just
+on average acceleration (of the first subject).</h2>
+<p>We can try to cluster the data, just on the average acceleration (of
+the fisrt subject).</p>
+<ul>
+<li>Let’s take the first three variables and calculate a distance matrix
+(recall that the default distance metric is the Euclidean
+distance).<br />
+</li>
+<li>Then call the <code>hclust()</code> function to do a
+<strong>hierarchical clustering</strong> of these data.<br />
+</li>
+<li>Finally, we call the <code>myplclust()</code> function (that we’ve
+seen in Module 3), just to get a prettier visualizaton of the
+dendrogram.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;4_data/myplclust.R&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>distanceMatrix <span class="ot">&lt;-</span> <span class="fu">dist</span>(sub1[, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>hclustering <span class="ot">&lt;-</span> <span class="fu">hclust</span>(distanceMatrix)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">myplclust</span>(hclustering, <span class="at">lab.col =</span> <span class="fu">unclass</span>(sub1<span class="sc">$</span>activity))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-4-1.png" width="1152" /></p>
+<ul>
+<li>We can see that the clustering is a <strong>little bit
+messy</strong>.<br />
+</li>
+<li>There <strong>isn’t any clear pattern</strong> going on (except that
+active colors -blues and magenta- are near each other as are the passive
+-black, red and green-).<br />
+</li>
+<li>Therefore, we <strong>need to look a little bit further</strong> to
+try to extract more information out of here.
+<ul>
+<li>Average acceleration doesn’t tell us much.<br />
+</li>
+<li><strong>How about maximum acceleration?</strong></li>
+</ul></li>
+</ul>
+</div>
+<div id="plotting-max-acceleration-for-the-first-subject."
+class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Plotting max
+acceleration for the first subject.</h2>
+<p>We can look now at the maximum acceleration for this subject, so we
+can plot columns 10 and 11.</p>
+<ul>
+<li>The <em>maximum of the body acceleration in the x
+direction</em>.<br />
+</li>
+<li>The <em>maximum of the body acceleration in the y
+direction</em>.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sub1[, <span class="dv">10</span>], <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> sub1<span class="sc">$</span>activity, <span class="at">ylab =</span> <span class="fu">names</span>(sub1)[<span class="dv">10</span>])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">unique</span>(sub1<span class="sc">$</span>activity),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">unique</span>(sub1<span class="sc">$</span>activity), <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sub1[, <span class="dv">11</span>], <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> sub1<span class="sc">$</span>activity, <span class="at">ylab =</span> <span class="fu">names</span>(sub1)[<span class="dv">11</span>])</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<ul>
+<li>We can see that passive activities mostly fall below the walking
+activities.<br />
+</li>
+<li>In other words, for <strong>walking, walking up and walking
+down</strong> the maximum acceleration shows <em>much more
+variability</em>.<br />
+</li>
+<li>So <strong>that may be a predictor</strong> of those kinds of
+activities.</li>
+</ul>
+</div>
+<div id="clustering-based-on-maximum-acceleration."
+class="section level2" number="1.6">
+<h2><span class="header-section-number">1.6</span> Clustering based on
+maximum acceleration.</h2>
+<p>So if we cluster the data based on maximum acceleration, we can see
+that there’re <strong>two very clear clusters</strong>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;4_data/myplclust.R&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>distanceMatrix <span class="ot">&lt;-</span> <span class="fu">dist</span>(sub1[, <span class="dv">10</span><span class="sc">:</span><span class="dv">12</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hclustering <span class="ot">&lt;-</span> <span class="fu">hclust</span>(distanceMatrix)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">myplclust</span>(hclustering, <span class="at">lab.col =</span> <span class="fu">unclass</span>(sub1<span class="sc">$</span>activity))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+<ul>
+<li>The <strong>two clear clusters are</strong>:
+<ul>
+<li>On the left hand side, we’ve got the <em>various walking
+activities</em>.<br />
+</li>
+<li>And on the right hand side we’ve got the <em>various non moving
+activities</em> (laying, standing and sitting).<br />
+</li>
+</ul></li>
+<li><strong>Beyond that</strong>, things are a little bit <em>jumbled
+together</em>:
+<ul>
+<li>The light blue (walking down) is clearly distinct from the other
+walking activities. The dark blue (walking level) also seems to be
+somewhat clustered.<br />
+</li>
+<li>The passive activities, however, seem all jumbled together with no
+clear pattern visible.<br />
+</li>
+</ul></li>
+<li>So, a <strong>cluster based on maximum acceleration</strong>
+<em>seems to separate out</em> <strong>moving</strong> from <strong>non
+moving</strong>.<br />
+</li>
+<li>But once we get <strong>within those clusters</strong>, for example,
+within the moving cluster or within the non moving cluster, then it’s a
+little bit <strong>hard to tell</strong> what is what, based just on
+maximum acceleration.</li>
+</ul>
+</div>
+<div id="singular-value-decomposition." class="section level2"
+number="1.7">
+<h2><span class="header-section-number">1.7</span> Singular Value
+Decomposition.</h2>
+<p>We can try a singular value decomposition on this data, just to
+explore what’s going on.</p>
+<ul>
+<li>First, we’ll remove the two last columns (“subject” and “activity”
+identifiers) which are not real interesting data.<br />
+</li>
+<li>Then we run the SVD on the normalized data, take a look at the first
+and the second left singular vectors and color code them by
+activity.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>svd1 <span class="ot">=</span> <span class="fu">svd</span>(<span class="fu">scale</span>(sub1[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">562</span>,<span class="dv">563</span>)]))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## &quot;svd1$u is a 347 by 347 matrix, that contains the LEFT singular vectors.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Each row in &quot;u&quot; corresponds to a row in the matrix sub1. Recall that in sub1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## each row has an associated activity.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(svd1<span class="sc">$</span>u)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">347</span> <span class="dv">347</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(svd1<span class="sc">$</span>u[, <span class="dv">1</span>], <span class="at">col =</span> sub1<span class="sc">$</span>activity, <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">unique</span>(sub1<span class="sc">$</span>activity),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">unique</span>(sub1<span class="sc">$</span>activity), <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(svd1<span class="sc">$</span>u[, <span class="dv">2</span>], <span class="at">col =</span> sub1<span class="sc">$</span>activity, <span class="at">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+<ul>
+<li>We can see there’s a <em>similar type of pattern</em>.<br />
+</li>
+<li>The <strong>first LEFT singular vector</strong> really seems to
+<em>separate out</em> the <em>moving</em> from the <em>non moving</em>.
+<ul>
+<li>Each entry of the vector belongs to a particular row with one of the
+6 activities assigned to it.<br />
+</li>
+<li>We see the activities distinguished by color.<br />
+</li>
+<li>Moving from left to right, the <strong>first section of
+rows</strong> are green (standing), the <strong>second</strong> red
+(sitting), the <strong>third</strong> black (laying), etc.</li>
+<li>So we can see that the green, red and black points are on the
+bottom. And the blue, turquoise and magenta are on the top.<br />
+</li>
+</ul></li>
+<li>The <strong>second LEFT singular vector</strong> is a little bit
+<em>more vague</em>.
+<ul>
+<li>It <em>seems</em> to be <em>separating out</em> the <em>magenta</em>
+color (walking up) <em>from all the other</em> clusters.<br />
+</li>
+<li>And so it’s not clear what is different about that, <strong>this is
+a highlight</strong> given by this second left singular vector.<br />
+</li>
+<li><strong><em>We’ll try to figure out why that is</em></strong>.</li>
+</ul></li>
+</ul>
+</div>
+<div id="find-maximum-contributor." class="section level2" number="1.8">
+<h2><span class="header-section-number">1.8</span> Find maximum
+contributor.</h2>
+<p>To do that we’ll have to find <strong>which of the 561 measurements
+is contributing</strong> to the <strong>most variation of that magenta
+component (walking up)</strong>.</p>
+<p>Since we’re <em>interested in sub1 columns</em>, we’ll look at the
+<strong>RIGHT singular vectors</strong> (the columns of
+<code>svd1$v</code>) and, in particular, <strong>the second one</strong>
+since the separation of the magenta cluster stood out in the second
+column of <code>svd1$v</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(svd1<span class="sc">$</span>v[, <span class="dv">2</span>], <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-8-1.png" width="576" /></p>
+<ul>
+<li>We used transparency in our plotting but nothing clearly stands out
+here.</li>
+</ul>
+</div>
+<div id="new-clustering-with-maximum-contributor."
+class="section level2" number="1.9">
+<h2><span class="header-section-number">1.9</span> New clustering with
+maximum contributor.</h2>
+<p>Let’s use clustering to find the feature (out of the 500+) which
+contributes the most to the variation of this second column of
+<code>svd1$v</code>.</p>
+<p>We can use the <code>which.max()</code> function.</p>
+<p>Then we can <strong>cluster based on</strong> the <em>maximum
+acceleration</em> <strong><em>plus</em></strong> <em>this extra
+feature</em>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>maxContrib <span class="ot">&lt;-</span> <span class="fu">which.max</span>(svd1<span class="sc">$</span>v[, <span class="dv">2</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>maxContrib</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">296</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(sub1)[maxContrib]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;fBodyAcc.meanFreq...Z&quot;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>distanceMatrix <span class="ot">&lt;-</span> <span class="fu">dist</span>(sub1[, <span class="fu">c</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">12</span>, maxContrib)])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>hclustering <span class="ot">&lt;-</span> <span class="fu">hclust</span>(distanceMatrix)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">myplclust</span>(hclustering, <span class="at">lab.col =</span> <span class="fu">unclass</span>(sub1<span class="sc">$</span>activity))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-9-1.png" width="768" /></p>
+<ul>
+<li>We can see now that the various activities seem to be separating out
+a little bit more, <strong>at least the three movement activities have
+clearly been separated</strong> (the magenta, the dark blue and the
+turquoise).<br />
+</li>
+<li>The various <strong>non moving activities</strong> seem to be all
+<strong>mixed together</strong> so the maximum contributor didn’t really
+help to separate out the non moving activities.<br />
+</li>
+<li>The <strong>maximum contributor</strong> is the <strong>mean body
+acceleration in the frequency domain for the z direction</strong>.</li>
+</ul>
+</div>
+<div id="k-means-clustering-nstart1-first-try." class="section level2"
+number="1.10">
+<h2><span class="header-section-number">1.10</span> K-means clustering
+(nstart=1, first try).</h2>
+<p>We can try another clustering technique which is K-means clustering
+and see if it can distinguish between the activities.</p>
+<p>One of the things about k-means clustering that we have to take into
+consideration is that <strong>we can get different answers</strong>
+<em>depending on how many starting values</em> we’ve tried and <em>how
+often we run it</em>.</p>
+<ul>
+<li>So whenever we start k-means it has to chose a starting point for
+the cluster centers. Most algorithms will chose a random starting
+point.<br />
+</li>
+<li>If we chose a <em>random starting point</em> we <em>may get to a
+solution</em> that is <em>suboptimal</em>.<br />
+</li>
+<li>If we chose a <em>different starting point</em> we <em>may get to an
+even better solution</em>.<br />
+</li>
+<li>So it’s <strong>usually good</strong> to set the <code>nstart</code>
+argument to be <strong>more than one</strong> so we can start at many
+different starting points, so you can get a more optimal solution.
+<ul>
+<li><code>nstart = 100</code>, for example, tells to try 100 random
+starts and return the best one.</li>
+</ul></li>
+</ul>
+<p>Here is one k-means clustering with six centers specified, so we know
+that there are six clusters (there are six activities).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>kClust <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(sub1[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">562</span>, <span class="dv">563</span>)], <span class="at">centers =</span> <span class="dv">6</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kClust<span class="sc">$</span>cluster, sub1<span class="sc">$</span>activity)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    laying sitting standing walk walkdown walkup</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>   <span class="dv">95</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>        <span class="dv">0</span>     <span class="dv">18</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>       <span class="dv">49</span>      <span class="dv">0</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">4</span>      <span class="dv">3</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>        <span class="dv">0</span>     <span class="dv">35</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span>     <span class="dv">27</span>      <span class="dv">37</span>       <span class="dv">51</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span>     <span class="dv">20</span>      <span class="dv">10</span>        <span class="dv">2</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span></code></pre></div>
+<ul>
+<li>We can see that some of the clusters kind of jumble together.</li>
+<li>K-means here had trouble separating out some activities (some
+clusters are a mix of different activities).</li>
+</ul>
+</div>
+<div id="k-means-clustering-nstart1-second-try" class="section level2"
+number="1.11">
+<h2><span class="header-section-number">1.11</span> K-means clustering
+(nstart=1, second try)</h2>
+<p>If we try it again, we can see the arrangement’s a little bit
+different but, again, there are clusters that are mixtures of
+activities.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>kClust <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(sub1[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">562</span>, <span class="dv">563</span>)], <span class="at">centers =</span> <span class="dv">6</span>, <span class="at">nstart =</span> <span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kClust<span class="sc">$</span>cluster, sub1<span class="sc">$</span>activity)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    laying sitting standing walk walkdown walkup</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>       <span class="dv">23</span>      <span class="dv">0</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>      <span class="dv">8</span>       <span class="dv">2</span>        <span class="dv">0</span>    <span class="dv">0</span>        <span class="dv">0</span>     <span class="dv">53</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>     <span class="dv">42</span>      <span class="dv">45</span>       <span class="dv">53</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">4</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>       <span class="dv">26</span>      <span class="dv">0</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>   <span class="dv">45</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>   <span class="dv">50</span>        <span class="dv">0</span>      <span class="dv">0</span></span></code></pre></div>
+</div>
+<div id="k-means-clustering-nstart100-first-try" class="section level2"
+number="1.12">
+<h2><span class="header-section-number">1.12</span> K-means clustering
+(nstart=100, first try)</h2>
+<p>If we try 100 different starting values and take the optimal solution
+from this 100, we see that things seem to separate out a little bit
+better, not much better than last time.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>kClust <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(sub1[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">562</span>, <span class="dv">563</span>)], <span class="at">centers =</span> <span class="dv">6</span>, <span class="at">nstart =</span> <span class="dv">100</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kClust<span class="sc">$</span>cluster, sub1<span class="sc">$</span>activity)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    laying sitting standing walk walkdown walkup</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>   <span class="dv">95</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>     <span class="dv">18</span>      <span class="dv">10</span>        <span class="dv">2</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>       <span class="dv">49</span>      <span class="dv">0</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">4</span>     <span class="dv">29</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span>      <span class="dv">0</span>      <span class="dv">37</span>       <span class="dv">51</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span>      <span class="dv">3</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>        <span class="dv">0</span>     <span class="dv">53</span></span></code></pre></div>
+<ul>
+<li>We see that even with 100 random starts, the passive activities tend
+to cluster together.<br />
+</li>
+<li>One of the clusters contains only laying, but in another cluster,
+standing and sitting group together.</li>
+</ul>
+</div>
+<div id="k-means-clustering-nstart100-second-try" class="section level2"
+number="1.13">
+<h2><span class="header-section-number">1.13</span> K-means clustering
+(nstart=100, second try)</h2>
+<p>If we do a second try with 100 starting values, it will <em>probably
+be our best effort</em>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>kClust <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(sub1[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">562</span>,<span class="dv">563</span>)], <span class="at">centers =</span> <span class="dv">6</span>, <span class="at">nstart =</span> <span class="dv">100</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> <span class="fu">table</span>(kClust<span class="sc">$</span>cluster,sub1<span class="sc">$</span>activity)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>table</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    laying sitting standing walk walkdown walkup</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>      <span class="dv">3</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>        <span class="dv">0</span>     <span class="dv">53</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>     <span class="dv">29</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>      <span class="dv">0</span>      <span class="dv">37</span>       <span class="dv">51</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">4</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>   <span class="dv">95</span>        <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span>      <span class="dv">0</span>       <span class="dv">0</span>        <span class="dv">0</span>    <span class="dv">0</span>       <span class="dv">49</span>      <span class="dv">0</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span>     <span class="dv">18</span>      <span class="dv">10</span>        <span class="dv">2</span>    <span class="dv">0</span>        <span class="dv">0</span>      <span class="dv">0</span></span></code></pre></div>
+<ul>
+<li>There’s a cluster that <em>still is a mixture of three
+activities</em>.<br />
+</li>
+<li>Another cluster is a <em>mixture of two</em>.</li>
+</ul>
+<div id="plotting-cluster-center-of-laying-variable."
+class="section level3" number="1.13.1">
+<h3><span class="header-section-number">1.13.1</span> Plotting cluster
+center of “laying” variable.</h3>
+<p>We can see <strong>where the cluster centers are</strong>.</p>
+<p>The idea is that each of the clusters has a <em>mean value</em> or a
+<em>center</em> in this 561 dimensional space.</p>
+<p>We can see <em>which features</em> of these 561 features <em>seem to
+drive the location</em> of <em>the center</em> for that <em>given
+cluster</em>.</p>
+<ul>
+<li>That will give us some idea of <em>what features seem to be
+important</em> for classifying people in that cluster, or classifying
+observations in that cluster.</li>
+</ul>
+<p>So let’s plot the cluster which seems to correspond to
+<strong>laying</strong>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tracking the cluster assigned to &#39;laying&#39;.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>kClust<span class="sc">$</span>size</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">56</span> <span class="dv">29</span> <span class="dv">88</span> <span class="dv">95</span> <span class="dv">49</span> <span class="dv">30</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>laying_clus <span class="ot">&lt;-</span> <span class="fu">which</span>(kClust<span class="sc">$</span>size <span class="sc">==</span> <span class="dv">29</span>)  <span class="co"># or which(table[, &#39;laying&#39;] == 29)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>laying_clus</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">2</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(kClust<span class="sc">$</span>centers)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]   <span class="dv">6</span> <span class="dv">561</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(kClust<span class="sc">$</span>centers[laying_clus, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">ylab =</span> <span class="st">&quot;Laying Cluster Center&quot;</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-14-1.png" width="768" /></p>
+<ul>
+<li>We are only plotting the first 10 measurments of the 561 features,
+and can see that:
+<ul>
+<li>The <strong>center has relatively high value</strong> for the
+<em>first three features</em>, that is, the first 3 columns dominate
+this cluster center.<br />
+</li>
+<li>These measurments are the mean body acceleration in the x, y and z
+directions.<br />
+</li>
+<li>The <em>other features</em> have <strong>low values</strong>.</li>
+</ul></li>
+</ul>
+</div>
+<div id="plotting-cluster-center-of-walk-variable."
+class="section level3" number="1.13.2">
+<h3><span class="header-section-number">1.13.2</span> Plotting cluster
+center of “walk” variable.</h3>
+<p>Here we can see the cluster center for the <em>walk</em>
+variable.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tracking the cluster assigned to &quot;walk&quot;.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>walking_clus <span class="ot">&lt;-</span> <span class="fu">which</span>(kClust<span class="sc">$</span>size <span class="sc">==</span> <span class="dv">95</span>)   <span class="co"># or  which(table[, &quot;walk&quot;] == 95)</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>walking_clus</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">4</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(kClust<span class="sc">$</span>centers[walking_clus, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">ylab =</span> <span class="st">&quot;Walk Cluster Center&quot;</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-15-1.png" width="768" /></p>
+<ul>
+<li>It has some more interesting values for other features: mean
+acceleration, also max acceleration.</li>
+</ul>
+</div>
+</div>
+<div id="in-summary." class="section level2" number="1.14">
+<h2><span class="header-section-number">1.14</span> In summary.</h2>
+<p><strong>Cluster centers</strong> allow us to see:</p>
+<ul>
+<li><strong>What features</strong> seem to <strong>have interesting
+values</strong> that <strong>drive the location to that
+center</strong>.<br />
+</li>
+<li>And <strong>which could give us a hint</strong>, in terms of what
+features will be most useful for <em>predicting that activity</em>.</li>
+</ul>
+<p>This is a just a <em>short demonstration</em> to show how we can take
+a large data set with lots of features and lots of observations and
+start to explore it a little bit with various clustering techniques.</p>
+<p>We used Hierarchical clustering, used K-means clustering and we used
+the singular value decomposition to look at various features of this
+data set.</p>
+<p>Given what we’ve learned here, we may want to be interested in
+following up on what separates out the various non movement
+activity.</p>
+<ul>
+<li>In terms of laying, sitting and standing, we seem to have some
+difficulty, at least on the first glance, separating those three
+activities out.<br />
+</li>
+<li>The movement activities in terms of walking, walking up and walking
+down, we seem to be able to separate those out into separate
+clusters.<br />
+</li>
+<li>The nice thing about the exploratory data analysis is that it gives
+us this rough cut, that tells us where to spend our energy. We probably
+may not have to spend too much energy on the movement activities, but
+maybe we need to spend, look, dig a little bit deeper looking at the non
+movement activities.</li>
+</ul>
+</div>
+<div id="cleaning-disk" class="section level2" number="1.15">
+<h2><span class="header-section-number">1.15</span> Cleaning disk</h2>
+<p>Let’s remove from disk the unzipped directory (283 MB) we don’t use
+anymore.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>unzipped_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, <span class="st">&quot;UCI HAR Dataset&quot;</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">file.exists</span>(unzipped_dir)) {</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unlink</span>(unzipped_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Unzipped directory has been deleted&quot;</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>Unzipped directory has been deleted</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div
+id="eda-case-study-changes-in-fine-particle-air-pollution-in-the-us."
+class="section level1" number="2">
+<h1><span class="header-section-number">2</span> EDA Case Study: Changes
+in Fine Particle Air Pollution in the US.</h1>
+<p>This chapter presents an example data analysis looking at changes in
+fine particulate matter (PM) air pollution in the United States using
+the Environmental Protection Agencies freely available national
+monitoring data.</p>
+<ul>
+<li>The <strong>purpose</strong> is to use the various tools we’ve
+leanred about to <em>read</em>, <em>manipulate</em> and
+<em>summarize</em> data so that we can <em>develop statistical
+evidence</em> for <em>relevant real-world questions</em>.</li>
+</ul>
+<div id="synopsis-the-question." class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Synopsis, the
+question.</h2>
+<ul>
+<li><p>We want to describe the <strong>changes in fine particle
+(PM2.5)</strong> outdoor air pollution in the US between the years
+<strong>1999 and 2012</strong>.</p></li>
+<li><p>Our <strong>overall hypothesis</strong> is that outdoor PM2.5 has
+<em>decreased on average</em> across the U.S. <em>due to</em> nationwide
+regulatory requirements arising from the Clean Air Act.</p>
+<ul>
+<li>So <strong>the question</strong> we want to answer is: <em>are air
+pollution levels lower now than they were before?</em></li>
+</ul></li>
+<li><p>To investigate this hypothesis, we obtained <strong>PM2.5
+data</strong> from the US Environmental Protection Agency which is
+collected from monitors sited across the US, for the years 1999 and
+2012.</p></li>
+<li><p>From these data, <strong>we found that</strong>:</p>
+<ul>
+<li><em>On average</em> across the US, <em>levels</em> of PM2.5 <em>have
+decreased</em> between 1999 and 2012.<br />
+</li>
+<li>At <em>one individual monitor</em>, we found that <em>levels</em>
+have <em>decreased</em> and that the <em>variability</em> of PM2.5 has
+<em>decreased</em>.<br />
+</li>
+<li><em>Most individual states</em> also <em>experienced decreases</em>
+in PM2.5, although <em>some states saw increases</em>.</li>
+</ul></li>
+</ul>
+</div>
+<div id="loading-and-processing-the-raw-data." class="section level2"
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Loading and
+processing the raw data.</h2>
+<p>From the <a
+href="https://aqs.epa.gov/aqsweb/airdata/download_files.html">EPA Air
+Quality System</a> we obtained data on fine particulate matter air
+pollution (PM2.5) that is monitored across the US as part of the
+nationwide PM monitoring network.</p>
+<p>We downloaded the files for the years 1999
+(<code>RD_501_88101_1999-0.txt</code>) and 2012
+(<code>RD_501_88101_2012-0.txt</code>), and zipped them into the
+<code>RD_501_88101.zip</code> file using these commands:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(zip)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>downloaded_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">&quot;4_data/&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;0.txt$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;4_data//RD_501_88101_1999-0.txt&quot; &quot;4_data//RD_501_88101_2012-0.txt&quot;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">zipr</span>(<span class="at">zipfile =</span> <span class="st">&quot;4_data/RD_501_88101.zip&quot;</span>, <span class="at">files =</span> downloaded_files)</span></code></pre></div>
+<div id="unzipping-the-data" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Unzipping the
+data</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">&lt;-</span> <span class="st">&quot;4_data&quot;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>zipped_file <span class="ot">&lt;-</span> <span class="st">&quot;RD_501_88101.zip&quot;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>zipped_file_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datadir, zipped_file)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>zipContent <span class="ot">&lt;-</span> <span class="fu">unzip</span>(zipped_file_path, <span class="at">exdir =</span> datadir)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>zipContent</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;4_data/RD_501_88101_1999-0.txt&quot;</span> <span class="st">&quot;4_data/RD_501_88101_2012-0.txt&quot;</span></span></code></pre></div>
+</div>
+<div
+id="reading-in-the-1999-data-identifying-the-pm2.5-column-and-checking-the-missing-values."
+class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Reading in the 1999
+data, identifying the PM2.5 column and checking the missing values.</h3>
+<p>The data is <strong>a delimited file</strong> were:</p>
+<ul>
+<li>Fields are delimited with the <em><code>|</code>
+character</em>.<br />
+</li>
+<li>Missing values are coded as <em>blank</em> fields.<br />
+</li>
+<li>We <strong>skip</strong> some commented lines in the beginning of
+the file.<br />
+</li>
+<li>Initially we <em>do not read the header</em> data.</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pm0 <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;4_data/RD_501_88101_1999-0.txt&quot;</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">delim =</span> <span class="st">&quot;|&quot;</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">comment =</span> <span class="st">&quot;#&quot;</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">na =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>Rows<span class="sc">:</span> <span class="dv">117421</span> Columns<span class="sc">:</span> <span class="dv">28</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>── Column specification ───────────────────────────────────────────────────────────────────</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>Delimiter<span class="sc">:</span> <span class="st">&quot;|&quot;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">chr</span>   (<span class="dv">7</span>)<span class="sc">:</span> X1, X2, X3, X4, X5, X14, X17</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dbl</span>   (<span class="dv">8</span>)<span class="sc">:</span> X6, X7, X8, X9, X10, X11, X13, X15</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lgl</span>  (<span class="dv">12</span>)<span class="sc">:</span> X16, X18, X19, X20, X21, X22, X23, X24, X25, X26, X27, X28</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">time</span>  (<span class="dv">1</span>)<span class="sc">:</span> X12</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>ℹ Use <span class="st">`</span><span class="at">spec()</span><span class="st">`</span> to retrieve the full column specification <span class="cf">for</span> this data.</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>ℹ Specify the column types or set <span class="st">`</span><span class="at">show_col_types = FALSE</span><span class="st">`</span> to quiet this message.</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(pm0)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">117421</span>     <span class="dv">28</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pm0[, <span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>])</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 6 × 13</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  X1    X2    X3    X4    X5       X6    X7    X8    X9   X10      X11 X12   </span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>    <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>time<span class="sc">&gt;</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> RD    I     <span class="dv">01</span>    <span class="dv">027</span>   <span class="dv">0001</span>  <span class="dv">88101</span>     <span class="dv">1</span>     <span class="dv">7</span>   <span class="dv">105</span>   <span class="dv">120</span> <span class="dv">19990103</span> <span class="dv">00</span><span class="st">&#39;00&quot;</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="st">2 RD    I     01    027   0001  88101     1     7   105   120 19990106 00&#39;</span><span class="dv">00</span><span class="st">&quot;</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="st">3 RD    I     01    027   0001  88101     1     7   105   120 19990109 00&#39;00&quot;</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> RD    I     <span class="dv">01</span>    <span class="dv">027</span>   <span class="dv">0001</span>  <span class="dv">88101</span>     <span class="dv">1</span>     <span class="dv">7</span>   <span class="dv">105</span>   <span class="dv">120</span> <span class="dv">19990112</span> <span class="dv">00</span><span class="st">&#39;00&quot;</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="st">5 RD    I     01    027   0001  88101     1     7   105   120 19990115 00&#39;</span><span class="dv">00</span><span class="st">&quot;</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="st">6 RD    I     01    027   0001  88101     1     7   105   120 19990118 00&#39;00&quot;</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 1 more variable: X13 &lt;dbl&gt;</span></span></code></pre></div>
+<p>We then <em>attach the column headers</em> to the dataset and make
+sure that they are <em>properly formated</em> for R data frames.</p>
+<ul>
+<li>We’ll use <strong>the <code>make.names()</code> function</strong>
+which basically takes an arbitrary string and turn it into a valid
+column name for a data frame.</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cnames <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">&quot;4_data/RD_501_88101_1999-0.txt&quot;</span>, <span class="dv">1</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cnames</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;# RD|Action Code|State Code|County Code|Site ID|Parameter|POC|Sample Duration|Unit|Method|Date|Start Time|Sample Value|Null Data Code|Sampling Frequency|Monitor Protocol (MP) ID|Qualifier - 1|Qualifier - 2|Qualifier - 3|Qualifier - 4|Qualifier - 5|Qualifier - 6|Qualifier - 7|Qualifier - 8|Qualifier - 9|Qualifier - 10|Alternate Method Detectable Limit|Uncertainty&quot;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>cnames <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(cnames, <span class="st">&quot;|&quot;</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>) <span class="co"># It&#39;s a fixed pattern, not a regex.</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>cnames</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>]]</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;# RD&quot;</span>                              <span class="st">&quot;Action Code&quot;</span>                      </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] <span class="st">&quot;State Code&quot;</span>                        <span class="st">&quot;County Code&quot;</span>                      </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] <span class="st">&quot;Site ID&quot;</span>                           <span class="st">&quot;Parameter&quot;</span>                        </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;POC&quot;</span>                               <span class="st">&quot;Sample Duration&quot;</span>                  </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] <span class="st">&quot;Unit&quot;</span>                              <span class="st">&quot;Method&quot;</span>                           </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] <span class="st">&quot;Date&quot;</span>                              <span class="st">&quot;Start Time&quot;</span>                       </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;Sample Value&quot;</span>                      <span class="st">&quot;Null Data Code&quot;</span>                   </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">15</span>] <span class="st">&quot;Sampling Frequency&quot;</span>                <span class="st">&quot;Monitor Protocol (MP) ID&quot;</span>         </span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] <span class="st">&quot;Qualifier - 1&quot;</span>                     <span class="st">&quot;Qualifier - 2&quot;</span>                    </span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;Qualifier - 3&quot;</span>                     <span class="st">&quot;Qualifier - 4&quot;</span>                    </span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] <span class="st">&quot;Qualifier - 5&quot;</span>                     <span class="st">&quot;Qualifier - 6&quot;</span>                    </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">23</span>] <span class="st">&quot;Qualifier - 7&quot;</span>                     <span class="st">&quot;Qualifier - 8&quot;</span>                    </span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;Qualifier - 9&quot;</span>                     <span class="st">&quot;Qualifier - 10&quot;</span>                   </span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>[<span class="dv">27</span>] <span class="st">&quot;Alternate Method Detectable Limit&quot;</span> <span class="st">&quot;Uncertainty&quot;</span>                      </span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="do">## Ensure names are properly formatted</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pm0) <span class="ot">&lt;-</span> <span class="fu">make.names</span>(cnames[[<span class="dv">1</span>]])</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>pm0</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 117,421 × 28</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>   X..RD Action.Code State.Code County.Code Site.ID Parameter   POC</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>chr<span class="sc">&gt;</span>      <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> RD    I           <span class="dv">01</span>         <span class="dv">027</span>         <span class="dv">0001</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 117,411 more rows, and 21 more variables: Sample.Duration &lt;dbl&gt;,</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   Unit &lt;dbl&gt;, Method &lt;dbl&gt;, Date &lt;dbl&gt;, Start.Time &lt;time&gt;,</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Value &lt;dbl&gt;, Null.Data.Code &lt;chr&gt;, Sampling.Frequency &lt;dbl&gt;,</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   Monitor.Protocol..MP..ID &lt;lgl&gt;, Qualifier...1 &lt;chr&gt;, Qualifier...2 &lt;lgl&gt;,</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...3 &lt;lgl&gt;, Qualifier...4 &lt;lgl&gt;, Qualifier...5 &lt;lgl&gt;,</span></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...6 &lt;lgl&gt;, Qualifier...7 &lt;lgl&gt;, Qualifier...8 &lt;lgl&gt;,</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...9 &lt;lgl&gt;, Qualifier...10 &lt;lgl&gt;, …</span></span></code></pre></div>
+<p>The column we are interested in is <strong>the Sample.Value
+column</strong> which contains the PM2.5 measurements.</p>
+<ul>
+<li>Here we extract that column and print a brief summary.</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x0 <span class="ot">&lt;-</span> pm0<span class="sc">$</span>Sample.Value</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x0)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA<span class="st">&#39;s </span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="st">   0.00    7.20   11.50   13.74   17.90  157.10   13217 </span></span></code></pre></div>
+<p><strong>Missing values</strong> are a common problem with
+environmental data and so we check to see <em>what proportion</em> of
+the observations are missing.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Are missing values important here?</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">is.na</span>(x0))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.1125608</span></span></code></pre></div>
+<ul>
+<li>Because the proportion of missing values is <strong>relatively
+low</strong>, we choose to ignore them for now.</li>
+</ul>
+</div>
+<div
+id="reading-in-the-2012-data-identifying-the-pm2.5-column-and-checking-the-missing-values."
+class="section level3" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Reading in the 2012
+data, identifying the PM2.5 column and checking the missing values.</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pm1 <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">&quot;4_data/RD_501_88101_2012-0.txt&quot;</span>,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">delim =</span> <span class="st">&quot;|&quot;</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">comment =</span> <span class="st">&quot;#&quot;</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">na =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> One or more parsing issues, see <span class="st">`</span><span class="at">problems()</span><span class="st">`</span> <span class="cf">for</span> details</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>Rows<span class="sc">:</span> <span class="dv">1304287</span> Columns<span class="sc">:</span> <span class="dv">28</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>── Column specification ───────────────────────────────────────────────────────────────────</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>Delimiter<span class="sc">:</span> <span class="st">&quot;|&quot;</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">chr</span>   (<span class="dv">8</span>)<span class="sc">:</span> X1, X2, X3, X4, X5, X14, X17, X18</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dbl</span>   (<span class="dv">9</span>)<span class="sc">:</span> X6, X7, X8, X9, X10, X11, X13, X15, X27</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lgl</span>  (<span class="dv">10</span>)<span class="sc">:</span> X16, X19, X20, X21, X22, X23, X24, X25, X26, X28</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="fu">time</span>  (<span class="dv">1</span>)<span class="sc">:</span> X12</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>ℹ Use <span class="st">`</span><span class="at">spec()</span><span class="st">`</span> to retrieve the full column specification <span class="cf">for</span> this data.</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>ℹ Specify the column types or set <span class="st">`</span><span class="at">show_col_types = FALSE</span><span class="st">`</span> to quiet this message.</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(pm1)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1304287</span>      <span class="dv">28</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pm1[, <span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>])</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 6 × 13</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  X1    X2    X3    X4    X5       X6    X7    X8    X9   X10      X11 X12   </span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>    <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>time<span class="sc">&gt;</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> RD    I     <span class="dv">01</span>    <span class="dv">003</span>   <span class="dv">0010</span>  <span class="dv">88101</span>     <span class="dv">1</span>     <span class="dv">7</span>   <span class="dv">105</span>   <span class="dv">118</span> <span class="dv">20120101</span> <span class="dv">00</span><span class="st">&#39;00&quot;</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="st">2 RD    I     01    003   0010  88101     1     7   105   118 20120104 00&#39;</span><span class="dv">00</span><span class="st">&quot;</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="st">3 RD    I     01    003   0010  88101     1     7   105   118 20120107 00&#39;00&quot;</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> RD    I     <span class="dv">01</span>    <span class="dv">003</span>   <span class="dv">0010</span>  <span class="dv">88101</span>     <span class="dv">1</span>     <span class="dv">7</span>   <span class="dv">105</span>   <span class="dv">118</span> <span class="dv">20120110</span> <span class="dv">00</span><span class="st">&#39;00&quot;</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="st">5 RD    I     01    003   0010  88101     1     7   105   118 20120113 00&#39;</span><span class="dv">00</span><span class="st">&quot;</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="st">6 RD    I     01    003   0010  88101     1     7   105   118 20120116 00&#39;00&quot;</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 1 more variable: X13 &lt;dbl&gt;</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pm1) <span class="ot">&lt;-</span> <span class="fu">make.names</span>(cnames[[<span class="dv">1</span>]])</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>pm1</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 1,304,287 × 28</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>   X..RD Action.Code State.Code County.Code Site.ID Parameter   POC</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>chr<span class="sc">&gt;</span>      <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> RD    I           <span class="dv">01</span>         <span class="dv">003</span>         <span class="dv">0010</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 1,304,277 more rows, and 21 more variables: Sample.Duration &lt;dbl&gt;,</span></span>
+<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   Unit &lt;dbl&gt;, Method &lt;dbl&gt;, Date &lt;dbl&gt;, Start.Time &lt;time&gt;,</span></span>
+<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Value &lt;dbl&gt;, Null.Data.Code &lt;chr&gt;, Sampling.Frequency &lt;dbl&gt;,</span></span>
+<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   Monitor.Protocol..MP..ID &lt;lgl&gt;, Qualifier...1 &lt;chr&gt;, Qualifier...2 &lt;chr&gt;,</span></span>
+<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...3 &lt;lgl&gt;, Qualifier...4 &lt;lgl&gt;, Qualifier...5 &lt;lgl&gt;,</span></span>
+<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...6 &lt;lgl&gt;, Qualifier...7 &lt;lgl&gt;, Qualifier...8 &lt;lgl&gt;,</span></span>
+<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...9 &lt;lgl&gt;, Qualifier...10 &lt;lgl&gt;, …</span></span>
+<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> pm1<span class="sc">$</span>Sample.Value</span>
+<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x1)</span>
+<span id="cb23-57"><a href="#cb23-57" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA<span class="st">&#39;s </span></span>
+<span id="cb23-58"><a href="#cb23-58" aria-hidden="true" tabindex="-1"></a><span class="st"> -10.00    4.00    7.63    9.14   12.00  908.97   73133 </span></span>
+<span id="cb23-59"><a href="#cb23-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-60"><a href="#cb23-60" aria-hidden="true" tabindex="-1"></a><span class="st">mean(is.na(x1))                              # Only 5% of NAs.</span></span>
+<span id="cb23-61"><a href="#cb23-61" aria-hidden="true" tabindex="-1"></a><span class="st">[1] 0.05607125</span></span></code></pre></div>
+</div>
+<div id="combining-into-a-single-data-frame." class="section level3"
+number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Combining into a
+single data frame.</h3>
+<p>Since we will be comparing the two years of data, it makes sense to
+combine them into a single data frame.</p>
+<p>And let’s also:</p>
+<ul>
+<li>Create a factor variable indicating which year the data comes
+from.<br />
+</li>
+<li>Rename the <code>Sample.Value</code> variable to a more sensible
+<code>PM</code>.</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>pm <span class="ot">&lt;-</span> <span class="fu">rbind</span>(pm0, pm1)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>pm <span class="ot">&lt;-</span> <span class="fu">mutate</span>(pm, <span class="at">year =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1999</span>, <span class="dv">2012</span>), <span class="fu">c</span>(<span class="fu">nrow</span>(pm0), <span class="fu">nrow</span>(pm1))))) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rename</span>(<span class="at">PM =</span> Sample.Value)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(pm0, pm1)</span></code></pre></div>
+</div>
+</div>
+<div id="results." class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Results.</h2>
+<div id="entire-us-analysis." class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Entire US
+analysis.</h3>
+<p>In order to <em>show aggregate changes</em> in PM across the entire
+monitoring network, we can make <strong>boxplots of all monitor
+values</strong> in 1999 and 2012.</p>
+<ul>
+<li>Here, we <strong>take the log</strong> of the PM values <em>to
+adjust for the skew</em> in the data.</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Take a random smaple because it&#39;s faster.</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2015</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(pm), <span class="dv">1000</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(year, <span class="fu">log2</span>(PM), <span class="at">data =</span> pm[idx, ], <span class="at">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">FUN</span>(X[[i]], ...)<span class="sc">:</span> Se han producido NaNs</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">FUN</span>(X[[i]], ...)<span class="sc">:</span> Se han producido NaNs</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> Removed <span class="dv">89</span> rows containing non<span class="sc">-</span>finite <span class="fu">values</span> (stat_boxplot).</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<ul>
+<li>From the raw boxplot, it <em>seems that on average</em>, the
+<em>levels</em> of PM in 2012 are <em>lower</em> than they were in
+1999.<br />
+</li>
+<li>Interestingly, there also appears to be <em>much greater
+variation</em> in PM in 2012 than there was in 1999.</li>
+</ul>
+<p>We can <strong>make some summaries</strong> of the two year’s worth
+data to <em>get the actual numbers</em>.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(pm, <span class="fu">tapply</span>(PM, year, summary))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span><span class="st">`</span><span class="at">1999</span><span class="st">`</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA<span class="st">&#39;s </span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="st">   0.00    7.20   11.50   13.74   17.90  157.10   13217 </span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="st">$`2012`</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="st">   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;</span>s </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a> <span class="sc">-</span><span class="fl">10.00</span>    <span class="fl">4.00</span>    <span class="fl">7.63</span>    <span class="fl">9.14</span>   <span class="fl">12.00</span>  <span class="fl">908.97</span>   <span class="dv">73133</span> </span></code></pre></div>
+<ul>
+<li>Interestingly, from the summary of 2012 it appears there are some
+<strong>negative values</strong> of PM, which in general <strong>should
+not occur</strong>.</li>
+</ul>
+<p>We can investigate that somewhat to <strong>see if there is anything
+we should worry about</strong>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(pm, year <span class="sc">==</span> <span class="st">&quot;2012&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">summarize</span>(<span class="at">sum.negatives =</span> <span class="fu">sum</span>(PM <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">prop.negatives =</span> <span class="fu">mean</span>(PM <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 1 × 2</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  sum.negatives prop.negatives</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>          <span class="sc">&lt;</span>int<span class="sc">&gt;</span>          <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>         <span class="dv">26474</span>         <span class="fl">0.0215</span></span></code></pre></div>
+<ul>
+<li>There is a <strong>relatively small proportion</strong> of values
+that are negative, which is perhaps reassuring.</li>
+</ul>
+<p>In order to <strong>investigate this a step further</strong> we
+can:</p>
+<ul>
+<li><em>Extract the date</em> of each measurement from the original data
+frame.<br />
+</li>
+<li>The idea here is that <em>perhaps negative values occur more
+often</em> in some parts of the year than other parts.<br />
+</li>
+<li>The original data are formatted as character strings so we convert
+them to R’s <code>Date</code> format for easier manipulation.</li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>neg.inspect <span class="ot">&lt;-</span> <span class="fu">filter</span>(pm, year <span class="sc">==</span> <span class="st">&quot;2012&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">negative =</span> PM <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">date =</span> <span class="fu">ymd</span>(Date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(date, negative)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>neg.inspect</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 1,304,287 × 2</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>   date       negative</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>date<span class="sc">&gt;</span>     <span class="er">&lt;</span>lgl<span class="sc">&gt;</span>   </span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">2012-01-01</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">2012-01-04</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">2012-01-07</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">2012-01-10</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2012-01-13</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2012-01-16</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2012-01-19</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2012-01-22</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">2012-01-25</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="dv">2012-01-28</span> <span class="cn">FALSE</span>   </span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 1,304,277 more rows</span></span></code></pre></div>
+<ul>
+<li>So we can <strong>extract the month</strong> from each of the
+<em>dates with negative values</em> and attempt to identify when
+negative values occur most often.</li>
+</ul>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(neg.inspect, <span class="at">month =</span> <span class="fu">factor</span>(month.name[<span class="fu">month</span>(date)],</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">levels =</span> month.name)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(month) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">summarize</span>(<span class="at">pct.negative =</span> <span class="fu">mean</span>(negative, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 10 × 2</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>   month     pct.negative</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>fct<span class="sc">&gt;</span>            <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> January          <span class="fl">2.97</span> </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> February         <span class="fl">2.43</span> </span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> March            <span class="fl">2.41</span> </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> April            <span class="fl">2.18</span> </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> May              <span class="fl">1.73</span> </span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> June             <span class="fl">2.56</span> </span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> July             <span class="fl">0.792</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> August           <span class="fl">1.06</span> </span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> September        <span class="fl">1.52</span> </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> October          <span class="dv">0</span>    </span></code></pre></div>
+<ul>
+<li>It appears that bulk of the negative values occur in the <em>first
+four months</em> of the year (January–April).<br />
+</li>
+<li>However, beyond that simple observation, it is <em>not clear
+why</em> the negative values <em>occur</em>.
+<ul>
+<li>One issue with PM2.5 is that in many areas of the country, it tends
+to be very low in the winter. And high in the summer.<br />
+</li>
+<li>So typically when pollution values are high, they’re easier to
+measure. And when they’re low, they’re harder to measure.<br />
+</li>
+<li>So maybe some of the negative values are just a measurement error
+when the values tend to be very low.<br />
+</li>
+</ul></li>
+<li>That said, given the relatively low proportion of negative values,
+we will <em>ignore them for now</em>.</li>
+</ul>
+</div>
+<div id="changes-in-pm-at-an-individual-monitor." class="section level3"
+number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Changes in PM at an
+individual monitor.</h3>
+<p>One issue with the previous analysis is that the <strong>monitoring
+network</strong> could have <em>changed</em> in the time period between
+1999 and 2012.</p>
+<ul>
+<li>So if for some reason in 2012 there are <em>more monitors</em>
+concentrated in <em>cleaner</em> parts of the country than there were in
+1999, it <em>might appear</em> the PM levels decreased when in fact they
+didn’t.</li>
+</ul>
+<p>In this section we will focus on a <strong>single monitor in New York
+State</strong> to see if PM levels at that monitor decreased from 1999
+to 2012.</p>
+<p>Our first task is to <strong>identify a monitor</strong> in New York
+State <strong>that has data</strong> in 1999
+<strong><em>and</em></strong> 2012 (not all monitors operated during
+both time periods).</p>
+<ul>
+<li>First we <strong>subset</strong> the data frame to:
+<ul>
+<li>Only include data from New York
+(<code>State.Code == 36</code>).<br />
+</li>
+<li>And only include the <code>County.Code</code>, the
+<code>Site.ID</code> (i.e. monitor number) and the <code>year</code>
+variables.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">filter</span>(pm, State.Code <span class="sc">==</span> <span class="dv">36</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(County.Code, Site.ID, year) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        unique</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sites</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 51 × 3</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>   County.Code Site.ID year </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>chr<span class="sc">&gt;</span>   <span class="er">&lt;</span>fct<span class="sc">&gt;</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">001</span>         <span class="dv">0005</span>    <span class="dv">1999</span> </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">001</span>         <span class="dv">0012</span>    <span class="dv">1999</span> </span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">005</span>         <span class="dv">0073</span>    <span class="dv">1999</span> </span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">005</span>         <span class="dv">0080</span>    <span class="dv">1999</span> </span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">005</span>         <span class="dv">0083</span>    <span class="dv">1999</span> </span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">005</span>         <span class="dv">0110</span>    <span class="dv">1999</span> </span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">013</span>         <span class="dv">0011</span>    <span class="dv">1999</span> </span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">027</span>         <span class="dv">1004</span>    <span class="dv">1999</span> </span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">029</span>         <span class="dv">0002</span>    <span class="dv">1999</span> </span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="dv">029</span>         <span class="dv">0005</span>    <span class="dv">1999</span> </span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 41 more rows</span></span></code></pre></div>
+<ul>
+<li>Then we <strong>create a new variable</strong>,
+<code>site.code</code> that <em>combines</em> the <em>county code</em>
+and the <em>site ID</em> into a <strong>single string</strong>.</li>
+</ul>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">mutate</span>(sites, <span class="at">site.code =</span> <span class="fu">paste</span>(County.Code, Site.ID, <span class="at">sep =</span> <span class="st">&quot;.&quot;</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sites)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>tibble [<span class="dv">51</span> × <span class="dv">4</span>] (S3<span class="sc">:</span> tbl_df<span class="sc">/</span>tbl<span class="sc">/</span>data.frame)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> County.Code<span class="sc">:</span> chr [<span class="dv">1</span><span class="sc">:</span><span class="dv">51</span>] <span class="st">&quot;001&quot;</span> <span class="st">&quot;001&quot;</span> <span class="st">&quot;005&quot;</span> <span class="st">&quot;005&quot;</span> ...</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Site.ID    <span class="sc">:</span> chr [<span class="dv">1</span><span class="sc">:</span><span class="dv">51</span>] <span class="st">&quot;0005&quot;</span> <span class="st">&quot;0012&quot;</span> <span class="st">&quot;0073&quot;</span> <span class="st">&quot;0080&quot;</span> ...</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> year       <span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">2</span> levels <span class="st">&quot;1999&quot;</span>,<span class="st">&quot;2012&quot;</span><span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> ...</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> site.code  <span class="sc">:</span> chr [<span class="dv">1</span><span class="sc">:</span><span class="dv">51</span>] <span class="st">&quot;001.0005&quot;</span> <span class="st">&quot;001.0012&quot;</span> <span class="st">&quot;005.0073&quot;</span> <span class="st">&quot;005.0080&quot;</span> ...</span></code></pre></div>
+<ul>
+<li>Finally, we want the <strong>intersection</strong> between the sites
+present in 1999 and 2012 so that we might choose a monitor that has data
+in both periods.</li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>site.year <span class="ot">&lt;-</span> <span class="fu">with</span>(sites, <span class="fu">split</span>(site.code, year))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>site.year</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span><span class="st">`</span><span class="at">1999</span><span class="st">`</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;001.0005&quot;</span> <span class="st">&quot;001.0012&quot;</span> <span class="st">&quot;005.0073&quot;</span> <span class="st">&quot;005.0080&quot;</span> <span class="st">&quot;005.0083&quot;</span> <span class="st">&quot;005.0110&quot;</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;013.0011&quot;</span> <span class="st">&quot;027.1004&quot;</span> <span class="st">&quot;029.0002&quot;</span> <span class="st">&quot;029.0005&quot;</span> <span class="st">&quot;029.1007&quot;</span> <span class="st">&quot;031.0003&quot;</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;047.0011&quot;</span> <span class="st">&quot;047.0076&quot;</span> <span class="st">&quot;055.6001&quot;</span> <span class="st">&quot;059.0005&quot;</span> <span class="st">&quot;059.0008&quot;</span> <span class="st">&quot;059.0011&quot;</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;061.0010&quot;</span> <span class="st">&quot;061.0056&quot;</span> <span class="st">&quot;061.0062&quot;</span> <span class="st">&quot;063.2008&quot;</span> <span class="st">&quot;065.2001&quot;</span> <span class="st">&quot;067.0019&quot;</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;067.1015&quot;</span> <span class="st">&quot;081.0094&quot;</span> <span class="st">&quot;081.0097&quot;</span> <span class="st">&quot;085.0055&quot;</span> <span class="st">&quot;085.0067&quot;</span> <span class="st">&quot;089.3001&quot;</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] <span class="st">&quot;093.0003&quot;</span> <span class="st">&quot;101.0003&quot;</span> <span class="st">&quot;103.0001&quot;</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span><span class="st">`</span><span class="at">2012</span><span class="st">`</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;001.0005&quot;</span> <span class="st">&quot;001.0012&quot;</span> <span class="st">&quot;005.0080&quot;</span> <span class="st">&quot;005.0133&quot;</span> <span class="st">&quot;013.0011&quot;</span> <span class="st">&quot;029.0005&quot;</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;031.0003&quot;</span> <span class="st">&quot;047.0122&quot;</span> <span class="st">&quot;055.1007&quot;</span> <span class="st">&quot;061.0079&quot;</span> <span class="st">&quot;061.0134&quot;</span> <span class="st">&quot;063.2008&quot;</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;067.1015&quot;</span> <span class="st">&quot;071.0002&quot;</span> <span class="st">&quot;081.0124&quot;</span> <span class="st">&quot;085.0055&quot;</span> <span class="st">&quot;101.0003&quot;</span> <span class="st">&quot;103.0002&quot;</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>both <span class="ot">&lt;-</span> <span class="fu">intersect</span>(site.year[[<span class="dv">1</span>]], site.year[[<span class="dv">2</span>]])</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>both</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;001.0005&quot;</span> <span class="st">&quot;001.0012&quot;</span> <span class="st">&quot;005.0080&quot;</span> <span class="st">&quot;013.0011&quot;</span> <span class="st">&quot;029.0005&quot;</span> <span class="st">&quot;031.0003&quot;</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;063.2008&quot;</span> <span class="st">&quot;067.1015&quot;</span> <span class="st">&quot;085.0055&quot;</span> <span class="st">&quot;101.0003&quot;</span></span></code></pre></div>
+<ul>
+<li>We can see that there are <strong>10 monitors</strong> that were
+operating in both time periods.</li>
+</ul>
+<p>Now let’s <strong>choose one of those monitors</strong>.</p>
+<ul>
+<li>Rather than choose one at random, it might best to choose one that
+had a <strong>reasonable amount of data in each year</strong>.<br />
+</li>
+<li>So first we <strong>subset</strong> the original data frame to only
+include the data from the monitors that overlap between 1999 and
+2012.</li>
+</ul>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>count <span class="ot">&lt;-</span> <span class="fu">mutate</span>(pm, <span class="at">site.code =</span> <span class="fu">paste</span>(County.Code, Site.ID, <span class="at">sep =</span> <span class="st">&quot;.&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(site.code <span class="sc">%in%</span> both)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>count</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 1,745 × 30</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>   X..RD Action.Code State.Code County.Code Site.ID Parameter   POC</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>chr<span class="sc">&gt;</span>      <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>chr<span class="sc">&gt;</span>       <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> RD    I           <span class="dv">06</span>         <span class="dv">101</span>         <span class="dv">0003</span>        <span class="dv">88101</span>     <span class="dv">1</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 1,735 more rows, and 23 more variables: Sample.Duration &lt;dbl&gt;,</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   Unit &lt;dbl&gt;, Method &lt;dbl&gt;, Date &lt;dbl&gt;, Start.Time &lt;time&gt;, PM &lt;dbl&gt;,</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   Null.Data.Code &lt;chr&gt;, Sampling.Frequency &lt;dbl&gt;,</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   Monitor.Protocol..MP..ID &lt;lgl&gt;, Qualifier...1 &lt;chr&gt;, Qualifier...2 &lt;chr&gt;,</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...3 &lt;lgl&gt;, Qualifier...4 &lt;lgl&gt;, Qualifier...5 &lt;lgl&gt;,</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...6 &lt;lgl&gt;, Qualifier...7 &lt;lgl&gt;, Qualifier...8 &lt;lgl&gt;,</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   Qualifier...9 &lt;lgl&gt;, Qualifier...10 &lt;lgl&gt;, …</span></span></code></pre></div>
+<ul>
+<li>Now <strong>we can count the number of observations</strong> at each
+monitor to see which ones have the most observations.</li>
+</ul>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(count, site.code) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 10 × 2</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>   site.code     n</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> <span class="fl">001.0005</span>    <span class="dv">186</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> <span class="fl">001.0012</span>     <span class="dv">92</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> <span class="fl">005.0080</span>     <span class="dv">92</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> <span class="fl">013.0011</span>    <span class="dv">213</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> <span class="fl">029.0005</span>     <span class="dv">94</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> <span class="fl">031.0003</span>    <span class="dv">198</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> <span class="fl">063.2008</span>    <span class="dv">152</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> <span class="fl">067.1015</span>    <span class="dv">153</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> <span class="fl">085.0055</span>     <span class="dv">38</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="fl">101.0003</span>    <span class="dv">527</span></span></code></pre></div>
+<ul>
+<li>A number of monitors seem suitable from the output.<br />
+</li>
+<li>But <strong>we will focus</strong> here on <strong>County
+63</strong> and <strong>site ID 2008</strong>.</li>
+</ul>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pmsub <span class="ot">&lt;-</span> <span class="fu">filter</span>(pm, State.Code <span class="sc">==</span> <span class="st">&quot;36&quot;</span> <span class="sc">&amp;</span> County.Code <span class="sc">==</span> <span class="st">&quot;063&quot;</span> <span class="sc">&amp;</span> Site.ID <span class="sc">==</span> <span class="st">&quot;2008&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(Date, year, PM) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">ymd</span>(Date), <span class="at">yday =</span> <span class="fu">yday</span>(Date))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>pmsub</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 152 × 4</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>   Date       year     PM  yday</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>date<span class="sc">&gt;</span>     <span class="er">&lt;</span>fct<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">1999-07-02</span> <span class="dv">1999</span>   <span class="cn">NA</span>     <span class="dv">183</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">1999-07-05</span> <span class="dv">1999</span>   <span class="cn">NA</span>     <span class="dv">186</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">1999-07-08</span> <span class="dv">1999</span>    <span class="fl">4.9</span>   <span class="dv">189</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">1999-07-11</span> <span class="dv">1999</span>    <span class="fl">4.8</span>   <span class="dv">192</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">1999-07-14</span> <span class="dv">1999</span>   <span class="fl">24.8</span>   <span class="dv">195</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">1999-07-17</span> <span class="dv">1999</span>   <span class="dv">40</span>     <span class="dv">198</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">1999-07-20</span> <span class="dv">1999</span>   <span class="cn">NA</span>     <span class="dv">201</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">1999-07-23</span> <span class="dv">1999</span>   <span class="cn">NA</span>     <span class="dv">204</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">1999-07-26</span> <span class="dv">1999</span>   <span class="fl">16.6</span>   <span class="dv">207</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="dv">1999-07-29</span> <span class="dv">1999</span>   <span class="cn">NA</span>     <span class="dv">210</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 142 more rows</span></span></code></pre></div>
+<p>Now we <strong>plot the time series data of PM</strong> for the
+monitor in both years.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(yday, PM, <span class="at">data =</span> pmsub, <span class="at">facets =</span> . <span class="sc">~</span> year, <span class="at">xlab =</span> <span class="st">&quot;Day of the year&quot;</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> Removed <span class="dv">35</span> rows containing missing <span class="fu">values</span> (geom_point).</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(year, PM, <span class="at">data =</span> pmsub, <span class="at">geom =</span> <span class="st">&quot;boxplot&quot;</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> Removed <span class="dv">35</span> rows containing non<span class="sc">-</span>finite <span class="fu">values</span> (stat_boxplot).</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-36-2.png" width="672" /></p>
+<ul>
+<li>We can see that <strong>median levels of PM</strong> (horizontal
+solid line) have <strong>decreased</strong> a little <strong>from
+10.45</strong> in 1999 <strong>to 8.29</strong> in 2012.<br />
+</li>
+<li>However, perhaps <strong>more interesting</strong> is that
+<strong>the variation</strong> (spread) in the PM values in 2012 is
+<strong>much smaller</strong> than it was in 1999.
+<ul>
+<li>This suggest that not only are median levels of PM lower in 2012,
+but that there are fewer large spikes from day to day.<br />
+</li>
+</ul></li>
+<li><strong>One issue</strong> with the data here is that the 1999 data
+are from July through December while the 2012 data are recorded in
+January through April.
+<ul>
+<li>It would have been <strong>better if we’d had full-year data for
+both years</strong> as there could be some seasonal confounding going
+on.</li>
+</ul></li>
+</ul>
+</div>
+<div id="changes-in-state-wide-pm-levels." class="section level3"
+number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Changes in
+state-wide PM levels.</h3>
+<p>Although ambient air quality standards are set at the federal level
+in the U.S. and hence affect the entire country, the actual reduction
+and management of PM is left to the individual states.</p>
+<p>States that are not “in attainment” have to develop a <strong>plan to
+reduce PM</strong> so that they are in attainment (eventually).</p>
+<p>Therefore, it might be <strong>useful to examine changes in PM at the
+state level</strong>.</p>
+<p>This analysis falls somewhere in between looking at the entire
+country all at once and looking at an individual monitor.</p>
+<p>What we do here is <strong>calculate the mean of PM for each
+state</strong> in 1999 and 2012.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>mn <span class="ot">&lt;-</span> <span class="fu">group_by</span>(pm, year, State.Code) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">PM =</span> <span class="fu">mean</span>(PM, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">summarise()</span><span class="st">`</span> has grouped output by <span class="st">&#39;year&#39;</span>. You can override using the <span class="st">`</span><span class="at">.groups</span><span class="st">`</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>argument.</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>mn</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 105 × 3</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Groups:   year [2]</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>   year  State.Code    PM</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">1999</span>  <span class="dv">01</span>         <span class="fl">20.0</span> </span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">1999</span>  <span class="dv">02</span>          <span class="fl">6.67</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">1999</span>  <span class="dv">04</span>         <span class="fl">10.8</span> </span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">1999</span>  <span class="dv">05</span>         <span class="fl">15.7</span> </span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">1999</span>  <span class="dv">06</span>         <span class="fl">17.7</span> </span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">1999</span>  <span class="dv">08</span>          <span class="fl">7.53</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">1999</span>  <span class="dv">09</span>         <span class="fl">13.3</span> </span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">1999</span>  <span class="dv">10</span>         <span class="fl">14.5</span> </span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">1999</span>  <span class="dv">11</span>         <span class="fl">15.8</span> </span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="dv">1999</span>  <span class="dv">12</span>         <span class="fl">11.1</span> </span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="co"># … with 95 more rows</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(mn)</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 6 × 3</span></span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Groups:   year [1]</span></span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>  year  State.Code    PM</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="dv">2012</span>  <span class="dv">51</span>          <span class="fl">8.71</span></span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="dv">2012</span>  <span class="dv">53</span>          <span class="fl">6.36</span></span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="dv">2012</span>  <span class="dv">54</span>          <span class="fl">9.82</span></span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="dv">2012</span>  <span class="dv">55</span>          <span class="fl">7.91</span></span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="dv">2012</span>  <span class="dv">56</span>          <span class="fl">4.01</span></span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span> <span class="dv">2012</span>  <span class="dv">72</span>          <span class="fl">6.05</span></span></code></pre></div>
+<p>Now make a <strong>plot that shows</strong>:</p>
+<ul>
+<li>The <em>1999 state-wide means</em> in one “column” and the <em>2012
+state-wide means</em> in another “column”.<br />
+</li>
+<li>We then draw a <em>line connecting the means</em> for each year in
+the <em>same state</em> to highlight the trend.</li>
+</ul>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(xyear, PM, <span class="at">data =</span> <span class="fu">mutate</span>(mn, <span class="at">xyear =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(year))),</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="fu">factor</span>(State.Code),</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">geom =</span> <span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;line&quot;</span>))</span></code></pre></div>
+<p><img src="4_ExploratoryDataAnalysis_Module4_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<ul>
+<li>This plot <strong>needs a bit of work still</strong>.<br />
+</li>
+<li>But we can see that <em>many states have decreased</em> the average
+PM levels from 1999 to 2012, although a <em>few states actually
+increased</em> their levels.</li>
+</ul>
+</div>
+</div>
+<div id="cleaning-disk-1" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Cleaning disk</h2>
+<p>Let’s remove from disk the unzipped data (8,5 MB + 91 MB) we don’t
+use anymore.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>unzipped_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">&quot;4_data/&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;0.txt$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>unzipped_files</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;4_data//RD_501_88101_1999-0.txt&quot;</span> <span class="st">&quot;4_data//RD_501_88101_2012-0.txt&quot;</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">file.remove</span>(unzipped_files)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="cn">TRUE</span> <span class="cn">TRUE</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Session Info.</h1>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] impute_1.<span class="fl">60.0</span>      RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> maps_3.<span class="fl">3.0</span>         stringr_1.<span class="fl">4.0</span>     </span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] lubridate_1.<span class="fl">9.2</span>    quantmod_0.<span class="fl">4.20</span>    TTR_0.<span class="fl">24.2</span>         xts_0.<span class="fl">12.1</span>        </span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] zoo_1<span class="fl">.8</span><span class="dv">-9</span>          readr_2.<span class="fl">0.1</span>        tidyr_1.<span class="fl">2.0</span>        dplyr_1.<span class="fl">0.8</span>       </span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] reshape2_1.<span class="fl">4.4</span>     Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>        ggplot2_3.<span class="fl">3.5</span>      Formula_1<span class="fl">.2</span><span class="dv">-3</span>     </span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] survival_3<span class="fl">.4</span><span class="dv">-0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>    jpeg_0<span class="fl">.1-8.1</span>       gitignore_0.<span class="fl">1.3</span>   </span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] rhdf5_2.<span class="fl">30.1</span>       httr_1.<span class="fl">4.2</span>         httpuv_1.<span class="fl">6.3</span>       sqldf_0<span class="fl">.4</span><span class="dv">-11</span>      </span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] RSQLite_2.<span class="fl">2.0</span>      gsubfn_0<span class="fl">.7</span>         proto_1.<span class="fl">0.0</span>        DBI_1.<span class="fl">1.1</span>         </span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] data.table_1.<span class="fl">14.0</span>  jsonlite_1.<span class="fl">7.2</span>     XML_3<span class="fl">.99-0.3</span>       xlsx_0.<span class="fl">6.3</span>        </span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] plyr_1.<span class="fl">8.6</span>        </span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        bit64_4.<span class="fl">0.5</span>         tools_3.<span class="fl">6.3</span>        </span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] backports_1.<span class="fl">4.1</span>     bslib_0.<span class="fl">3.0</span>         utf8_1.<span class="fl">2.2</span>         </span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] R6_2.<span class="fl">5.1</span>            KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span>  rpart_4.<span class="fl">1.19</span>       </span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    nnet_7<span class="fl">.3</span><span class="dv">-18</span>        </span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] withr_2.<span class="fl">5.0</span>         tidyselect_1.<span class="fl">2.0</span>    gridExtra_2<span class="fl">.3</span>      </span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] bit_4.<span class="fl">0.4</span>           curl_4.<span class="fl">3.2</span>          compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] chron_2<span class="fl">.3</span><span class="dv">-55</span>        cli_3.<span class="fl">6.0</span>           formatR_1<span class="fl">.14</span>       </span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] htmlTable_2.<span class="fl">0.1</span>     labeling_0.<span class="fl">4.2</span>      sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] scales_1.<span class="fl">1.1</span>        checkmate_2.<span class="fl">0.0</span>     askpass_1<span class="fl">.1</span>        </span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] digest_0.<span class="fl">6.29</span>       foreign_0<span class="fl">.8</span><span class="dv">-76</span>      rmarkdown_2<span class="fl">.11</span>     </span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     pkgconfig_2.<span class="fl">0.3</span>     htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] fastmap_1.<span class="fl">1.0</span>       highr_0<span class="fl">.9</span>           htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] rlang_1.<span class="fl">0.6</span>         rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] jquerylib_0.<span class="fl">1.4</span>     generics_0.<span class="fl">1.2</span>      vroom_1.<span class="fl">5.5</span>        </span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] acepack_1.<span class="fl">4.1</span>       magrittr_2.<span class="fl">0.2</span>      Matrix_1<span class="fl">.5</span><span class="dv">-1</span>       </span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] Rcpp_1.<span class="fl">0.7</span>          munsell_0.<span class="fl">5.0</span>       Rhdf5lib_1.<span class="fl">8.0</span>     </span>
+<span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] fansi_1.<span class="fl">0.2</span>         clipr_0.<span class="fl">7.1</span>         lifecycle_1.<span class="fl">0.3</span>    </span>
+<span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] stringi_1.<span class="fl">7.6</span>       yaml_2.<span class="fl">2.1</span>          grid_3.<span class="fl">6.3</span>         </span>
+<span id="cb41-51"><a href="#cb41-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] blob_1.<span class="fl">2.2</span>          parallel_3.<span class="fl">6.3</span>      promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>   </span>
+<span id="cb41-52"><a href="#cb41-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] crayon_1.<span class="fl">5.0</span>        splines_3.<span class="fl">6.3</span>       xlsxjars_0.<span class="fl">6.1</span>     </span>
+<span id="cb41-53"><a href="#cb41-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] hms_1.<span class="fl">1.0</span>           knitr_1<span class="fl">.41</span>          pillar_1.<span class="fl">7.0</span>       </span>
+<span id="cb41-54"><a href="#cb41-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] tcltk_3.<span class="fl">6.3</span>         glue_1.<span class="fl">6.2</span>          evaluate_0<span class="fl">.19</span>      </span>
+<span id="cb41-55"><a href="#cb41-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> vctrs_0.<span class="fl">5.2</span>         png_0<span class="fl">.1</span><span class="dv">-7</span>          </span>
+<span id="cb41-56"><a href="#cb41-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] tzdb_0.<span class="fl">3.0</span>          gtable_0.<span class="fl">3.0</span>        openssl_2.<span class="fl">0.5</span>      </span>
+<span id="cb41-57"><a href="#cb41-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] purrr_0.<span class="fl">3.4</span>         assertthat_0.<span class="fl">2.1</span>    xfun_0<span class="fl">.36</span>          </span>
+<span id="cb41-58"><a href="#cb41-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] later_1.<span class="fl">3.0</span>         viridisLite_0.<span class="fl">4.0</span>   tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb41-59"><a href="#cb41-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] rJava_0<span class="fl">.9</span><span class="dv">-13</span>        memoise_1.<span class="fl">1.0</span>       cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb41-60"><a href="#cb41-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">82</span>] timechange_0.<span class="fl">2.0</span>    ellipsis_0.<span class="fl">3.2</span>     </span></code></pre></div>
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

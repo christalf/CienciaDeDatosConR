@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Reproducible Research Course - Module 1</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Reproducible Research Course - Module
+1</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#reproducibility-and-the-data-science-pipeline."
+id="toc-reproducibility-and-the-data-science-pipeline."><span
+class="toc-section-number">1</span> Reproducibility and the Data Science
+Pipeline.</a>
+<ul>
+<li><a
+href="#reproducibility-fills-the-gap-between-replication-and-nothing."
+id="toc-reproducibility-fills-the-gap-between-replication-and-nothing."><span
+class="toc-section-number">1.1</span> “Reproducibility” fills the gap
+between “Replication” and “Nothing”.</a></li>
+<li><a
+href="#reproducible-research-its-fundamental-role-as-the-score-of-a-symphony-and-the-main-practical-problem-in-data-analysis."
+id="toc-reproducible-research-its-fundamental-role-as-the-score-of-a-symphony-and-the-main-practical-problem-in-data-analysis."><span
+class="toc-section-number">1.2</span> Reproducible research: its
+fundamental role as the “score” of a symphony and the main practical
+problem in data analysis.</a>
+<ul>
+<li><a href="#scripting-as-the-score-of-the-symphony-in-data-analysis."
+id="toc-scripting-as-the-score-of-the-symphony-in-data-analysis."><span
+class="toc-section-number">1.2.1</span> “Scripting” as the “score” of
+the symphony in data analysis.</a></li>
+</ul></li>
+<li><a href="#why-do-we-need-reproducible-research"
+id="toc-why-do-we-need-reproducible-research"><span
+class="toc-section-number">1.3</span> Why do we need reproducible
+research?</a></li>
+<li><a
+href="#best-practices-involved-in-reproducibility-the-iom-report."
+id="toc-best-practices-involved-in-reproducibility-the-iom-report."><span
+class="toc-section-number">1.4</span> Best practices involved in
+reproducibility, the IOM report.</a>
+<ul>
+<li><a href="#some-more-about-how-to-make-our-work-reproducible."
+id="toc-some-more-about-how-to-make-our-work-reproducible."><span
+class="toc-section-number">1.4.1</span> Some more about how to make our
+work reproducible.</a></li>
+</ul></li>
+<li><a href="#reproducibility-in-the-data-science-pipeline."
+id="toc-reproducibility-in-the-data-science-pipeline."><span
+class="toc-section-number">1.5</span> Reproducibility in the data
+science pipeline.</a></li>
+<li><a href="#literate-statistical-programming."
+id="toc-literate-statistical-programming."><span
+class="toc-section-number">1.6</span> Literate Statistical
+Programming.</a>
+<ul>
+<li><a href="#two-kinds-of-processing-from-a-single-source."
+id="toc-two-kinds-of-processing-from-a-single-source."><span
+class="toc-section-number">1.6.1</span> Two kinds of processing from a
+single source.</a></li>
+<li><a
+href="#two-kinds-of-programs-needed-a-documentation-program-and-a-programming-language."
+id="toc-two-kinds-of-programs-needed-a-documentation-program-and-a-programming-language."><span
+class="toc-section-number">1.6.2</span> Two kinds of programs needed: a
+documentation program and a programming language.</a>
+<ul>
+<li><a href="#knuths-original-system."
+id="toc-knuths-original-system."><span
+class="toc-section-number">1.6.2.1</span> Knuth’s original
+system.</a></li>
+<li><a href="#sweave." id="toc-sweave."><span
+class="toc-section-number">1.6.2.2</span> Sweave.</a></li>
+<li><a href="#knitr." id="toc-knitr."><span
+class="toc-section-number">1.6.2.3</span> Knitr.</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="#structure-of-a-data-analysis."
+id="toc-structure-of-a-data-analysis."><span
+class="toc-section-number">2</span> Structure of a Data Analysis.</a>
+<ul>
+<li><a href="#steps-in-a-data-analysis."
+id="toc-steps-in-a-data-analysis."><span
+class="toc-section-number">2.1</span> Steps in a data analysis.</a></li>
+<li><a href="#the-key-challenge-in-data-analysis."
+id="toc-the-key-challenge-in-data-analysis."><span
+class="toc-section-number">2.2</span> The key challenge in data
+analysis.</a></li>
+<li><a href="#defining-a-question." id="toc-defining-a-question."><span
+class="toc-section-number">2.3</span> Defining a question.</a>
+<ul>
+<li><a href="#where-does-the-question-generally-come-from"
+id="toc-where-does-the-question-generally-come-from"><span
+class="toc-section-number">2.3.1</span> Where does “the question”
+generally come from?</a></li>
+<li><a href="#basic-example-of-a-question."
+id="toc-basic-example-of-a-question."><span
+class="toc-section-number">2.3.2</span> Basic example of a
+question.</a></li>
+</ul></li>
+<li><a href="#define-the-ideal-dataset."
+id="toc-define-the-ideal-dataset."><span
+class="toc-section-number">2.4</span> Define the ideal dataset.</a>
+<ul>
+<li><a href="#the-ideal-dataset-in-our-emails-example."
+id="toc-the-ideal-dataset-in-our-emails-example."><span
+class="toc-section-number">2.4.1</span> The ideal dataset in our emails
+example.</a></li>
+</ul></li>
+<li><a href="#the-real-dataset-what-data-were-able-to-access-to."
+id="toc-the-real-dataset-what-data-were-able-to-access-to."><span
+class="toc-section-number">2.5</span> The real dataset, what data we’re
+able to access to.</a>
+<ul>
+<li><a href="#possible-solutions-in-our-mail-example."
+id="toc-possible-solutions-in-our-mail-example."><span
+class="toc-section-number">2.5.1</span> Possible solutions in our mail
+example.</a>
+<ul>
+<li><a href="#uci-spam-database." id="toc-uci-spam-database."><span
+class="toc-section-number">2.5.1.1</span> UCI spam database.</a></li>
+<li><a href="#the-kernlab-package-and-its-spam-dataset."
+id="toc-the-kernlab-package-and-its-spam-dataset."><span
+class="toc-section-number">2.5.1.2</span> The <code>kernlab</code>
+package and its <code>spam</code> dataset.</a></li>
+</ul></li>
+<li><a href="#tips-on-obtaining-the-data."
+id="toc-tips-on-obtaining-the-data."><span
+class="toc-section-number">2.5.2</span> Tips on obtaining the
+data.</a></li>
+</ul></li>
+<li><a href="#cleaning-the-data." id="toc-cleaning-the-data."><span
+class="toc-section-number">2.6</span> Cleaning the data.</a>
+<ul>
+<li><a href="#our-cleaned-dataset." id="toc-our-cleaned-dataset."><span
+class="toc-section-number">2.6.1</span> Our cleaned dataset.</a></li>
+</ul></li>
+<li><a href="#splitting-the-dataset."
+id="toc-splitting-the-dataset."><span
+class="toc-section-number">2.7</span> Splitting the dataset.</a></li>
+<li><a
+href="#exploratory-data-analysis-focusing-on-the-training-dataset."
+id="toc-exploratory-data-analysis-focusing-on-the-training-dataset."><span
+class="toc-section-number">2.8</span> Exploratory data analysis,
+focusing on the training dataset.</a>
+<ul>
+<li><a href="#names-str-head." id="toc-names-str-head."><span
+class="toc-section-number">2.8.1</span> Names, str, head.</a></li>
+<li><a href="#summaries." id="toc-summaries."><span
+class="toc-section-number">2.8.2</span> Summaries.</a></li>
+<li><a href="#plots." id="toc-plots."><span
+class="toc-section-number">2.8.3</span> Plots.</a>
+<ul>
+<li><a href="#the-average-number-of-capital-letters-is-a-predictor."
+id="toc-the-average-number-of-capital-letters-is-a-predictor."><span
+class="toc-section-number">2.8.3.1</span> The average number of capital
+letters is a predictor?.</a></li>
+<li><a href="#pairwise-relationships-between-variablespredictors."
+id="toc-pairwise-relationships-between-variablespredictors."><span
+class="toc-section-number">2.8.3.2</span> Pairwise relationships between
+variables/predictors.</a></li>
+</ul></li>
+<li><a href="#clustering-to-further-explore-the-predictors-space."
+id="toc-clustering-to-further-explore-the-predictors-space."><span
+class="toc-section-number">2.8.4</span> Clustering, to further explore
+the predictors space.</a></li>
+</ul></li>
+<li><a href="#statistical-predictionmodeling."
+id="toc-statistical-predictionmodeling."><span
+class="toc-section-number">2.9</span> Statistical
+prediction/modeling.</a>
+<ul>
+<li><a href="#a-basic-statistical-model."
+id="toc-a-basic-statistical-model."><span
+class="toc-section-number">2.9.1</span> A basic statistical
+model.</a></li>
+<li><a href="#predicting-the-outcome."
+id="toc-predicting-the-outcome."><span
+class="toc-section-number">2.9.2</span> Predicting the outcome.</a></li>
+<li><a href="#getting-a-measure-of-uncertainty."
+id="toc-getting-a-measure-of-uncertainty."><span
+class="toc-section-number">2.9.3</span> Getting a measure of
+uncertainty.</a></li>
+</ul></li>
+<li><a href="#interpreting-results."
+id="toc-interpreting-results."><span
+class="toc-section-number">2.10</span> Interpreting results.</a>
+<ul>
+<li><a href="#in-our-example." id="toc-in-our-example."><span
+class="toc-section-number">2.10.1</span> In our example.</a></li>
+</ul></li>
+<li><a href="#challenge-the-findings."
+id="toc-challenge-the-findings."><span
+class="toc-section-number">2.11</span> Challenge the findings.</a></li>
+<li><a href="#synthesizingwriting-up-results."
+id="toc-synthesizingwriting-up-results."><span
+class="toc-section-number">2.12</span> Synthesizing/writing-up
+results.</a>
+<ul>
+<li><a href="#in-our-example.-1" id="toc-in-our-example.-1"><span
+class="toc-section-number">2.12.1</span> In our example.</a></li>
+</ul></li>
+<li><a href="#create-reproducible-code."
+id="toc-create-reproducible-code."><span
+class="toc-section-number">2.13</span> Create reproducible
+code.</a></li>
+</ul></li>
+<li><a href="#organizing-a-data-analysis."
+id="toc-organizing-a-data-analysis."><span
+class="toc-section-number">3</span> Organizing a Data Analysis.</a>
+<ul>
+<li><a href="#data-analysis-files." id="toc-data-analysis-files."><span
+class="toc-section-number">3.1</span> Data analysis files.</a></li>
+<li><a href="#raw-data." id="toc-raw-data."><span
+class="toc-section-number">3.2</span> Raw data.</a></li>
+<li><a href="#processed-data" id="toc-processed-data"><span
+class="toc-section-number">3.3</span> Processed data</a></li>
+<li><a href="#exploratory-figures." id="toc-exploratory-figures."><span
+class="toc-section-number">3.4</span> Exploratory figures.</a></li>
+<li><a href="#final-figures." id="toc-final-figures."><span
+class="toc-section-number">3.5</span> Final figures.</a></li>
+<li><a href="#raw-scripts." id="toc-raw-scripts."><span
+class="toc-section-number">3.6</span> Raw scripts.</a></li>
+<li><a href="#final-scripts" id="toc-final-scripts"><span
+class="toc-section-number">3.7</span> Final scripts</a></li>
+<li><a href="#r-markdown-files." id="toc-r-markdown-files."><span
+class="toc-section-number">3.8</span> R markdown files.</a></li>
+<li><a href="#readme-files." id="toc-readme-files."><span
+class="toc-section-number">3.9</span> Readme files.</a></li>
+<li><a href="#text-of-the-final-report."
+id="toc-text-of-the-final-report."><span
+class="toc-section-number">3.10</span> Text of the final
+report.</a></li>
+<li><a href="#further-resources" id="toc-further-resources"><span
+class="toc-section-number">3.11</span> Further resources</a></li>
+<li><a href="#projecttemplate-r-package."
+id="toc-projecttemplate-r-package."><span
+class="toc-section-number">3.12</span> <code>ProjectTemplate</code> R
+package.</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">4</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="reproducibility-and-the-data-science-pipeline."
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Reproducibility and the
+Data Science Pipeline.</h1>
+<p>As we know, science, in general, is based upon a key idea:</p>
+<ul>
+<li>Findings must be somehow <strong>verifyied and validated</strong>,
+in order to be considered real or true.</li>
+</ul>
+<div id="reproducibility-fills-the-gap-between-replication-and-nothing."
+class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> “Reproducibility”
+fills the gap between “Replication” and “Nothing”.</h2>
+<p>There’s <strong>replication</strong> when scientific questions are
+<em>examined and verified independently</em> by different
+scientists.</p>
+<ul>
+<li><p>It is the <strong>gold standard</strong> for scientific
+validity.</p></li>
+<li><p>The goal is to have independent people to do independent things
+with <em>different data</em>, <em>different methods</em> and
+<em>different laboratories</em> and see if we get the same
+result.</p></li>
+<li><p>If a relationship in nature is truly there, then it should be
+robust to having different people discover it in different
+ways.</p></li>
+</ul>
+<p>Replication <strong>can be difficult</strong> and <strong>often there
+are no resources</strong> to independently replicate a study.</p>
+<ul>
+<li><p>There are a lot of good reasons why we can’t replicate a
+study.</p>
+<ul>
+<li><p>This happens with big studies involving a lot of money.</p></li>
+<li><p>When the original study took decades to do.</p></li>
+<li><p>Studies over unique situations in time or population.</p></li>
+</ul></li>
+</ul>
+<p><strong><em>Is there another alternative to replication, besides
+doing nothing?</em></strong></p>
+<p>Here is where <strong>reproducibility</strong> comes in: <em>data and
+code</em> are <em>re-analyzed</em> by independent scientists to obtain
+the <em>same results</em> of the original investigator.</p>
+<ul>
+<li><p>What reproducible reporting is about is a <em>validation of
+the</em> <strong><em>data analysis</em></strong> (the <em>data</em> of
+the original study and the <em>computational methods</em> are made
+available so that other people can look at that data and run that kind
+of analysis in order to come to the same original findings).</p></li>
+<li><p>This is how we can fill the gap between the gold standard
+(replication) and the worst standard (doing nothing).</p></li>
+<li><p>It’s a <strong>reasonable minimum standard</strong> when
+replication is not possible.</p></li>
+<li><p>In <em>non-research settings</em>, often full replication isn’t
+even the point. Often the goal is to preserve something to the point
+where anybody in an organization can repeat what we did (for example,
+after we leave the organization). In this case, reproducibility is key
+to maintaining the history of a project and making sure that every step
+along the way is clear.</p></li>
+</ul>
+</div>
+<div
+id="reproducible-research-its-fundamental-role-as-the-score-of-a-symphony-and-the-main-practical-problem-in-data-analysis."
+class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Reproducible
+research: its fundamental role as the “score” of a symphony and the main
+practical problem in data analysis.</h2>
+<p>What we’re talking about in this course, reproducible research, is
+basically, <em>how do we develop the</em>
+<strong><em>score</em></strong> <em>(partitura) for data analysis</em>
+so that we can <em>communicate</em> to someone what was done and, if
+they want to reproduce the work, <em>how to do it</em>.</p>
+<p>Now the <strong>fundamental problem in data analysis</strong> is that
+we <em>don’t really have</em> an <em>agreed upon notation system for
+communicating</em> data analysis.</p>
+<ul>
+<li>Everyone does it a different way and, in aggregate, it’s kind of a
+mess.<br />
+</li>
+<li>Some people will just describe in words what was done, and in some
+cases, this is suficient. But in many cases, it’s not.<br />
+</li>
+<li>Some people will provide the computer code and the data and
+everything that we need, and sometimes that’s good. But sometimes it’s
+enormously complex and it’s difficult to sort through.<br />
+</li>
+<li>So there are a variety of ways that we can communicate data
+analysis, but we just haven’t agreed upon what is a way that we can all
+look, that is sufficient for everybody, or more or less sufficient for
+everybody.</li>
+</ul>
+<div id="scripting-as-the-score-of-the-symphony-in-data-analysis."
+class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> “Scripting” as the
+“score” of the symphony in data analysis.</h3>
+<p>In this course, we’re gonna <strong>focus on how to communicate data
+analysis using</strong> <strong><em>code</em></strong>, by writing
+documents that are very dynamic and by sharing data so that other people
+can reproduce the work that we’re doing.</p>
+<p>If there’s one rule that we would want to adhere to <strong>make our
+work as reproducible as possible</strong> is that you should
+<strong><em>script everything</em></strong>.</p>
+<ul>
+<li><p>This course will be essentially about <em>defining and
+developing</em> the <strong>notation of specifying a research project or
+a data analysis</strong> (<em>how do we write down</em> the things that
+we did and how we did them).</p></li>
+<li><p>And the way that we do that, essentially, is through
+<strong>scripting</strong>. We write down computer programs. We give
+instructions to the computer and tell it what to do at any given time
+with what type of data.</p></li>
+<li><p>The more we can script (or the less we can do things on your own
+by hand), the better and the more reproducible our work will
+be.</p></li>
+</ul>
+</div>
+</div>
+<div id="why-do-we-need-reproducible-research" class="section level2"
+number="1.3">
+<h2><span class="header-section-number">1.3</span> Why do we need
+reproducible research?</h2>
+<ul>
+<li><p><strong>Data</strong> tend to be more <em>complex</em> and
+<em>extremely high dimensional</em>, as new technologies are increasing
+data collection throughput.</p></li>
+<li><p>Existing databases can be merged into new
+<em>“megadatabases”</em>.</p></li>
+<li><p>More <strong>sophisticated analyses</strong> can be done, as
+computer power is continuously increasing.</p>
+<ul>
+<li><p>The <em>models that we fit</em> and the <em>algorithms</em> that
+we run, are much much more complicated than they used to be. Having a
+basic understanding of these algorithms is difficult, even for a
+sophisticated person, and it’s almost impossible to describe these
+algorithms with words alone.</p></li>
+<li><p>Understanding what someone did in a data analysis now requires
+looking at code and scrutinizing the computer programs that people
+used.</p></li>
+</ul></li>
+<li><p>All this explains why, nowadays, <strong><em>for every
+field</em></strong> of study (such as biology, chemistry, environmental
+science, etc.) there’s a <strong><em>computational version of
+it</em></strong> (a computational biology, computational astronomy,
+etc.).</p></li>
+</ul>
+</div>
+<div id="best-practices-involved-in-reproducibility-the-iom-report."
+class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Best practices
+involved in reproducibility, the IOM report.</h2>
+<p>As an example in the medicine field, the <strong>Institute of
+Medicine (IOM) of the National Academies</strong>, in response to a lot
+of events involving reproducibility of scientific studies, issued a
+<strong>report</strong> about <strong>best practices in
+reproducibility</strong> (particularly in what’s called <em>’omics</em>
+based research, such as genomics, proteomics, other similar areas
+involving high-throughput biological measurements).</p>
+<p>Of the many recommendations that the IOM made, the <strong>key
+ones</strong> were that:</p>
+<ul>
+<li><p><strong>Data and metadata</strong> need to be made publicly
+available.</p></li>
+<li><p><strong>Computer code</strong> used should be fully specified, so
+that people can examine it to see what was done.</p></li>
+<li><p>All the <strong>steps of the computational analysis</strong>,
+including any preprocessing of data, should be fully described so that
+people can study it and reproduce it.</p></li>
+</ul>
+<div id="some-more-about-how-to-make-our-work-reproducible."
+class="section level3" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> Some more about how
+to make our work reproducible.</h3>
+<ul>
+<li><p><strong>Decide to do it (ideally from the start)</strong>.</p>
+<ul>
+<li><p>A basic answer is that we have to decide to do it.</p></li>
+<li><p>And you can decide to do this at any point in our analysis, but
+it’s usually easiest to do it at the very beginning. If we decide at the
+very end that we want to make our analysis reproducible, then it often
+is much harder to do and maybe even impossible.</p></li>
+</ul></li>
+<li><p><strong>Keep track of things, perhaps with a version control
+system to track snapshots/changes</strong>.</p>
+<ul>
+<li><p>We want to keep track of things as we go along.</p></li>
+<li><p>We can use a version control system like Git of SVN, for
+instance.</p></li>
+</ul></li>
+<li><p><strong>Use software whose operation can be coded</strong>.</p>
+<ul>
+<li><p>It’s important to use software, statistical software, whose
+operation can be coded.</p></li>
+<li><p>The idea is that we can write down the instructions that were
+used to manipulate or analyze the data.</p></li>
+<li><p>This generally rules out graphical user interfaces unless those
+programs will code or keep track of all the clicks that we make on the
+graphical user interface.</p></li>
+<li><p>In systems like R we have to program explicitly everything that
+we do to the data.</p></li>
+</ul></li>
+<li><p><strong>Don’t save output</strong>.</p>
+<ul>
+<li><p>Another key lesson is to not save any output.</p></li>
+<li><p>By output, we mean mostly temporary data
+transformations.</p></li>
+<li><p>So if we pre-process the data and have a clean dataset, rather
+than store the clean dataset, it might be better just to have the
+<em>raw dataset</em> with the <em>preprocessing code</em>, because then
+we not only can make the final product, but we can see how we got there.
+If we <em>just</em> keep the clean dataset and then accidentally lose
+the preprocessing code, then we don’t really have a good record of how
+we got from A to B.</p></li>
+<li><p>So, rather than keeping the temporary products or even final
+products, try to keep the original products and the code that got you
+there.</p></li>
+</ul></li>
+<li><p><strong>Save data in non-propietary formats</strong>.</p>
+<ul>
+<li><p>Finally try not to save data in non-proprietary formats.</p></li>
+<li><p>These are data formats where the layout of the dataset is not
+publicly known.</p></li>
+<li><p>There are not too many proprietary formats out there any more
+that are commonly used like they were before.</p></li>
+<li><p>So using non-proprietary, even textual formats, may be
+compressed, can be much better at making our research or analysis more
+reproducible.</p></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="reproducibility-in-the-data-science-pipeline."
+class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Reproducibility in
+the data science pipeline.</h2>
+<p>The <strong>process of conducting and disseminating research</strong>
+can be <em>depicted</em> as a “data science pipeline”.</p>
+<p><img src="5_data/dataSciencePipeline2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>The basic idea behind <strong>reproducibility</strong> is to
+<em>focus on:</em></p>
+<ul>
+<li>The <strong>analytic data</strong> and the <strong>computational
+results</strong>.</li>
+</ul>
+<p>More precisely, there are four things that are required to make
+results <em>reproducible</em>:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Analytic data</strong>.
+<ul>
+<li>The data that were used for the analysis that was presented should
+be available for others to access. This is different from the raw data
+because very often in a data analysis the raw data are not all used for
+the analysis, but rather some subset is used.<br />
+</li>
+</ul></li>
+<li><strong>Analytic code</strong>.
+<ul>
+<li>The analytic code is the code that was applied to the analytic data
+to produce the key results. This may be <em>preprocessing</em> code,
+<em>regression modeling</em> code or really any other code used to
+produce the results from the analytic data.<br />
+</li>
+</ul></li>
+<li><strong>Documentation</strong> of that code and the data.<br />
+</li>
+<li><strong>Distribution</strong>.
+<ul>
+<li>Finally, there needs to be some <em>standard means</em> of
+distribution, so all this data in the code is easily accessible.</li>
+</ul></li>
+</ol>
+</div>
+<div id="literate-statistical-programming." class="section level2"
+number="1.6">
+<h2><span class="header-section-number">1.6</span> Literate Statistical
+Programming.</h2>
+<p>Literate statistical programming tools can <strong>make it easier to
+write up</strong> reproducible documents containing data analyses.</p>
+<ul>
+<li><p>This come from <strong>literate programming</strong> in the area
+of writing computer programs.</p></li>
+<li><p>We can read in <a
+href="https://en.wikipedia.org/wiki/Literate_programming">Wikipedia</a>:<br />
+“Literate programming is a <strong>programming paradigm</strong>
+introduced by <strong>Donald Knuth</strong> in which a computer program
+is given an <em>explanation of its logic</em> in a <em>natural
+language</em>, such as English, <em>interspersed with snippets of macros
+and traditional source code</em>, from which compilable source code can
+be generated”.</p></li>
+<li><p>So a <strong>literate statistical program</strong> or a
+<strong>literate statistical analysis</strong> is a <em>stream of
+text</em> (readable by people) and <em>code</em> (readable by
+computers).</p>
+<ul>
+<li>The analysis is described in a <em>series of text and code
+chunks</em>.<br />
+</li>
+<li>Each kind of <em>code chunk</em> will do something like load some
+data or compute some results.<br />
+</li>
+<li>Each <em>text chunk</em> will relay something in a human readable
+language.<br />
+</li>
+<li>There might also be <em>presentation code</em> that formats tables
+and figures.<br />
+</li>
+<li>And there’s article text that explains what’s going on around all
+this code.</li>
+</ul></li>
+</ul>
+<div id="two-kinds-of-processing-from-a-single-source."
+class="section level3" number="1.6.1">
+<h3><span class="header-section-number">1.6.1</span> Two kinds of
+processing from a single source.</h3>
+<p>Literate programs, therefore, are processed in two ways.</p>
+<ul>
+<li><p>They are <strong>weaved</strong> (tejidos) to produce <em>human
+readable documents</em>, like <strong>PDFs</strong> or <strong>HTML web
+pages</strong>.</p></li>
+<li><p>And they are <strong>tangled</strong> to produce <em>machine
+readable code</em>.</p></li>
+</ul>
+<p>So the basic idea behind literate programming is that we only need a
+<strong>single source document</strong> in order to generate the
+<strong>different kinds of output</strong> we might need.</p>
+</div>
+<div
+id="two-kinds-of-programs-needed-a-documentation-program-and-a-programming-language."
+class="section level3" number="1.6.2">
+<h3><span class="header-section-number">1.6.2</span> Two kinds of
+programs needed: a documentation program and a programming
+language.</h3>
+<p>In order to use a system like this we need:</p>
+<ul>
+<li><p>A <strong>documentational language</strong>, that’s human
+readable.</p></li>
+<li><p>And a <strong>programming language</strong> that’s machine
+readable (or can be compiled/interpreted into something that’s machine
+readable).</p></li>
+</ul>
+<div id="knuths-original-system." class="section level4"
+number="1.6.2.1">
+<h4><span class="header-section-number">1.6.2.1</span> Knuth’s original
+system.</h4>
+<p>Knuth’s <strong>original WEB system</strong> used:</p>
+<ul>
+<li><code>TeX</code> as the <em>documentation language</em>.<br />
+</li>
+<li>And <code>Pascal</code> as the <em>programming language</em>.</li>
+</ul>
+</div>
+<div id="sweave." class="section level4" number="1.6.2.2">
+<h4><span class="header-section-number">1.6.2.2</span> Sweave.</h4>
+<p>Another one of the <strong>original literate programming systems in
+R</strong> that was designed to do this was called
+<strong>Sweave</strong> (“S”weave).</p>
+<ul>
+<li>It uses a <em>documentation program</em> (or markup language) called
+<code>LaTeX</code>.<br />
+</li>
+<li>And as <em>programming language</em>, uses <code>R</code>.<br />
+</li>
+<li>It was originally developed by Fritz Leisch, who is a core member of
+R, and the code base is still maintained by R Core.<br />
+</li>
+<li>The Sweave system comes with a any installation of R.</li>
+</ul>
+<p>There are <strong>many limitations</strong> to the original Sweave
+system.</p>
+<ul>
+<li>One of them is that it is <strong>focused primarily on
+LaTeX</strong>, which is not a documentation language that many people
+are familiar with. Therefore, it can be difficult to learn this type of
+markup language if we’re not already in a field that uses it
+regularly.<br />
+</li>
+<li>Sweave also <strong>lacks a lot of features that people find
+useful</strong> like <em>caching</em>, and <em>multiple plots per
+page</em> and <em>mixing programming languages</em>.</li>
+</ul>
+</div>
+<div id="knitr." class="section level4" number="1.6.2.3">
+<h4><span class="header-section-number">1.6.2.3</span> Knitr.</h4>
+<p>The <strong>knitr package</strong> for R takes a lot of these ideas
+of literate programming and updates and improves upon them, providing
+much more powerful functionality, including the ability to write in
+Markdown and create a variety of output formats.</p>
+<ul>
+<li>Of course it still uses <code>R</code> as its <em>programming
+language</em>, but it <em>allows us to mix</em> other programming
+languages in.<br />
+</li>
+<li>We can also use a <em>variety of documentation languages</em> now,
+such as <code>LaTeX</code>, <code>Markdown</code> and
+<code>HTML</code>.<br />
+</li>
+<li>The package also supports weaving to PDF and HTML formats (in
+RStudio we can also weave to Microsoft Word docx format).</li>
+</ul>
+<p><code>knitr</code> was developed by <a
+href="http://yihui.name/knitr">Yihui Xie</a> while he was a graduate
+student at Iowa State and it has become a very popular package for
+writing literate statistical programs.</p>
+<hr />
+</div>
+</div>
+</div>
+</div>
+<div id="structure-of-a-data-analysis." class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Structure of a Data
+Analysis.</h1>
+<p>Let’s see a <strong>useful template</strong> for understanding
+<em>what</em> the pieces of a data analysis are and <em>how</em> they
+typically flow together.</p>
+<div id="steps-in-a-data-analysis." class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Steps in a data
+analysis.</h2>
+<p>If one were to write down the steps in a data analysis, we might come
+up with something along these lines of the following list</p>
+<ul>
+<li>Define the question</li>
+<li>Define the ideal data set</li>
+<li>Determine what data you can access</li>
+<li>Obtain the data</li>
+<li>Clean the data</li>
+<li>Exploratory data analysis</li>
+<li>Statistical prediction/modeling</li>
+<li>Interpret results</li>
+<li>Challenge results</li>
+<li>Synthesize/write up results</li>
+<li>Create reproducible code</li>
+</ul>
+<p>There may be little things that you might want to add or delete.</p>
+<p>But most data analyses have some subset of these steps.</p>
+</div>
+<div id="the-key-challenge-in-data-analysis." class="section level2"
+number="2.2">
+<h2><span class="header-section-number">2.2</span> The key challenge in
+data analysis.</h2>
+<blockquote>
+<p>“Ask yourselves, what problem have you solved, ever, that was worth
+solving, where you knew all of the given information in advance? Where
+you didn’t have a surplus of information and have to filter it out, or
+you had insufficient information and have to go find some?” <a
+href="http://www.ted.com/talks/dan_meyer_math_curriculum_makeover.html">Dan
+Myer, Mathematics Educator</a></p>
+</blockquote>
+<p>That’s a key element of data analysis. Typically:</p>
+<ul>
+<li>We don’t have all the facts.<br />
+</li>
+<li>Or we have too much information and we have to go through it.</li>
+</ul>
+</div>
+<div id="defining-a-question." class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Defining a
+question.</h2>
+<p>The first part of data analysis that we want to start with is
+defining a question.</p>
+<p>Defining a question is <strong>the most powerful dimension reduction
+tool</strong> you can ever employ.</p>
+<ul>
+<li>The more effort you can put into coming up with a reasonable
+question, the less effort you’ll spend having to filter through a lot of
+stuff.<br />
+</li>
+<li><em>Example:</em>
+<ul>
+<li>If we’re interested in a specific variable, like height or weight,
+then we can remove a lot of other variables that don’t really pertain to
+those criteria at all.<br />
+</li>
+<li>If we’re interested in a different type of variable then we can
+remove another subset.<br />
+</li>
+</ul></li>
+<li>The idea is, if we can narrow down our question as specifically as
+possible, we’ll <strong>reduce the noise</strong> that we’ll have to
+deal with when we’re going through a potentially very large
+dataset.</li>
+</ul>
+<p><strong>Sometimes</strong> we <strong>only want to look at</strong> a
+dataset and see what is inside of it.</p>
+<ul>
+<li>Then we’ll have to <em>explore all kinds of things</em> in a large
+dataset.<br />
+</li>
+<li>But if we can narrow down our interest to a specific type of
+question, it is extremely useful for simplifying our problem.</li>
+</ul>
+<div id="where-does-the-question-generally-come-from"
+class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Where does “the
+question” generally come from?</h3>
+<p><img src="5_data/definingTheQuestion.png" width="50%" style="display: block; margin: auto;" /></p>
+<ol style="list-style-type: decimal">
+<li>Statistical methods development<br />
+</li>
+<li><a href="http://www.drewconway.com/zia/?p=2378">Danger
+zone!!!</a><br />
+</li>
+<li>Proper data analysis</li>
+</ol>
+<p>The <strong>science</strong>, generally speaking, <strong>will
+determine what type of question</strong> we’re interested in asking.</p>
+<ul>
+<li>That will <em>lead us to the data</em>.<br />
+</li>
+<li>Which may lead us to <em>applied statistics</em>, which we use to
+analyze the data.
+<ul>
+<li>A key problem is if we <em>randomly</em> apply statistical methods
+to datasets to find an interesting answer we will almost certainly find
+something interesting.<br />
+</li>
+<li>But it <em>may not be reproducible</em> and it <em>may not be really
+meaningful</em>.<br />
+</li>
+<li>A <strong>proper data analysis</strong> has:
+<ul>
+<li>A <em>scientific context</em>.<br />
+</li>
+<li>And at least <em>some general question</em> that we’re trying to
+investigate which will narrow down the dimensionality of the
+problem.<br />
+</li>
+<li><strong><em>Then</em></strong> we’ll apply the
+<strong><em>appropriate statistical methods</em></strong> to the
+<strong><em>appropriate data</em></strong>.</li>
+</ul></li>
+</ul></li>
+<li>If we get really ambitious we might want to think of <em>some
+theoretical statistics</em> that will <em>generalize the methods</em>
+that you apply to different types of data.
+<ul>
+<li>There are relatively few people who can do that, so it would not be
+expected of everyone.</li>
+</ul></li>
+</ul>
+</div>
+<div id="basic-example-of-a-question." class="section level3"
+number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Basic example of a
+question.</h3>
+<p>A general question might be:</p>
+<ul>
+<li><strong>Can we automatically detect emails that are spam and those
+that are not?</strong></li>
+</ul>
+<p>If we want to <em>turn that into a data analysis problem</em> there
+are many ways to answer the question.</p>
+<ul>
+<li><p>For example, we could hire someone to go through our email and
+figure out what’s spam and what’s not.</p></li>
+<li><p>But that’s not really sustainable, and it’s not particularly
+efficient.</p></li>
+<li><p>So, if we want to turn this into a data analysis question, we
+have to <strong>make the question a little bit more concrete</strong>
+and <strong>translate it using terms</strong> that are <strong>specific
+to data analysis tools</strong>.</p>
+<ul>
+<li><p>A more concrete version of this question might be: <strong>can we
+use quantitative characteristics of the emails themselves to classify
+them as spam?</strong></p></li>
+<li><p>Now we can start looking at emails and try to <em>identify these
+quantitative characteristics</em> that we want to develop so that we can
+classify them as spam.</p></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="define-the-ideal-dataset." class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Define the ideal
+dataset.</h2>
+<p>The dataset depend on our goal and type of question.</p>
+<ul>
+<li><strong>Descriptive</strong> —&gt; <strong>whole population</strong>
+<ul>
+<li>In a descriptive problem we might think of a whole population.<br />
+</li>
+<li>We don’t need to sample anything. We might want to get the entire
+census or population that we’re looking for.<br />
+</li>
+<li>All the emails in the universe, for example.<br />
+</li>
+</ul></li>
+<li><strong>Exploratory</strong> —&gt; a <strong>random sample</strong>
+with <strong>many variables measured</strong>
+<ul>
+<li>If we just want to explore our question we might take a random
+sample with a bunch of variables measured.<br />
+</li>
+</ul></li>
+<li><strong>Inferential</strong> —&gt; the <strong>right population,
+randomly sampled</strong>
+<ul>
+<li>If we want to make inference about a problem then we have to be very
+careful about the sampling mechanism and the definition of the
+population that we are sampling from.<br />
+</li>
+<li>The sampling mechanism is very important because, typically, when we
+make an inferential statement we use our smaller sample to make a
+conclusion about a larger population.<br />
+</li>
+</ul></li>
+<li><strong>Predictive</strong> —&gt; a <strong>training and test
+dataset</strong> from the same population
+<ul>
+<li>If we want to make a prediction, we need something like a training
+set and a test dataset from a population that we’re interested in so
+that we can build a <em>model</em> and a <em>classifier</em>.<br />
+</li>
+</ul></li>
+<li><strong>Causal</strong> —&gt; data from a <strong>randomized
+study</strong>
+<ul>
+<li>If we want to make a causal statement, such as <em>“if we modify
+this component, then something else happens”</em>, we’re going to need
+<strong>experimental data</strong>.<br />
+</li>
+<li><strong>One type</strong> of experimental data is from something
+like a <strong>randomized trial or a randomized study</strong>.<br />
+</li>
+</ul></li>
+<li><strong>Mechanistic</strong> —&gt; data about <strong>all components
+of the system</strong>
+<ul>
+<li>If we want to make mechanistic types of statements, we need data
+about all the different components of the system that we’re trying to
+describe.</li>
+</ul></li>
+</ul>
+<div id="the-ideal-dataset-in-our-emails-example."
+class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> The ideal dataset
+in our emails example.</h3>
+<p>For our problem with spam, perhaps we use Gmail. And in this case our
+<strong>ideal dataset</strong> would be all the emails in the Gmail
+system stored on <a
+href="http://www.google.com/about/datacenters/inside/">Google’s data
+centers</a>.</p>
+<ul>
+<li><p>That would be a whole population of emails.</p></li>
+<li><p>Then we can just build our classifier based on all this data and
+we wouldn’t have to worry about sampling because we’d have all the
+data.</p></li>
+</ul>
+</div>
+</div>
+<div id="the-real-dataset-what-data-were-able-to-access-to."
+class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> The real dataset,
+what data we’re able to access to.</h2>
+<p>Of course, in the real world, we have to think about <strong>what
+data we can actually access</strong>.</p>
+<p>The real scenarios are that:</p>
+<ul>
+<li>We might be able to find <strong>free data on the
+web</strong>.<br />
+</li>
+<li>We might need to <strong>buy some data</strong> from a provider.
+<ul>
+<li>Here we have to be sure to respect the terms of use for the
+data.<br />
+</li>
+<li>Any agreement or contract that we agree to about the data has to be
+adhered to.<br />
+</li>
+</ul></li>
+<li>If the data simply does not exist out there, you may need to
+<strong>generate the data ourselves</strong> in some way.</li>
+</ul>
+<div id="possible-solutions-in-our-mail-example." class="section level3"
+number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Possible solutions
+in our mail example.</h3>
+<p>Maybe someone at Google can actually access all the emails that go
+through Gmail, but even in that extreme case, it may be difficult.</p>
+<p>The truth is that most people are not going to be able to access
+that.</p>
+<div id="uci-spam-database." class="section level4" number="2.5.1.1">
+<h4><span class="header-section-number">2.5.1.1</span> UCI spam
+database.</h4>
+<p>One possible solution comes from the UCI machine learning repository,
+which is the <a
+href="http://archive.ics.uci.edu/ml/datasets/Spambase">spam
+dataset</a>.</p>
+<center>
+<div class="figure">
+<img src="5_data/UCI_spambase_dataset.png" style="width:90.0%" alt="" />
+<p class="caption"><a
+href="http://archive.ics.uci.edu/ml/datasets/Spambase"
+class="uri">http://archive.ics.uci.edu/ml/datasets/Spambase</a></p>
+</div>
+</center>
+<ul>
+<li><p>This is a collection of spam in a dataset created by people at
+<em>Hewlett Packard</em> who collected several thousand spam and regular
+messages, then classified them appropriately.</p></li>
+<li><p>So we could use this database to explore our problem of how to
+classify emails into spam.</p></li>
+</ul>
+</div>
+<div id="the-kernlab-package-and-its-spam-dataset."
+class="section level4" number="2.5.1.2">
+<h4><span class="header-section-number">2.5.1.2</span> The
+<code>kernlab</code> package and its <code>spam</code> dataset.</h4>
+<p>The <em>Hewlett Packard</em> <code>spam</code> dataset is available
+via the <a
+href="http://search.r-project.org/library/kernlab/html/spam.html"><code>kernlab</code>
+package in R</a>.</p>
+<ul>
+<li>Once we install the <code>kernlab</code> package, we can load the
+data set right away.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;kernlab&quot;</span>)) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">install.packages</span>(<span class="st">&quot;kernlab&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">library</span>(kernlab)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Loading required package<span class="sc">:</span> kernlab</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">&#39;kernlab&#39;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>The following object is masked from <span class="st">&#39;package:ggplot2&#39;</span><span class="sc">:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    alpha</span></code></pre></div>
+</div>
+</div>
+<div id="tips-on-obtaining-the-data." class="section level3"
+number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Tips on obtaining
+the data.</h3>
+<ul>
+<li><p>The first goal is to try to obtain <strong>the raw
+data</strong>.</p>
+<ul>
+<li>For example, from the UCI machine learning repository.</li>
+</ul></li>
+<li><p>We should always <strong>reference and keep track of where the
+data came from</strong> (the source).</p></li>
+<li><p>If we need to get data from a person or an investigator that
+we’re not familiar with, often a very <strong>polite email</strong> will
+go a long way. They may be willing to share that data with us.</p></li>
+<li><p>If we will load the data from an internet source, record the url
+and time accessed.</p></li>
+</ul>
+</div>
+</div>
+<div id="cleaning-the-data." class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Cleaning the
+data.</h2>
+<p>As we saw in <strong>Getting and Cleaning Data</strong> course:</p>
+<ul>
+<li><p><em>Raw data typically needs to be processed</em> in some
+way.</p>
+<ul>
+<li>To get it into a form where we can model it or feed it into a
+modeling program.</li>
+</ul></li>
+<li><p><em>If the data is pre-processed, it’s important that we
+understand how it was done</em>.</p>
+<ul>
+<li>Try to get some documentation about what the pre-processing was and
+how it was done.</li>
+</ul></li>
+<li><p><em>Understand the source of the data</em>.</p>
+<ul>
+<li><p>For example if it came from a <em>survey</em>, we need to know
+how the sampling was done.</p></li>
+<li><p>Was it a <em>convenience sample</em>, or did the data come from
+an <em>observational study</em>, or perhaps from
+<em>experiments?</em></p></li>
+</ul></li>
+<li><p><em>Data may need reformating, subsampling</em>.</p>
+<ul>
+<li><p>We may need to reformat the data in a certain way to get it to
+work in a certain type of analysis.</p></li>
+<li><p>If the dataset is extremely large we may want to sub-sample it to
+make it more manageable.</p></li>
+</ul></li>
+<li><p><em>Record these steps in scripts</em>.</p>
+<ul>
+<li><p>It is very important that anything we do to clean the data is
+recorded.</p></li>
+<li><p>Write down these steps in scripts or whatever is most convenient
+because we or someone else is going to have to reproduce these steps if
+they want to reproduce our findings.</p></li>
+<li><p>If we don’t document all these pre-processing steps, then no one
+will ever be able to do it again.</p></li>
+</ul></li>
+<li><p><em>Determine if the data are good enough</em>.</p>
+<ul>
+<li><p>Once we have cleaned the data and we have gotten a basic look at
+it, it is important to determine if the data <em>are good enough to
+solve your problems</em>.</p></li>
+<li><p>In some cases, we may determine that the data are not good
+enough.</p>
+<ul>
+<li>We may not have <em>enough data</em>, you may not have <em>enough
+variables</em> or enough characteristics, or the <em>sampling</em> of
+the data may be <em>inappropriate for our question</em>.</li>
+</ul></li>
+<li><p>If we determine the data are not good enough for our question,
+then:</p>
+<ul>
+<li><p>We’ve got to <strong>quit</strong>, <strong>try again</strong>,
+<strong>change the data</strong>, or <strong>try a different
+question</strong>.</p></li>
+<li><p>It is <strong><em>important to not simply push on</em></strong>
+with the data you have, just because that’s all that you’ve got, because
+that can lead to inappropriate inferences or conclusions.</p></li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="our-cleaned-dataset." class="section level3" number="2.6.1">
+<h3><span class="header-section-number">2.6.1</span> Our cleaned
+dataset.</h3>
+<p>Here is our cleaned data set from the <code>kernlab</code> package
+that we’re going to use.</p>
+<ul>
+<li>It’s already been cleaned for us, in the <code>kernlab</code>
+package.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(spam)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(spam)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">4601</span> obs. of  <span class="dv">58</span> variables<span class="sc">:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> make             <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.21</span> <span class="fl">0.06</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.15</span> <span class="fl">0.06</span> ...</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> address          <span class="sc">:</span> num  <span class="fl">0.64</span> <span class="fl">0.28</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.12</span> ...</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> all              <span class="sc">:</span> num  <span class="fl">0.64</span> <span class="fl">0.5</span> <span class="fl">0.71</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.46</span> <span class="fl">0.77</span> ...</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num3d            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> our              <span class="sc">:</span> num  <span class="fl">0.32</span> <span class="fl">0.14</span> <span class="fl">1.23</span> <span class="fl">0.63</span> <span class="fl">0.63</span> <span class="fl">1.85</span> <span class="fl">1.92</span> <span class="fl">1.88</span> <span class="fl">0.61</span> <span class="fl">0.19</span> ...</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> over             <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.28</span> <span class="fl">0.19</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.32</span> ...</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> remove           <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.21</span> <span class="fl">0.19</span> <span class="fl">0.31</span> <span class="fl">0.31</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.3</span> <span class="fl">0.38</span> ...</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> internet         <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.07</span> <span class="fl">0.12</span> <span class="fl">0.63</span> <span class="fl">0.63</span> <span class="fl">1.85</span> <span class="dv">0</span> <span class="fl">1.88</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> order            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.64</span> <span class="fl">0.31</span> <span class="fl">0.31</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.92</span> <span class="fl">0.06</span> ...</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> mail             <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.94</span> <span class="fl">0.25</span> <span class="fl">0.63</span> <span class="fl">0.63</span> <span class="dv">0</span> <span class="fl">0.64</span> <span class="dv">0</span> <span class="fl">0.76</span> <span class="dv">0</span> ...</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> receive          <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.21</span> <span class="fl">0.38</span> <span class="fl">0.31</span> <span class="fl">0.31</span> <span class="dv">0</span> <span class="fl">0.96</span> <span class="dv">0</span> <span class="fl">0.76</span> <span class="dv">0</span> ...</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> will             <span class="sc">:</span> num  <span class="fl">0.64</span> <span class="fl">0.79</span> <span class="fl">0.45</span> <span class="fl">0.31</span> <span class="fl">0.31</span> <span class="dv">0</span> <span class="fl">1.28</span> <span class="dv">0</span> <span class="fl">0.92</span> <span class="fl">0.64</span> ...</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> people           <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.65</span> <span class="fl">0.12</span> <span class="fl">0.31</span> <span class="fl">0.31</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.25</span> ...</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> report           <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.21</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> addresses        <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.14</span> <span class="fl">1.75</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.12</span> ...</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> free             <span class="sc">:</span> num  <span class="fl">0.32</span> <span class="fl">0.14</span> <span class="fl">0.06</span> <span class="fl">0.31</span> <span class="fl">0.31</span> <span class="dv">0</span> <span class="fl">0.96</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> business         <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.07</span> <span class="fl">0.06</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> email            <span class="sc">:</span> num  <span class="fl">1.29</span> <span class="fl">0.28</span> <span class="fl">1.03</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.32</span> <span class="dv">0</span> <span class="fl">0.15</span> <span class="fl">0.12</span> ...</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> you              <span class="sc">:</span> num  <span class="fl">1.93</span> <span class="fl">3.47</span> <span class="fl">1.36</span> <span class="fl">3.18</span> <span class="fl">3.18</span> <span class="dv">0</span> <span class="fl">3.85</span> <span class="dv">0</span> <span class="fl">1.23</span> <span class="fl">1.67</span> ...</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> credit           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.32</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">3.53</span> <span class="fl">0.06</span> ...</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> your             <span class="sc">:</span> num  <span class="fl">0.96</span> <span class="fl">1.59</span> <span class="fl">0.51</span> <span class="fl">0.31</span> <span class="fl">0.31</span> <span class="dv">0</span> <span class="fl">0.64</span> <span class="dv">0</span> <span class="dv">2</span> <span class="fl">0.71</span> ...</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> font             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num000           <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.43</span> <span class="fl">1.16</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.19</span> ...</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> money            <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.43</span> <span class="fl">0.06</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.15</span> <span class="dv">0</span> ...</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> hp               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> hpl              <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> george           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num650           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> lab              <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> labs             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> telnet           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num857           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> data             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.15</span> <span class="dv">0</span> ...</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num415           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num85            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> technology       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num1999          <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.07</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> parts            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> pm               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> direct           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.06</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> cs               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> meeting          <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> original         <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.12</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.3</span> <span class="dv">0</span> ...</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> project          <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.06</span> ...</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> re               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.06</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> edu              <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.06</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> table            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> conference       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charSemicolon    <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.01</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.04</span> ...</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charRoundbracket <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.132</span> <span class="fl">0.143</span> <span class="fl">0.137</span> <span class="fl">0.135</span> <span class="fl">0.223</span> <span class="fl">0.054</span> <span class="fl">0.206</span> <span class="fl">0.271</span> <span class="fl">0.03</span> ...</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charSquarebracket<span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charExclamation  <span class="sc">:</span> num  <span class="fl">0.778</span> <span class="fl">0.372</span> <span class="fl">0.276</span> <span class="fl">0.137</span> <span class="fl">0.135</span> <span class="dv">0</span> <span class="fl">0.164</span> <span class="dv">0</span> <span class="fl">0.181</span> <span class="fl">0.244</span> ...</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charDollar       <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.18</span> <span class="fl">0.184</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.054</span> <span class="dv">0</span> <span class="fl">0.203</span> <span class="fl">0.081</span> ...</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charHash         <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.048</span> <span class="fl">0.01</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.022</span> <span class="dv">0</span> ...</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> capitalAve       <span class="sc">:</span> num  <span class="fl">3.76</span> <span class="fl">5.11</span> <span class="fl">9.82</span> <span class="fl">3.54</span> <span class="fl">3.54</span> ...</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> capitalLong      <span class="sc">:</span> num  <span class="dv">61</span> <span class="dv">101</span> <span class="dv">485</span> <span class="dv">40</span> <span class="dv">40</span> <span class="dv">15</span> <span class="dv">4</span> <span class="dv">11</span> <span class="dv">445</span> <span class="dv">43</span> ...</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> capitalTotal     <span class="sc">:</span> num  <span class="dv">278</span> <span class="dv">1028</span> <span class="dv">2259</span> <span class="dv">191</span> <span class="dv">191</span> ...</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> type             <span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">2</span> levels <span class="st">&quot;nonspam&quot;</span>,<span class="st">&quot;spam&quot;</span><span class="sc">:</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> ...</span></code></pre></div>
+<ul>
+<li>So there are 4601 observations (mails), characterized along 58
+variables.</li>
+</ul>
+</div>
+</div>
+<div id="splitting-the-dataset." class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Splitting the
+dataset.</h2>
+<p>The first thing that we need to do with this dataset <strong>if we
+want to build a model to classify emails</strong> into spam or not, is
+that <strong>we need to split</strong> the dataset into a <strong>test
+set</strong> and a <strong>training set</strong>.</p>
+<ul>
+<li><p>We’re going to use <em>part of the test</em> of the dataset
+<em>to build our model</em>.</p></li>
+<li><p>And then we’re going to use <em>another part of the dataset</em>
+which is independent of the first part to actually <em>determine how
+good our model is making a prediction</em>.</p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform the subsampling</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3435</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>trainIndicator <span class="ot">=</span> <span class="fu">rbinom</span>(<span class="dv">4601</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(trainIndicator)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>trainIndicator</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="dv">0</span>    <span class="dv">1</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dv">2314</span> <span class="dv">2287</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>trainSpam <span class="ot">=</span> spam[trainIndicator<span class="sc">==</span><span class="dv">1</span>, ]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>testSpam <span class="ot">=</span> spam[trainIndicator<span class="sc">==</span><span class="dv">0</span>, ]</span></code></pre></div>
+<ul>
+<li>Here we’re taking a random half of the dataset.<br />
+</li>
+<li>To do so, we’re flipping a coin with the <code>rbinom()</code>
+function, to generate a random kind of coin flip with probability of
+half.<br />
+</li>
+<li>That will separate the the dataset into two pieces.
+<ul>
+<li>We can see that about 2314 are going to be in one half.<br />
+</li>
+<li>And 2287 will be in the other half.<br />
+</li>
+</ul></li>
+<li>So the training set will be one set and the test set will be another
+set of data.</li>
+</ul>
+</div>
+<div id="exploratory-data-analysis-focusing-on-the-training-dataset."
+class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Exploratory data
+analysis, focusing on the training dataset.</h2>
+<p>Let’s now look at what the data look like, what’s the distribution of
+the data, what are the relationships between the variables.</p>
+<p>We want to:</p>
+<ul>
+<li>Look at basic summaries of the data (one and two dimensional
+summaries).<br />
+</li>
+<li>Check for missing data.<br />
+</li>
+<li>Create exploratory plots.<br />
+</li>
+<li>Perform exploratory analyses (e.g. clustering).</li>
+</ul>
+<p>We’re going to focus on the training dataset as we do our exploratory
+analysis and we build our model.</p>
+<div id="names-str-head." class="section level3" number="2.8.1">
+<h3><span class="header-section-number">2.8.1</span> Names, str,
+head.</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(trainSpam)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;make&quot;</span>              <span class="st">&quot;address&quot;</span>           <span class="st">&quot;all&quot;</span>              </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] <span class="st">&quot;num3d&quot;</span>             <span class="st">&quot;our&quot;</span>               <span class="st">&quot;over&quot;</span>             </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">&quot;remove&quot;</span>            <span class="st">&quot;internet&quot;</span>          <span class="st">&quot;order&quot;</span>            </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] <span class="st">&quot;mail&quot;</span>              <span class="st">&quot;receive&quot;</span>           <span class="st">&quot;will&quot;</span>             </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">&quot;people&quot;</span>            <span class="st">&quot;report&quot;</span>            <span class="st">&quot;addresses&quot;</span>        </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] <span class="st">&quot;free&quot;</span>              <span class="st">&quot;business&quot;</span>          <span class="st">&quot;email&quot;</span>            </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] <span class="st">&quot;you&quot;</span>               <span class="st">&quot;credit&quot;</span>            <span class="st">&quot;your&quot;</span>             </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] <span class="st">&quot;font&quot;</span>              <span class="st">&quot;num000&quot;</span>            <span class="st">&quot;money&quot;</span>            </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] <span class="st">&quot;hp&quot;</span>                <span class="st">&quot;hpl&quot;</span>               <span class="st">&quot;george&quot;</span>           </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] <span class="st">&quot;num650&quot;</span>            <span class="st">&quot;lab&quot;</span>               <span class="st">&quot;labs&quot;</span>             </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] <span class="st">&quot;telnet&quot;</span>            <span class="st">&quot;num857&quot;</span>            <span class="st">&quot;data&quot;</span>             </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] <span class="st">&quot;num415&quot;</span>            <span class="st">&quot;num85&quot;</span>             <span class="st">&quot;technology&quot;</span>       </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] <span class="st">&quot;num1999&quot;</span>           <span class="st">&quot;parts&quot;</span>             <span class="st">&quot;pm&quot;</span>               </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] <span class="st">&quot;direct&quot;</span>            <span class="st">&quot;cs&quot;</span>                <span class="st">&quot;meeting&quot;</span>          </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] <span class="st">&quot;original&quot;</span>          <span class="st">&quot;project&quot;</span>           <span class="st">&quot;re&quot;</span>               </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] <span class="st">&quot;edu&quot;</span>               <span class="st">&quot;table&quot;</span>             <span class="st">&quot;conference&quot;</span>       </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] <span class="st">&quot;charSemicolon&quot;</span>     <span class="st">&quot;charRoundbracket&quot;</span>  <span class="st">&quot;charSquarebracket&quot;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] <span class="st">&quot;charExclamation&quot;</span>   <span class="st">&quot;charDollar&quot;</span>        <span class="st">&quot;charHash&quot;</span>         </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] <span class="st">&quot;capitalAve&quot;</span>        <span class="st">&quot;capitalLong&quot;</span>       <span class="st">&quot;capitalTotal&quot;</span>     </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] <span class="st">&quot;type&quot;</span>             </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(trainSpam)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">2287</span> obs. of  <span class="dv">58</span> variables<span class="sc">:</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> make             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.15</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> address          <span class="sc">:</span> num  <span class="fl">0.64</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.42</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> all              <span class="sc">:</span> num  <span class="fl">0.64</span> <span class="dv">0</span> <span class="fl">0.46</span> <span class="fl">0.25</span> <span class="dv">0</span> <span class="fl">0.42</span> <span class="dv">0</span> <span class="fl">0.55</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num3d            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> our              <span class="sc">:</span> num  <span class="fl">0.32</span> <span class="fl">1.92</span> <span class="fl">0.61</span> <span class="fl">0.38</span> <span class="fl">0.9</span> <span class="fl">1.27</span> <span class="dv">0</span> <span class="fl">1.11</span> <span class="fl">2.94</span> <span class="fl">1.16</span> ...</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> over             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.25</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> remove           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.3</span> <span class="fl">0.25</span> <span class="fl">0.9</span> <span class="fl">0.42</span> <span class="dv">0</span> <span class="fl">0.18</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> internet         <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> order            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.92</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> mail             <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.64</span> <span class="fl">0.76</span> <span class="dv">0</span> <span class="fl">0.9</span> <span class="fl">1.27</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> receive          <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.96</span> <span class="fl">0.76</span> <span class="fl">0.12</span> <span class="fl">0.9</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> will             <span class="sc">:</span> num  <span class="fl">0.64</span> <span class="fl">1.28</span> <span class="fl">0.92</span> <span class="fl">0.12</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.58</span> ...</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> people           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.12</span> <span class="fl">0.9</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.92</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> report           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> addresses        <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.18</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> free             <span class="sc">:</span> num  <span class="fl">0.32</span> <span class="fl">0.96</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">1.27</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">2.94</span> <span class="fl">1.16</span> ...</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> business         <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.37</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> email            <span class="sc">:</span> num  <span class="fl">1.29</span> <span class="fl">0.32</span> <span class="fl">0.15</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.37</span> <span class="dv">0</span> <span class="fl">1.16</span> ...</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> you              <span class="sc">:</span> num  <span class="fl">1.93</span> <span class="fl">3.85</span> <span class="fl">1.23</span> <span class="fl">1.16</span> <span class="fl">2.72</span> <span class="fl">1.7</span> <span class="dv">0</span> <span class="fl">3.15</span> <span class="dv">0</span> <span class="fl">1.16</span> ...</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> credit           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">3.53</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.42</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> your             <span class="sc">:</span> num  <span class="fl">0.96</span> <span class="fl">0.64</span> <span class="dv">2</span> <span class="fl">0.77</span> <span class="fl">0.9</span> <span class="fl">1.27</span> <span class="fl">2.11</span> <span class="fl">0.92</span> <span class="dv">0</span> <span class="fl">1.75</span> ...</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> font             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num000           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.7</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> money            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.15</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.42</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> hp               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> hpl              <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> george           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num650           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> lab              <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> labs             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> telnet           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num857           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> data             <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.15</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num415           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num85            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> technology       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> num1999          <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">1.27</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> parts            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> pm               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> direct           <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.42</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> cs               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> meeting          <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> original         <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.3</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> project          <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> re               <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> edu              <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> table            <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> conference       <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charSemicolon    <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.022</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.404</span> <span class="dv">0</span> ...</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charRoundbracket <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.054</span> <span class="fl">0.271</span> <span class="fl">0.044</span> <span class="dv">0</span> <span class="fl">0.063</span> <span class="dv">0</span> <span class="fl">0.182</span> <span class="fl">0.404</span> <span class="fl">0.133</span> ...</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charSquarebracket<span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charExclamation  <span class="sc">:</span> num  <span class="fl">0.778</span> <span class="fl">0.164</span> <span class="fl">0.181</span> <span class="fl">0.663</span> <span class="dv">0</span> ...</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charDollar       <span class="sc">:</span> num  <span class="dv">0</span> <span class="fl">0.054</span> <span class="fl">0.203</span> <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.063</span> <span class="fl">0.37</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> charHash         <span class="sc">:</span> num  <span class="dv">0</span> <span class="dv">0</span> <span class="fl">0.022</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> ...</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> capitalAve       <span class="sc">:</span> num  <span class="fl">3.76</span> <span class="fl">1.67</span> <span class="fl">9.74</span> <span class="fl">1.24</span> <span class="fl">2.08</span> ...</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> capitalLong      <span class="sc">:</span> num  <span class="dv">61</span> <span class="dv">4</span> <span class="dv">445</span> <span class="dv">11</span> <span class="dv">7</span> <span class="dv">55</span> <span class="dv">95</span> <span class="dv">4</span> <span class="dv">12</span> <span class="dv">5</span> ...</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> capitalTotal     <span class="sc">:</span> num  <span class="dv">278</span> <span class="dv">112</span> <span class="dv">1257</span> <span class="dv">184</span> <span class="dv">25</span> ...</span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> type             <span class="sc">:</span> Factor w<span class="sc">/</span> <span class="dv">2</span> levels <span class="st">&quot;nonspam&quot;</span>,<span class="st">&quot;spam&quot;</span><span class="sc">:</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> ...</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trainSpam)</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>   make address  all num3d  our over remove internet order mail receive will</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="fl">0.00</span>    <span class="fl">0.64</span> <span class="fl">0.64</span>     <span class="dv">0</span> <span class="fl">0.32</span> <span class="fl">0.00</span>   <span class="fl">0.00</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">0.00</span>    <span class="fl">0.00</span> <span class="fl">0.64</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>  <span class="fl">0.00</span>    <span class="fl">0.00</span> <span class="fl">0.00</span>     <span class="dv">0</span> <span class="fl">1.92</span> <span class="fl">0.00</span>   <span class="fl">0.00</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">0.64</span>    <span class="fl">0.96</span> <span class="fl">1.28</span></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>  <span class="fl">0.15</span>    <span class="fl">0.00</span> <span class="fl">0.46</span>     <span class="dv">0</span> <span class="fl">0.61</span> <span class="fl">0.00</span>   <span class="fl">0.30</span>        <span class="dv">0</span>  <span class="fl">0.92</span> <span class="fl">0.76</span>    <span class="fl">0.76</span> <span class="fl">0.92</span></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span> <span class="fl">0.00</span>    <span class="fl">0.00</span> <span class="fl">0.25</span>     <span class="dv">0</span> <span class="fl">0.38</span> <span class="fl">0.25</span>   <span class="fl">0.25</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">0.00</span>    <span class="fl">0.12</span> <span class="fl">0.12</span></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span> <span class="fl">0.00</span>    <span class="fl">0.00</span> <span class="fl">0.00</span>     <span class="dv">0</span> <span class="fl">0.90</span> <span class="fl">0.00</span>   <span class="fl">0.90</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">0.90</span>    <span class="fl">0.90</span> <span class="fl">0.00</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span> <span class="fl">0.00</span>    <span class="fl">0.42</span> <span class="fl">0.42</span>     <span class="dv">0</span> <span class="fl">1.27</span> <span class="fl">0.00</span>   <span class="fl">0.42</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">1.27</span>    <span class="fl">0.00</span> <span class="fl">0.00</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>   people report addresses free business email  you credit your font num000</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>    <span class="fl">0.00</span>      <span class="dv">0</span>         <span class="dv">0</span> <span class="fl">0.32</span>        <span class="dv">0</span>  <span class="fl">1.29</span> <span class="fl">1.93</span>   <span class="fl">0.00</span> <span class="fl">0.96</span>    <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>    <span class="fl">0.00</span>      <span class="dv">0</span>         <span class="dv">0</span> <span class="fl">0.96</span>        <span class="dv">0</span>  <span class="fl">0.32</span> <span class="fl">3.85</span>   <span class="fl">0.00</span> <span class="fl">0.64</span>    <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>    <span class="fl">0.00</span>      <span class="dv">0</span>         <span class="dv">0</span> <span class="fl">0.00</span>        <span class="dv">0</span>  <span class="fl">0.15</span> <span class="fl">1.23</span>   <span class="fl">3.53</span> <span class="fl">2.00</span>    <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>   <span class="fl">0.12</span>      <span class="dv">0</span>         <span class="dv">0</span> <span class="fl">0.00</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">1.16</span>   <span class="fl">0.00</span> <span class="fl">0.77</span>    <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>   <span class="fl">0.90</span>      <span class="dv">0</span>         <span class="dv">0</span> <span class="fl">0.00</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">2.72</span>   <span class="fl">0.00</span> <span class="fl">0.90</span>    <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>   <span class="fl">0.00</span>      <span class="dv">0</span>         <span class="dv">0</span> <span class="fl">1.27</span>        <span class="dv">0</span>  <span class="fl">0.00</span> <span class="fl">1.70</span>   <span class="fl">0.42</span> <span class="fl">1.27</span>    <span class="dv">0</span>      <span class="dv">0</span></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>   money hp hpl george num650 lab labs telnet num857 data num415 num85</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>   <span class="fl">0.00</span>  <span class="dv">0</span>   <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>   <span class="dv">0</span>    <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span> <span class="fl">0.00</span>      <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>   <span class="fl">0.00</span>  <span class="dv">0</span>   <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>   <span class="dv">0</span>    <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span> <span class="fl">0.00</span>      <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>   <span class="fl">0.15</span>  <span class="dv">0</span>   <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>   <span class="dv">0</span>    <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span> <span class="fl">0.15</span>      <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>  <span class="fl">0.00</span>  <span class="dv">0</span>   <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>   <span class="dv">0</span>    <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span> <span class="fl">0.00</span>      <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>  <span class="fl">0.00</span>  <span class="dv">0</span>   <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>   <span class="dv">0</span>    <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span> <span class="fl">0.00</span>      <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>  <span class="fl">0.42</span>  <span class="dv">0</span>   <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>   <span class="dv">0</span>    <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span> <span class="fl">0.00</span>      <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>   technology num1999 parts pm direct cs meeting original project re edu table</span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>           <span class="dv">0</span>    <span class="fl">0.00</span>     <span class="dv">0</span>  <span class="dv">0</span>   <span class="fl">0.00</span>  <span class="dv">0</span>       <span class="dv">0</span>      <span class="fl">0.0</span>       <span class="dv">0</span>  <span class="dv">0</span>   <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>           <span class="dv">0</span>    <span class="fl">0.00</span>     <span class="dv">0</span>  <span class="dv">0</span>   <span class="fl">0.00</span>  <span class="dv">0</span>       <span class="dv">0</span>      <span class="fl">0.0</span>       <span class="dv">0</span>  <span class="dv">0</span>   <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>           <span class="dv">0</span>    <span class="fl">0.00</span>     <span class="dv">0</span>  <span class="dv">0</span>   <span class="fl">0.00</span>  <span class="dv">0</span>       <span class="dv">0</span>      <span class="fl">0.3</span>       <span class="dv">0</span>  <span class="dv">0</span>   <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>          <span class="dv">0</span>    <span class="fl">0.00</span>     <span class="dv">0</span>  <span class="dv">0</span>   <span class="fl">0.00</span>  <span class="dv">0</span>       <span class="dv">0</span>      <span class="fl">0.0</span>       <span class="dv">0</span>  <span class="dv">0</span>   <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>          <span class="dv">0</span>    <span class="fl">0.00</span>     <span class="dv">0</span>  <span class="dv">0</span>   <span class="fl">0.00</span>  <span class="dv">0</span>       <span class="dv">0</span>      <span class="fl">0.0</span>       <span class="dv">0</span>  <span class="dv">0</span>   <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>          <span class="dv">0</span>    <span class="fl">1.27</span>     <span class="dv">0</span>  <span class="dv">0</span>   <span class="fl">0.42</span>  <span class="dv">0</span>       <span class="dv">0</span>      <span class="fl">0.0</span>       <span class="dv">0</span>  <span class="dv">0</span>   <span class="dv">0</span>     <span class="dv">0</span></span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>   conference charSemicolon charRoundbracket charSquarebracket charExclamation</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>           <span class="dv">0</span>         <span class="fl">0.000</span>            <span class="fl">0.000</span>                 <span class="dv">0</span>           <span class="fl">0.778</span></span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>           <span class="dv">0</span>         <span class="fl">0.000</span>            <span class="fl">0.054</span>                 <span class="dv">0</span>           <span class="fl">0.164</span></span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>           <span class="dv">0</span>         <span class="fl">0.000</span>            <span class="fl">0.271</span>                 <span class="dv">0</span>           <span class="fl">0.181</span></span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>          <span class="dv">0</span>         <span class="fl">0.022</span>            <span class="fl">0.044</span>                 <span class="dv">0</span>           <span class="fl">0.663</span></span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>          <span class="dv">0</span>         <span class="fl">0.000</span>            <span class="fl">0.000</span>                 <span class="dv">0</span>           <span class="fl">0.000</span></span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>          <span class="dv">0</span>         <span class="fl">0.000</span>            <span class="fl">0.063</span>                 <span class="dv">0</span>           <span class="fl">0.572</span></span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>   charDollar charHash capitalAve capitalLong capitalTotal type</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>       <span class="fl">0.000</span>    <span class="fl">0.000</span>      <span class="fl">3.756</span>          <span class="dv">61</span>          <span class="dv">278</span> spam</span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>       <span class="fl">0.054</span>    <span class="fl">0.000</span>      <span class="fl">1.671</span>           <span class="dv">4</span>          <span class="dv">112</span> spam</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>       <span class="fl">0.203</span>    <span class="fl">0.022</span>      <span class="fl">9.744</span>         <span class="dv">445</span>         <span class="dv">1257</span> spam</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>      <span class="fl">0.000</span>    <span class="fl">0.000</span>      <span class="fl">1.243</span>          <span class="dv">11</span>          <span class="dv">184</span> spam</span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>      <span class="fl">0.000</span>    <span class="fl">0.000</span>      <span class="fl">2.083</span>           <span class="dv">7</span>           <span class="dv">25</span> spam</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>      <span class="fl">0.063</span>    <span class="fl">0.000</span>      <span class="fl">5.659</span>          <span class="dv">55</span>          <span class="dv">249</span> spam</span></code></pre></div>
+<ul>
+<li>As we can see, the variables are <strong>words</strong> and their
+values are basically <strong>fequencies</strong> at which they occur
+<strong>in a given email</strong>.<br />
+</li>
+<li>For example, the words <em>make</em> and <em>mail</em> does not
+appear in the first email.<br />
+</li>
+<li>So these data are basically <strong>frequencies of words</strong>
+within each of the emails.</li>
+</ul>
+</div>
+<div id="summaries." class="section level3" number="2.8.2">
+<h3><span class="header-section-number">2.8.2</span> Summaries.</h3>
+<p>Let’s see how many of the emails are classified as spam. That’s what
+the variable <code>type</code> of this dataset tells us.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(trainSpam<span class="sc">$</span>type)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>nonspam    spam </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>   <span class="dv">1381</span>     <span class="dv">906</span> </span></code></pre></div>
+<ul>
+<li>As we said, this is what we’re going to use to build our model for
+predicting the spam emails.</li>
+</ul>
+</div>
+<div id="plots." class="section level3" number="2.8.3">
+<h3><span class="header-section-number">2.8.3</span> Plots.</h3>
+<p>We can make some plots and we can <strong>compare</strong> what are
+the <strong>frequencies of certain characteristics</strong> between the
+<strong>spam and the non spam</strong> emails.</p>
+<div id="the-average-number-of-capital-letters-is-a-predictor."
+class="section level4" number="2.8.3.1">
+<h4><span class="header-section-number">2.8.3.1</span> The average
+number of capital letters is a predictor?.</h4>
+<p>Here we’re looking at a variable called <code>capitalAve</code> (the
+<em>average number of capital letters</em>).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Equivalently: plot(trainSpam$capitalAve ~ trainSpam$type)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(capitalAve <span class="sc">~</span> type, <span class="at">data =</span> trainSpam)</span></code></pre></div>
+<p><img src="5_ReproducibleResearch_Module1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li>It is difficult to look at this picture, because the <strong>data
+are highly skewed</strong>.<br />
+</li>
+<li>In these kinds of situations it’s often useful to just <strong>look
+at the log transformation</strong> of the variable.<br />
+</li>
+<li>Here we’re going to to take the <em>base ten log</em> of the
+variable.<br />
+</li>
+<li>Since <strong>there are a lot of zeros</strong> in this particular
+variable, taking the log of zero doesn’t really make sense. Therefore
+we’ll <strong>add 1</strong> to that variable, just so we can take the
+log and get a rough sense of what the data look like.<br />
+</li>
+<li>Typically, we wouldn’t want to just add 1 to a variable just
+because. But since <strong>we’re just exploring</strong> the data,
+making exploratory plots, it’s okay to do that in this case.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Equivalently: plot(log10(trainSpam$capitalAve + 1) ~ trainSpam$type)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">log10</span>(capitalAve <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">~</span> type, <span class="at">data =</span> trainSpam)</span></code></pre></div>
+<p><img src="5_ReproducibleResearch_Module1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li>Now we can see clearly that the spam emails have a much higher rate
+of these capital letters than the non spam emails.<br />
+</li>
+<li>If we’ve ever seen spam emails, we’re probably familiar with that
+phenomenon.<br />
+</li>
+<li>And so <strong>that’s one useful relationship</strong> to see
+there.</li>
+</ul>
+</div>
+<div id="pairwise-relationships-between-variablespredictors."
+class="section level4" number="2.8.3.2">
+<h4><span class="header-section-number">2.8.3.2</span> Pairwise
+relationships between variables/predictors.</h4>
+<p>We can look at pairwise relationships between the different variables
+in the plots.</p>
+<p>Here we’ve got a pairs plot of the <strong>first four
+variables</strong> (the log transformation of each of the
+variables).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Equivalently: plot(log10(trainSpam[,1:4] + 1))</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(<span class="fu">log10</span>(trainSpam[, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="sc">+</span> <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="5_ReproducibleResearch_Module1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<ul>
+<li>We can see that some of them are correlated, some of them are not
+particularly correlated, and that’s useful to know.</li>
+</ul>
+</div>
+</div>
+<div id="clustering-to-further-explore-the-predictors-space."
+class="section level3" number="2.8.4">
+<h3><span class="header-section-number">2.8.4</span> Clustering, to
+further explore the predictors space.</h3>
+<p>We can explore the predictors space a little bit more by doing a
+hierarchical cluster analysis.</p>
+<p>Let’s then try to make a first cut with the <code>hclust</code>
+function in R, plotting a dendrogram just to see <strong>what predictors
+or what words or characteristics tend to cluster together</strong>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">0</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hCluster <span class="ot">=</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(<span class="fu">t</span>(trainSpam[, <span class="dv">1</span><span class="sc">:</span><span class="dv">57</span>])))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hCluster)</span></code></pre></div>
+<p><img src="5_ReproducibleResearch_Module1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<ul>
+<li>It’s not particularly helpful at this point, although it does
+separate out this one variable, <code>capitalTotal</code>.<br />
+</li>
+<li>But if we recall, the <strong>clustering algorithms</strong> can be
+<strong>sensitive to any skewness</strong> in the distribution of the
+individual variables, so it <em>may be useful to redo the
+clustering</em> analysis <em>after a transformation</em> of the
+predictor space.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">0</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>hClusterUpdated <span class="ot">=</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(<span class="fu">t</span>(<span class="fu">log10</span>(trainSpam[, <span class="dv">1</span><span class="sc">:</span><span class="dv">55</span>] <span class="sc">+</span> <span class="dv">1</span>))))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hClusterUpdated)</span></code></pre></div>
+<p><img src="5_ReproducibleResearch_Module1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<ul>
+<li>Now the dendrogram is a little bit more interesting, it separated
+out a few clusters.<br />
+</li>
+<li><code>captialAve</code> is one kind of cluster all by itself.<br />
+</li>
+<li>There’s another cluster that includes <code>you will</code> or
+<code>your</code>.<br />
+</li>
+<li>And then there are a bunch of <em>other words</em> that <em>lump
+more ambiguously together</em>.<br />
+</li>
+<li>And so this <em>may be something worth exploring</em> a little bit
+further, if we see some particular characteristics that are
+interesting.</li>
+</ul>
+</div>
+</div>
+<div id="statistical-predictionmodeling." class="section level2"
+number="2.9">
+<h2><span class="header-section-number">2.9</span> Statistical
+prediction/modeling.</h2>
+<p>Once we’ve done exploratory data analysis, we’ve looked at some
+univariate and bivariate plots, we did a little cluster analysis, we can
+move on to doing <strong>a more sophisticated statistical model</strong>
+and <strong>some prediction modeling</strong>.</p>
+<p><strong>Any statistical modeling</strong> that we engage in:</p>
+<ul>
+<li><p>Should be informed by the results of our exploratory
+analysis.</p></li>
+<li><p>Exact methods depend on the question of interest.</p></li>
+<li><p>Transformations/processing should be accounted for when
+necessary.</p></li>
+<li><p>Measures of uncertainty should be reported (we should always
+think about, what are the sources of uncertainty in our
+dataset).</p></li>
+</ul>
+<div id="a-basic-statistical-model." class="section level3"
+number="2.9.1">
+<h3><span class="header-section-number">2.9.1</span> A basic statistical
+model.</h3>
+<p>We’re going to do a very basic statistical model.</p>
+<ul>
+<li>We’re going to go <em>through each of the variables</em> in the data
+set and try to <em>fit a generalize linear model</em>, in this case a
+<strong>logistic regression</strong>, to see if we can predict if an
+email is spam or not by using just a single variable.<br />
+</li>
+<li>More particularly:
+<ul>
+<li>We’ll use the <code>reformulate()</code> function to create a
+formula that includes the response, which is just the type of email and
+one of the variables of the data set.<br />
+</li>
+<li>We’re just going to cycle through all the variables in this dataset
+to build a logistic regression model, <code>glmFit</code>, and then
+subsequently calculate the cross validated error rate of predicting spam
+emails from a single variable, <code>cvError</code>.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>trainSpam<span class="sc">$</span>numType <span class="ot">=</span> <span class="fu">as.numeric</span>(trainSpam<span class="sc">$</span>type) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>costFunction <span class="ot">=</span> <span class="cf">function</span>(x, y) <span class="fu">sum</span>(x <span class="sc">!=</span> (y <span class="sc">&gt;</span> <span class="fl">0.5</span>)) </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>cvError <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">55</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(boot)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">55</span>) {</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    lmFormula <span class="ot">=</span> <span class="fu">reformulate</span>(<span class="fu">names</span>(trainSpam)[i], <span class="at">response =</span> <span class="st">&quot;numType&quot;</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    glmFit <span class="ot">=</span> <span class="fu">glm</span>(lmFormula, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="at">data =</span> trainSpam)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    cvError[i] <span class="ot">=</span> <span class="fu">cv.glm</span>(trainSpam, glmFit, costFunction, <span class="dv">2</span>)<span class="sc">$</span>delta[<span class="dv">2</span>]</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<ul>
+<li>Once we’ve done this, we’re going to try to figure out <strong>which
+of the individual variables</strong> has the <strong>minimum cross
+validated error rate</strong>.<br />
+</li>
+<li>To do so, we can just take the <code>cvError</code> vector of
+results to determine which one is the minimum.</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Which predictor has minimum cross-validated error?</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(trainSpam)[<span class="fu">which.min</span>(cvError)]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;charDollar&quot;</span></span></code></pre></div>
+<ul>
+<li>It turns out that the predictor that has the minimum cross validated
+error rate is the <code>charDollar</code> variable.<br />
+</li>
+<li>This is an indicator of the <strong>number of dollar signs in the
+email</strong>.<br />
+</li>
+<li>Keep in mind this is a very simple model. Each of these models that
+we fit <em>only have a single predictor</em> in it.
+<ul>
+<li>Of course we could think of something more complicated, but this may
+be an interesting place to start.</li>
+</ul></li>
+</ul>
+</div>
+<div id="predicting-the-outcome." class="section level3" number="2.9.2">
+<h3><span class="header-section-number">2.9.2</span> Predicting the
+outcome.</h3>
+<p>We can now take the best model we found from the set of 55 predictors
+(the <code>charDollar</code> variable) and just <strong>re-fit the
+(logistic regression) model again</strong>.</p>
+<ul>
+<li>We can actually <strong>make predictions</strong> now from the model
+<strong>on the test data</strong>, using the <code>predict()</code>
+function.
+<ul>
+<li>Recall that we built the model on the training dataset.<br />
+</li>
+<li>Now we’re going to predict the outcome on the test dataset to see
+how well we do.<br />
+</li>
+</ul></li>
+<li>In a <em>logistic regression</em> we don’t get specific 0/1
+classifications of each of the messages, <em>we get a probability</em>
+that a message is going to be spam or not.
+<ul>
+<li>Then we have to take that continuous probability, which ranges
+between 0 and 1, and <strong>determine at what point, at what cutoff, do
+we think that the email is spam</strong>.<br />
+</li>
+<li>We’re just going to draw the cut off <strong>at 0.5</strong>, so if
+the probability is above 50%, we’re just going to call it a spam
+email.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the best model from the group</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>predictionModel <span class="ot">=</span> <span class="fu">glm</span>(numType <span class="sc">~</span> charDollar, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="at">data =</span> trainSpam)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Get predictions on the test set</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>predictionTest <span class="ot">=</span> <span class="fu">predict</span>(predictionModel, testSpam)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>predictedSpam <span class="ot">=</span> <span class="fu">rep</span>(<span class="st">&quot;nonspam&quot;</span>, <span class="fu">dim</span>(testSpam)[<span class="dv">1</span>])</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Classify as `spam&#39; for those with prob &gt; 0.5</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>predictedSpam[predictionModel<span class="sc">$</span>fitted <span class="sc">&gt;</span> <span class="fl">0.5</span>] <span class="ot">=</span> <span class="st">&quot;spam&quot;</span></span></code></pre></div>
+</div>
+<div id="getting-a-measure-of-uncertainty." class="section level3"
+number="2.9.3">
+<h3><span class="header-section-number">2.9.3</span> Getting a measure
+of uncertainty.</h3>
+<p>Once we’ve created our classification, we can take a <strong>look at
+the predicted values</strong> from our model, and then <strong>compare
+them with the actual values</strong> from the test dataset, because we
+know which was spam, and which was not.</p>
+<p>Here’s the classification table that we get from the predicted and
+the the real values.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Classification table</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(predictedSpam, testSpam<span class="sc">$</span>type)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>             </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>predictedSpam nonspam spam</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      nonspam    <span class="dv">1346</span>  <span class="dv">458</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      spam         <span class="dv">61</span>  <span class="dv">449</span></span></code></pre></div>
+<ul>
+<li>Now we can just <strong>calculate the error rate</strong>.<br />
+</li>
+<li>The <strong>mistakes</strong> that we made are <strong>on the off
+diagonal</strong> elements of this table, 61 and 458.<br />
+</li>
+<li>61 were classified as spam that were not actually spam.<br />
+</li>
+<li>And 458 were classified as non spam but actually were spam.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Error rate</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>(<span class="dv">61</span> <span class="sc">+</span> <span class="dv">458</span>) <span class="sc">/</span> (<span class="dv">1346</span> <span class="sc">+</span> <span class="dv">458</span> <span class="sc">+</span> <span class="dv">61</span> <span class="sc">+</span> <span class="dv">449</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.2242869</span></span></code></pre></div>
+<ul>
+<li>So we calculate this error rate as about 22%.</li>
+</ul>
+</div>
+</div>
+<div id="interpreting-results." class="section level2" number="2.10">
+<h2><span class="header-section-number">2.10</span> Interpreting
+results.</h2>
+<p>So far we’ve done the analysis, calculated some results, calculated
+our best model, and looked at the error rate that’s produced by that
+model.</p>
+<p>Now we <strong>need to interpret our findings</strong> and it’s
+important, when we do so, to:</p>
+<ul>
+<li>Use the <strong>appropriate language</strong> (not use language that
+goes beyond the analysis that we actually done). If we’re in this type
+of application where we’re just looking at some data and building a
+predictive model, we want to use words like:
+<ul>
+<li>“prediction”<br />
+</li>
+<li>“it correlates with/associated with”, or “certain variables may be
+associated with the outcome”<br />
+</li>
+<li>“the analysis is descriptive”, “leads to/causes”, “predicts”.<br />
+</li>
+</ul></li>
+<li>Its also good to <strong>give an explanation</strong> for why
+certain models predict better than others, if possible.<br />
+</li>
+<li><strong>Interpret coefficients</strong> that the model may
+have.<br />
+</li>
+<li>In particular, it’s useful to <strong>interpret measures of
+uncertainty</strong>.</li>
+</ul>
+<div id="in-our-example." class="section level3" number="2.10.1">
+<h3><span class="header-section-number">2.10.1</span> In our
+example.</h3>
+<p>In our example, we might think of stating that <strong>the fraction
+of</strong> characters that are <strong>dollar signs</strong> can be
+used to <strong>predict</strong> if an email is spam.</p>
+<p>Maybe we decide that anything with <em>more than 6.6%</em> dollar
+signs is classified as spam.</p>
+<p>More dollar signs always means more spam under our prediction
+model.</p>
+<p>And for our model in the test dataset, the <em>error rate</em> was
+22.4% (test set error rate).</p>
+</div>
+</div>
+<div id="challenge-the-findings." class="section level2" number="2.11">
+<h2><span class="header-section-number">2.11</span> Challenge the
+findings.</h2>
+<p>Once we’ve done our analysis and we’ve developed our interpretation,
+it’s important that we, ourselves, <strong>challenge all the
+results</strong> that you’ve found.</p>
+<ul>
+<li>Because if we don’t do it, someone else is going to do it once they
+see our analysis.<br />
+</li>
+<li>So we might as well get one step ahead of everyone by doing it
+ourselves first.</li>
+</ul>
+<p>It’s good to challenge everything, the whole process by which we’ve
+gone through this problem, all the steps:</p>
+<ul>
+<li>Question.
+<ul>
+<li>Is the question even a valid question to ask?<br />
+</li>
+</ul></li>
+<li>Data source.
+<ul>
+<li>Where did the data come from?<br />
+</li>
+<li>How did we get the data?<br />
+</li>
+</ul></li>
+<li>Processing.
+<ul>
+<li>How did we process the data?<br />
+</li>
+</ul></li>
+<li>Analysis, Conclusions.
+<ul>
+<li>How did we do the analysis and draw any conclusions?<br />
+</li>
+</ul></li>
+<li>Challenge measures of uncertainty.
+<ul>
+<li>Are those the appropiate measures of uncertainty?</li>
+</ul></li>
+<li>Challenge choices of terms to include in models.
+<ul>
+<li>Why is our model the best model?<br />
+</li>
+<li>Why is it an appropriate model for this problem?<br />
+</li>
+<li>How do we choose the things to include in our model?</li>
+</ul></li>
+</ul>
+<p>Also, think of <strong>potential alternative analyses</strong> that
+might be useful.</p>
+<ul>
+<li>It doesn’t mean that we have to do those alternative analyses, in
+the sense that we might stick to our original just because of other
+reasons.<br />
+</li>
+<li>But it may be useful to try alternative analyses just in case they
+may be useful in different ways or may produce better predictions.</li>
+</ul>
+</div>
+<div id="synthesizingwriting-up-results." class="section level2"
+number="2.12">
+<h2><span class="header-section-number">2.12</span>
+Synthesizing/writing-up results.</h2>
+<p>Once we’ve interpreted our results, we’ve done the analysis, we’ve
+interpreted our results, we’ve drawn some conclusions and we’ve
+challenged all our findings, we’re going to need to synthesize the
+results and write them up.</p>
+<p>The goal is to <em>tell a coherent story</em>, tipically by:</p>
+<ul>
+<li><em>Leading with the question</em> we want to address.
+<ul>
+<li>If people understand the question then they can draw up a context in
+their mind, and have a better understanding of the framework in which
+we’re operating.<br />
+</li>
+<li>That will lead to what kinds of data are necessary, are appropriate
+for this question, what kinds of analyses would be appropriate.<br />
+</li>
+</ul></li>
+<li><em>Summarizing the analyses into the story</em>.
+<ul>
+<li>We can summarize the analyses as we’re telling the story.<br />
+</li>
+</ul></li>
+<li><em>Don’t include every analysis</em>, include it:
+<ul>
+<li>If it is needed for the story.<br />
+</li>
+<li>If it is needed to address a challenge.<br />
+</li>
+<li>It’s useful to sometimes keep these analyses in your back pocket
+though, even if you don’t talk about it, because someone may challenge
+what you’ve done and it’s useful to say: <em>“Well, you know, we</em>
+<strong><em>did</em></strong> <em>do that analysis but it was
+problematic because of”</em> whatever the reason may be.<br />
+</li>
+</ul></li>
+<li><em>Order analyses according to the story</em>, rather than
+chronologically.
+<ul>
+<li>It’s usually not that useful to talk about the analyses that we did
+chronologically, or the order in which we did them, because that order
+is often very scattered and doesn’t make sense in retrospect.<br />
+</li>
+</ul></li>
+<li>Include <em>“pretty” figures that contribute to the story</em>.
+<ul>
+<li>Figures so that people can understand what we’re trying to say in
+one picture or two.</li>
+</ul></li>
+</ul>
+<div id="in-our-example.-1" class="section level3" number="2.12.1">
+<h3><span class="header-section-number">2.12.1</span> In our
+example.</h3>
+<ul>
+<li>Lead with the question:
+<ul>
+<li>Can we use quantitative characteristics of the emails to classify
+them as SPAM/HAM?<br />
+</li>
+</ul></li>
+<li>Describe the approach:
+<ul>
+<li>We collected data from UCI -&gt; created training/test sets.<br />
+</li>
+<li>We explored relationships between the various predictors.<br />
+</li>
+<li>We decided to use logistic regression model on training set and
+chose our single variable predictor by using cross validation.<br />
+</li>
+<li>When we applied that model to test set, it was 78% accurate.<br />
+</li>
+</ul></li>
+<li>Interpret results:
+<ul>
+<li>Basicalley, <em>more dollar signs</em> seemed to indicate an email
+was more likely to be spam.<br />
+</li>
+<li>This <em>seems reasonable</em>: we’ve all seen emails with lots of
+dollar signs that are spam trying to sell us somthing, e.g.,
+<strong>“Make money with Viagra $ $ $ $!”</strong><br />
+</li>
+</ul></li>
+<li>Challenge results:
+<ul>
+<li>78% isn’t that good for most prediction algorithms.<br />
+</li>
+<li>We could do better if we included more variables.<br />
+</li>
+<li>Why logistic regression? We could do better if we used a more
+sophisticated model (maybe a non-linear model).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="create-reproducible-code." class="section level2"
+number="2.13">
+<h2><span class="header-section-number">2.13</span> Create reproducible
+code.</h2>
+<p>Finally, the thing that we want to make sure of is that we
+<strong>document our analysis as we go</strong>.</p>
+<p>We can use tools like <strong>R Markdown</strong> and
+<strong>knitr</strong> and <strong>RStudio</strong> to document our
+analyses as we do them (we’ll see more about this).</p>
+<ul>
+<li><p>We can preserve the R code as well as any kind of a written
+summary of our analysis in a <strong>single document using
+knitr</strong>.</p></li>
+<li><p>And so then to make sure that all of what we do is
+<strong>reproducible</strong> by either ourselves or by other
+people.</p></li>
+<li><p>That will make our evidence for our conclusions much more
+powerful.</p></li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="organizing-a-data-analysis." class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Organizing a Data
+Analysis.</h1>
+<p>Here there’re <strong>some useful tips</strong> that can be used to
+help us put things together in logical places and ultimately ensure that
+our data analysis is reproducible.</p>
+<div id="data-analysis-files." class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Data analysis
+files.</h2>
+<p>The key data analysis files that we’ll retain over the course of a
+major project are going to be:</p>
+<ul>
+<li><strong>Data</strong>.
+<ul>
+<li>Raw data.<br />
+</li>
+<li>And processed data.</li>
+</ul></li>
+<li><strong>Figures-Tables</strong>. We’ll generate some figures or
+tables, and they’re going to be:
+<ul>
+<li>Exploratory figures.
+<ul>
+<li>As we saw, they’re not going to be very pollished.<br />
+</li>
+<li>But just good enough to get us a sense of what the data look
+like.<br />
+</li>
+</ul></li>
+<li>Final figures.
+<ul>
+<li>Well annotated and nicely organized, they’re going to be useful for
+us to put in reports.</li>
+</ul></li>
+</ul></li>
+<li><strong>R code</strong>.
+<ul>
+<li>Raw / unused scripts.
+<ul>
+<li>These are kind of things that we code up to see what’s going on,
+perhaps in the process of making exploratory figures.<br />
+</li>
+<li>There’s going to be R code that we eventually don’t use in the
+end.<br />
+</li>
+</ul></li>
+<li>Final scripts.
+<ul>
+<li>Those that we’ll use in final analysis.<br />
+</li>
+<li>Hopefully, easier to read, commented and formatted better.<br />
+</li>
+</ul></li>
+<li>R Markdown files.
+<ul>
+<li>To annotate a data analysis using a literate statistical programming
+style.</li>
+</ul></li>
+</ul></li>
+<li><strong>Text</strong>. We’ll have text that is going to integrate
+everything we’ve done in our data analysis, with the data, the figures,
+the tables, and the R code.
+<ul>
+<li>README files, that explain what’s going on in our project.<br />
+</li>
+<li>Text of analysis / report.</li>
+</ul></li>
+</ul>
+</div>
+<div id="raw-data." class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Raw data.</h2>
+<p>We’ll want to <strong>store the raw data in our analysis
+folder</strong>.</p>
+<ul>
+<li>If the data were accessed from the web we want to <em>include things
+like the URL</em> where we got the data.<br />
+</li>
+<li>Describe <em>what the dataset is</em>, <em>what it’s for</em>, the
+<em>date that we accessed the URL</em> on the website, etc.<br />
+</li>
+<li>We may want this in a README file so when we look at it later, or if
+someone else looks at it, they know where this data came from and what
+it’s for.</li>
+</ul>
+<p>If we’re using <code>git</code> or an equivalent <strong>version
+control system</strong>, we’ll want to <em>add our raw data</em>, if
+possible (if it’s <em>too big</em> then it’s not really feasible).</p>
+<ul>
+<li>When we add our raw data to the repository, in the log message, we
+can talk about what the website was where we got it, what the URL was,
+etcetera.<br />
+</li>
+<li>That’s a convenient place to put this kind of information.</li>
+</ul>
+</div>
+<div id="processed-data" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Processed data</h2>
+<p>Processed data can come in a <strong>variety of forms</strong>.</p>
+<ul>
+<li>One common format is a table.</li>
+</ul>
+<p>Our processed data <strong>should be named</strong> <em>so that</em>
+we can easily <em>see what script generated what data</em>.</p>
+<p>The <strong>processing script</strong> is very important.</p>
+<ul>
+<li>Because it shows how the raw data were mapped to the processed
+data.<br />
+</li>
+<li>In any README file or any sort of documentation, it’s important to
+document what code files were used to transform the raw data into the
+processed data.</li>
+</ul>
+<p>Finally, as we know from previous courses, the processed data should
+be <a href="http://vita.had.co.nz/papers/tidy-data.pdf">tidy</a> so that
+we can use them in subsequent modeling or analysis types of
+functions.</p>
+</div>
+<div id="exploratory-figures." class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Exploratory
+figures.</h2>
+<p>Exploratory figures are usually <strong>very simple
+figures</strong>.</p>
+<p>Typically, our data will be high dimensional because we’ll be
+collecting lots of variables on lots of subjects or observations.</p>
+<ul>
+<li>We’re going to be able to look at pieces of the data at a
+time.<br />
+</li>
+<li>Exploratory figures serve the <strong>role of giving us a quick look
+at various aspects of our data</strong>.</li>
+</ul>
+<p>They’re not all necessarily going to be part of your final report or
+final paper.</p>
+<ul>
+<li>We’ll tend to make a bunch of these along the way, they don’t need
+to be “pretty”.<br />
+</li>
+<li>But they need to be usable enough so that we understand what’s going
+on in the figure and how to reproduce it.</li>
+</ul>
+</div>
+<div id="final-figures." class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Final figures.</h2>
+<p>The final figures usually make a <strong>very small subset of the set
+of exploratory figures</strong> that we might generate.</p>
+<ul>
+<li>For example, the typical paper in a journal might have four or maybe
+five figures in it because these figures take up a lot of space.<br />
+</li>
+<li>We typically don’t want to inundate people with a lot of figures
+because then the ultimate message of what we’re trying to communicate
+tends to get lost in a pile of figures.</li>
+</ul>
+<p>It’s important to have these final figures <strong>labeled well and
+annotated</strong> so people understand what’s going on with the
+data.</p>
+<ul>
+<li>Axes/colors set to make the figure clear.<br />
+</li>
+<li>Possibly multiple panels.</li>
+</ul>
+</div>
+<div id="raw-scripts." class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Raw scripts.</h2>
+<p>There will be a <em>lot of dead ends</em> that we’ll go down, and
+there will be many R scripts that don’t play into the final
+analysis.</p>
+<p>These R scripts are going to be:</p>
+<ul>
+<li>Less commented (but comments help!) with just the code to put some
+stuff together.<br />
+</li>
+<li>May be multiple versions<br />
+</li>
+<li>May include analyses that are later discarded</li>
+</ul>
+</div>
+<div id="final-scripts" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Final scripts</h2>
+<p>These ones will of course be:</p>
+<ul>
+<li>Much more clearly commented.
+<ul>
+<li>Small comments liberally - <em>what, when, why, how</em>.<br />
+</li>
+<li>Bigger commented blocks for whole sections.</li>
+</ul></li>
+<li>Include processing details.
+<ul>
+<li>Any processing details of any code that is used to process the raw
+data would be important to include.</li>
+</ul></li>
+<li>Basically these final scripts are for any analysis that would appear
+in a final write up of paper.</li>
+</ul>
+</div>
+<div id="r-markdown-files." class="section level2" number="3.8">
+<h2><span class="header-section-number">3.8</span> R markdown
+files.</h2>
+<p><a href="http://www.rstudio.com/ide/docs/authoring/using_markdown">R
+markdown</a> files can be used to <strong>generate reproducible
+reports</strong>.</p>
+<p>Text and R code are integrated.</p>
+<p>Very easy to create in <a
+href="http://www.rstudio.com/">Rstudio</a>.</p>
+</div>
+<div id="readme-files." class="section level2" number="3.9">
+<h2><span class="header-section-number">3.9</span> Readme files.</h2>
+<p>The are <em>not necessary if we use R markdown</em>.</p>
+<p>They should <strong>explain what’s going on</strong> so you or
+another person can <strong>get a sense of the organization of the
+project</strong>. They could contain step by step instructions for:</p>
+<ul>
+<li>how the analysis is conducted;<br />
+</li>
+<li>what code files are called first;<br />
+</li>
+<li>what are used to process the data;<br />
+</li>
+<li>what are used to fit models;</li>
+<li>and what are used to generate figures and things like that.</li>
+</ul>
+<p>Here is an example <a
+href="https://github.com/jtleek/swfdr/blob/master/README.md">https://github.com/jtleek/swfdr/blob/master/README.md</a></p>
+</div>
+<div id="text-of-the-final-report." class="section level2"
+number="3.10">
+<h2><span class="header-section-number">3.10</span> Text of the final
+report.</h2>
+<ul>
+<li>It should include:
+<ul>
+<li>a <em>title</em>;<br />
+</li>
+<li>an <em>introduction</em> (motivation);<br />
+</li>
+<li><em>methods</em> (statistics we used);<br />
+</li>
+<li><em>results</em> (including measures of uncertainty);<br />
+</li>
+<li>and <em>conclusions</em> (including potential problems).</li>
+</ul></li>
+<li>It should <em>tell a story</em>.
+<ul>
+<li>The important thing is that we need to tell a coherent story.<br />
+</li>
+<li>In other words, take all the analysis that we did and winnow it down
+into a final product that has a coherent story to it.</li>
+</ul></li>
+<li>It <em>should not include every analysis we performed</em>.
+<ul>
+<li>That does not mean we need to delete everything that we’ve ever
+did.<br />
+</li>
+<li>But the summary report should not include everything.</li>
+</ul></li>
+<li><em>References</em> should be included for statistical methods.
+<ul>
+<li>That way people know what we used, what software we used and what
+implementation was used.<br />
+</li>
+<li>This is very important for reproducibility.</li>
+</ul></li>
+</ul>
+</div>
+<div id="further-resources" class="section level2" number="3.11">
+<h2><span class="header-section-number">3.11</span> Further
+resources</h2>
+<ul>
+<li><p>Information about a non-reproducible study that led to cancer
+patients being mistreated: <a
+href="http://simplystatistics.org/2012/02/27/the-duke-saga-starter-set/">The
+Duke Saga Starter Set</a>.</p></li>
+<li><p><a
+href="http://biostatistics.oxfordjournals.org/content/10/3/405.full">Reproducible
+research and Biostatistics</a>.</p></li>
+<li><p><a
+href="http://www.r-statistics.com/2010/09/managing-a-statistical-analysis-project-guidelines-and-best-practices/">Managing
+a statistical analysis project guidelines and best
+practices</a>.</p></li>
+</ul>
+</div>
+<div id="projecttemplate-r-package." class="section level2"
+number="3.12">
+<h2><span class="header-section-number">3.12</span>
+<code>ProjectTemplate</code> R package.</h2>
+<p><a href="http://projecttemplate.net/">ProjectTemplate</a> is a
+software an R package that can be used to <strong>automate a lot of the
+mundane aspects of a data analysis project</strong>.</p>
+<ul>
+<li>Basically, it gives a pre-organized set of files for data
+analysis.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Session Info.</h1>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NUMERIC<span class="ot">=</span>C                 </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>           LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       </span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>      </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          LC_NAME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>          </span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_TELEPHONE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>     </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_IDENTIFICATION<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] kernlab_0<span class="fl">.9</span><span class="dv">-29</span>     R.utils_2.<span class="fl">10.1</span>     R.oo_1.<span class="fl">24.0</span>        R.methodsS3_1.<span class="fl">8.1</span> </span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] impute_1.<span class="fl">60.0</span>      RColorBrewer_1<span class="fl">.1</span><span class="dv">-2</span> maps_3.<span class="fl">3.0</span>         stringr_1.<span class="fl">4.0</span>     </span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] lubridate_1.<span class="fl">9.2</span>    quantmod_0.<span class="fl">4.20</span>    TTR_0.<span class="fl">24.2</span>         xts_0.<span class="fl">12.1</span>        </span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] zoo_1<span class="fl">.8</span><span class="dv">-9</span>          readr_2.<span class="fl">0.1</span>        tidyr_1.<span class="fl">2.0</span>        dplyr_1.<span class="fl">0.8</span>       </span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] reshape2_1.<span class="fl">4.4</span>     Hmisc_4<span class="fl">.4</span><span class="dv">-0</span>        ggplot2_3.<span class="fl">3.5</span>      Formula_1<span class="fl">.2</span><span class="dv">-3</span>     </span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] survival_3<span class="fl">.4</span><span class="dv">-0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>    jpeg_0<span class="fl">.1-8.1</span>       gitignore_0.<span class="fl">1.3</span>   </span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] rhdf5_2.<span class="fl">30.1</span>       httr_1.<span class="fl">4.2</span>         httpuv_1.<span class="fl">6.3</span>       sqldf_0<span class="fl">.4</span><span class="dv">-11</span>      </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] RSQLite_2.<span class="fl">2.0</span>      gsubfn_0<span class="fl">.7</span>         proto_1.<span class="fl">0.0</span>        DBI_1.<span class="fl">1.1</span>         </span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] data.table_1.<span class="fl">14.0</span>  jsonlite_1.<span class="fl">7.2</span>     XML_3<span class="fl">.99-0.3</span>       xlsx_0.<span class="fl">6.3</span>        </span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] plyr_1.<span class="fl">8.6</span>        </span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] colorspace_2<span class="fl">.0</span><span class="dv">-3</span>    ellipsis_0.<span class="fl">3.2</span>      htmlTable_2.<span class="fl">0.1</span>    </span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] base64enc_0<span class="fl">.1</span><span class="dv">-3</span>     rstudioapi_0<span class="fl">.13</span>     farver_2.<span class="fl">1.0</span>       </span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] bit64_4.<span class="fl">0.5</span>         fansi_1.<span class="fl">0.2</span>         splines_3.<span class="fl">6.3</span>      </span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] knitr_1<span class="fl">.41</span>          rJava_0<span class="fl">.9</span><span class="dv">-13</span>        cluster_2.<span class="fl">1.4</span>      </span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>           clipr_0.<span class="fl">7.1</span>         compiler_3.<span class="fl">6.3</span>     </span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] backports_1.<span class="fl">4.1</span>     assertthat_0.<span class="fl">2.1</span>    Matrix_1<span class="fl">.5</span><span class="dv">-1</span>       </span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] fastmap_1.<span class="fl">1.0</span>       cli_3.<span class="fl">6.0</span>           later_1.<span class="fl">3.0</span>        </span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] formatR_1<span class="fl">.14</span>        acepack_1.<span class="fl">4.1</span>       htmltools_0.<span class="fl">5.2</span>    </span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] tools_3.<span class="fl">6.3</span>         gtable_0.<span class="fl">3.0</span>        glue_1.<span class="fl">6.2</span>         </span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] Rcpp_1.<span class="fl">0.7</span>          jquerylib_0.<span class="fl">1.4</span>     vctrs_0.<span class="fl">5.2</span>        </span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] nlme_3<span class="fl">.1</span><span class="dv">-162</span>        xfun_0<span class="fl">.36</span>           xlsxjars_0.<span class="fl">6.1</span>     </span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] timechange_0.<span class="fl">2.0</span>    lifecycle_1.<span class="fl">0.3</span>     scales_1.<span class="fl">1.1</span>       </span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] vroom_1.<span class="fl">5.5</span>         hms_1.<span class="fl">1.0</span>           promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>   </span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] parallel_3.<span class="fl">6.3</span>      yaml_2.<span class="fl">2.1</span>          curl_4.<span class="fl">3.2</span>         </span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] memoise_1.<span class="fl">1.0</span>       gridExtra_2<span class="fl">.3</span>       sass_0.<span class="fl">4.0</span>         </span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] rpart_4.<span class="fl">1.19</span>        latticeExtra_0<span class="fl">.6</span><span class="dv">-29</span> stringi_1.<span class="fl">7.6</span>      </span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] highr_0<span class="fl">.9</span>           checkmate_2.<span class="fl">0.0</span>     chron_2<span class="fl">.3</span><span class="dv">-55</span>       </span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">52</span>] rlang_1.<span class="fl">0.6</span>         pkgconfig_2.<span class="fl">0.3</span>     evaluate_0<span class="fl">.19</span>      </span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">55</span>] purrr_0.<span class="fl">3.4</span>         Rhdf5lib_1.<span class="fl">8.0</span>      htmlwidgets_1.<span class="fl">5.4</span>  </span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">58</span>] labeling_0.<span class="fl">4.2</span>      bit_4.<span class="fl">0.4</span>           tidyselect_1.<span class="fl">2.0</span>   </span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] magrittr_2.<span class="fl">0.2</span>      R6_2.<span class="fl">5.1</span>            generics_0.<span class="fl">1.2</span>     </span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>[<span class="dv">64</span>] pillar_1.<span class="fl">7.0</span>        foreign_0<span class="fl">.8</span><span class="dv">-76</span>      withr_2.<span class="fl">5.0</span>        </span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">67</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>         nnet_7<span class="fl">.3</span><span class="dv">-18</span>         tibble_3.<span class="fl">1.8</span>       </span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">70</span>] crayon_1.<span class="fl">5.0</span>        KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span>  utf8_1.<span class="fl">2.2</span>         </span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] tzdb_0.<span class="fl">3.0</span>          rmarkdown_2<span class="fl">.11</span>      grid_3.<span class="fl">6.3</span>         </span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">76</span>] blob_1.<span class="fl">2.2</span>          digest_0.<span class="fl">6.29</span>       openssl_2.<span class="fl">0.5</span>      </span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">79</span>] munsell_0.<span class="fl">5.0</span>       viridisLite_0.<span class="fl">4.0</span>   bslib_0.<span class="fl">3.0</span>        </span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>[<span class="dv">82</span>] tcltk_3.<span class="fl">6.3</span>         askpass_1<span class="fl">.1</span>        </span></code></pre></div>
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

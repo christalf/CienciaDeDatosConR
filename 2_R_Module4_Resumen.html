@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R Programming - Module 4</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Aprendiendo ciencia de datos con R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-hand-spock"></span>
+     
+    Resumen del contenido
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-bars"></span>
+     
+    Contenido
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Science Toolbox</li>
+    <li class="divider"></li>
+    <li>
+      <a href="1_DataScienceToolBox_Resumen.html">Módulo único</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">R</li>
+    <li class="divider"></li>
+    <li>
+      <a href="2_R_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt_PrevPract.html">_práctica</a>
+    </li>
+    <li>
+      <a href="2_R_Module2_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="2_R_Module3_ProgAssmt.html">_ejercicio</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_Resumen.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="2_R_Module4_ProgAssmt.html">Ejercicio final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Getting &amp; Cleaning Data</li>
+    <li class="divider"></li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module1_Resumen.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Resumen.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module2_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Resumen.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module3_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_Module4_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="3_GettingAndCleaningData_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Exploratory Data Analysis</li>
+    <li class="divider"></li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module1_Ejercicios.html">_ejercicios</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="4_ExploratoryDataAnalysis_FinalProj.html">Proyecto final</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Reproducible Research</li>
+    <li class="divider"></li>
+    <li>
+      <a href="5_ReproducibleResearch_Module1.html">Módulo 1</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module2.html">Módulo 2</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module3.html">Módulo 3</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_Module4.html">Módulo 4</a>
+    </li>
+    <li>
+      <a href="5_ReproducibleResearch_FinalProj.html">Proyectos finales</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">
+    <span class="fa fa-gears"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">R Programming - Module 4</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#the-str-function-the-alternative-to-summary."
+id="toc-the-str-function-the-alternative-to-summary."><span
+class="toc-section-number">1</span> The <code>str()</code> function,
+<em>the</em> alternative to <code>summary()</code>.</a></li>
+<li><a href="#simulation." id="toc-simulation."><span
+class="toc-section-number">2</span> Simulation.</a>
+<ul>
+<li><a href="#importance-of-randomness."
+id="toc-importance-of-randomness."><span
+class="toc-section-number">2.1</span> Importance of randomness.</a></li>
+<li><a
+href="#built-in-functions-for-simulating-randomness-r-d-p-and-q-functions."
+id="toc-built-in-functions-for-simulating-randomness-r-d-p-and-q-functions."><span
+class="toc-section-number">2.2</span> Built-in functions for simulating
+randomness: <code>r</code>, <code>d</code>, <code>p</code> and
+<code>q</code> functions.</a>
+<ul>
+<li><a href="#table-of-probability-distributions-handled-by-r."
+id="toc-table-of-probability-distributions-handled-by-r."><span
+class="toc-section-number">2.2.1</span> Table of probability
+distributions handled by R.</a></li>
+<li><a
+href="#simulating-from-the-normal-distribution-rnorm-dnorm-pnorm-qnorm."
+id="toc-simulating-from-the-normal-distribution-rnorm-dnorm-pnorm-qnorm."><span
+class="toc-section-number">2.2.2</span> Simulating from the Normal
+distribution: <code>rnorm</code>, <code>dnorm</code>,
+<code>pnorm</code>, <code>qnorm</code>.</a></li>
+<li><a href="#simulating-from-the-poisson-distribution."
+id="toc-simulating-from-the-poisson-distribution."><span
+class="toc-section-number">2.2.3</span> Simulating from the Poisson
+distribution.</a></li>
+<li><a
+href="#simulating-several-groups-of-random-numbers-with-replicate."
+id="toc-simulating-several-groups-of-random-numbers-with-replicate."><span
+class="toc-section-number">2.2.4</span> Simulating several
+<em>groups</em> of random numbers with
+<code>replicate()</code>.</a></li>
+</ul></li>
+<li><a href="#setting-the-random-number-seed-set.seed."
+id="toc-setting-the-random-number-seed-set.seed."><span
+class="toc-section-number">2.3</span> Setting the random number seed:
+<code>set.seed()</code>.</a></li>
+<li><a href="#simulating-from-a-linear-model."
+id="toc-simulating-from-a-linear-model."><span
+class="toc-section-number">2.4</span> Simulating from a Linear
+Model.</a>
+<ul>
+<li><a
+href="#simulating-a-normal-predictor-variable-x-for-our-linear-model."
+id="toc-simulating-a-normal-predictor-variable-x-for-our-linear-model."><span
+class="toc-section-number">2.4.1</span> Simulating a Normal predictor
+variable <code>X</code> for our linear model.</a></li>
+<li><a
+href="#simulating-a-binomial-predictor-variable-x-for-our-linear-model."
+id="toc-simulating-a-binomial-predictor-variable-x-for-our-linear-model."><span
+class="toc-section-number">2.4.2</span> Simulating a Binomial predictor
+variable <code>X</code> for our linear model.</a></li>
+</ul></li>
+<li><a
+href="#simulating-from-a-generalized-linear-model-where-errors-are-not-longer-from-a-normal-distribution."
+id="toc-simulating-from-a-generalized-linear-model-where-errors-are-not-longer-from-a-normal-distribution."><span
+class="toc-section-number">2.5</span> Simulating from a generalized
+linear model (where errors are not longer from a Normal
+distribution).</a></li>
+<li><a href="#random-sampling-sample-function."
+id="toc-random-sampling-sample-function."><span
+class="toc-section-number">2.6</span> Random Sampling:
+<code>sample()</code> function.</a>
+<ul>
+<li><a href="#random-permutations-re-arragenments."
+id="toc-random-permutations-re-arragenments."><span
+class="toc-section-number">2.6.1</span> Random permutations
+(re-arragenments).</a></li>
+<li><a href="#sample-with-replacement."
+id="toc-sample-with-replacement."><span
+class="toc-section-number">2.6.2</span> Sample with
+replacement.</a></li>
+<li><a href="#sample-with-replacement-and-probabilities."
+id="toc-sample-with-replacement-and-probabilities."><span
+class="toc-section-number">2.6.3</span> Sample with replacement and
+probabilities.</a></li>
+<li><a href="#sampling-more-complex-objects."
+id="toc-sampling-more-complex-objects."><span
+class="toc-section-number">2.6.4</span> Sampling more complex
+objects.</a>
+<ul>
+<li><a href="#sampling-the-rows-from-a-data-frame."
+id="toc-sampling-the-rows-from-a-data-frame."><span
+class="toc-section-number">2.6.4.1</span> Sampling the rows from a data
+frame.</a></li>
+<li><a href="#sampling-elements-of-a-list."
+id="toc-sampling-elements-of-a-list."><span
+class="toc-section-number">2.6.4.2</span> Sampling elements of a
+list.</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="#profiling-r-code." id="toc-profiling-r-code."><span
+class="toc-section-number">3</span> Profiling R Code.</a>
+<ul>
+<li><a href="#basic-principles-of-optimizing"
+id="toc-basic-principles-of-optimizing"><span
+class="toc-section-number">3.1</span> Basic principles of
+optimizing:</a></li>
+<li><a href="#using-system.time." id="toc-using-system.time."><span
+class="toc-section-number">3.2</span> Using
+<code>system.time()</code>.</a></li>
+<li><a href="#timing-longer-expressions."
+id="toc-timing-longer-expressions."><span
+class="toc-section-number">3.3</span> Timing longer
+expressions.</a></li>
+<li><a href="#the-r-profiler-rprof-and-summaryrprof."
+id="toc-the-r-profiler-rprof-and-summaryrprof."><span
+class="toc-section-number">3.4</span> The R Profiler:
+<code>Rprof()</code> and <code>summaryRprof()</code>.</a></li>
+</ul></li>
+<li><a href="#base-graphics-in-r." id="toc-base-graphics-in-r."><span
+class="toc-section-number">4</span> Base graphics in R.</a>
+<ul>
+<li><a href="#plot-function." id="toc-plot-function."><span
+class="toc-section-number">4.1</span> <code>plot()</code>
+function.</a></li>
+<li><a href="#boxplot-function-the-formula-interface."
+id="toc-boxplot-function-the-formula-interface."><span
+class="toc-section-number">4.2</span> <code>boxplot()</code> function,
+the <code>formula</code> interface.</a></li>
+<li><a href="#hist-function." id="toc-hist-function."><span
+class="toc-section-number">4.3</span> <code>hist()</code>
+function.</a></li>
+</ul></li>
+<li><a href="#session-info." id="toc-session-info."><span
+class="toc-section-number">5</span> Session Info.</a></li>
+</ul>
+</div>
+
+<hr />
+<div id="the-str-function-the-alternative-to-summary."
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The <code>str()</code>
+function, <em>the</em> alternative to <code>summary()</code>.</h1>
+<p>Some think that <code>str()</code> is the <strong>most important
+function in all R</strong>.</p>
+<p>The idea behind <code>str</code> is that it <strong>compactly display
+the internal structure</strong> of an R object.</p>
+<ul>
+<li>It makes a very simple diagnostic task and it’s very
+versatile.<br />
+</li>
+<li>It’s particularly well suited for compactly displaying <strong>large
+lists</strong> which may contain <strong>nested lists</strong>.<br />
+</li>
+<li>It’s goal is to <strong>produce roughly one line</strong> of output
+<strong>per basic object</strong>.
+<ul>
+<li>For example if we give to it a simple object like a
+<strong>vector</strong> (numeric, factor, etc) or a
+<strong>matrix</strong>, it’ll give us one line of output back,
+specifying:
+<ul>
+<li>What kind of R object is it (the class).<br />
+</li>
+<li>The dimensions of the object, the length of each dimension.<br />
+</li>
+<li>A sample of the data stored in the object.<br />
+</li>
+</ul></li>
+<li>If we give to it a <strong>function</strong> (which is also an
+object in R), it will retun again one line back with the arguments of
+the function.<br />
+</li>
+<li>If we give to it a <strong>data frame</strong>, it will return as
+many output lines as there are variables (columns) in the data
+frame.<br />
+</li>
+<li>And, as we said, <code>str</code> is the best thing that we could
+ever find to inspect a <strong>list</strong>.</li>
+</ul></li>
+</ul>
+<p>If we want to look at an object, and know <em>what is it</em>, and
+<em>what’s in it</em>, we can use <code>str</code> as an
+<strong>alternative</strong> to <code>summary</code>.</p>
+<p>Let’s apply <code>str</code> <strong>to itself</strong>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(str)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (object, ...)  </span></code></pre></div>
+<ul>
+<li>We can see that it’s a function that takes an object, <strong>any R
+object</strong>, so we can apply <code>str</code> to other
+functions.</li>
+</ul>
+<p>Some examples.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspecting a function.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(lm)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> a<span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> b<span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># A numeric vector (100 random normal variables, mean 2, sd 4)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>] <span class="sc">-</span><span class="fl">1.12</span> <span class="fl">8.97</span> <span class="fl">1.69</span> <span class="sc">-</span><span class="fl">1.9</span> <span class="fl">2.28</span> ...</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a> <span class="sc">-</span><span class="fl">8.384</span>  <span class="sc">-</span><span class="fl">1.877</span>   <span class="fl">1.851</span>   <span class="fl">1.764</span>   <span class="fl">5.275</span>  <span class="fl">10.085</span> </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># A factor vector.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">gl</span>(<span class="dv">40</span>, <span class="dv">5</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(f)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a> Factor w<span class="sc">/</span> <span class="dv">40</span> levels <span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;4&quot;</span>,..<span class="sc">:</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span> ...</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(f)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span>  <span class="dv">2</span>  <span class="dv">3</span>  <span class="dv">4</span>  <span class="dv">5</span>  <span class="dv">6</span>  <span class="dv">7</span>  <span class="dv">8</span>  <span class="dv">9</span> <span class="dv">10</span> <span class="dv">11</span> <span class="dv">12</span> <span class="dv">13</span> <span class="dv">14</span> <span class="dv">15</span> <span class="dv">16</span> <span class="dv">17</span> <span class="dv">18</span> <span class="dv">19</span> <span class="dv">20</span> <span class="dv">21</span> <span class="dv">22</span> <span class="dv">23</span> <span class="dv">24</span> <span class="dv">25</span> <span class="dv">26</span> </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span> </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span> <span class="dv">28</span> <span class="dv">29</span> <span class="dv">30</span> <span class="dv">31</span> <span class="dv">32</span> <span class="dv">33</span> <span class="dv">34</span> <span class="dv">35</span> <span class="dv">36</span> <span class="dv">37</span> <span class="dv">38</span> <span class="dv">39</span> <span class="dv">40</span> </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span>  <span class="dv">5</span> </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># A data frame.</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(airquality)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>   <span class="dv">153</span> obs. of  <span class="dv">6</span> variables<span class="sc">:</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a> <span class="er">$</span> Ozone  <span class="sc">:</span> int  <span class="dv">41</span> <span class="dv">36</span> <span class="dv">12</span> <span class="dv">18</span> <span class="cn">NA</span> <span class="dv">28</span> <span class="dv">23</span> <span class="dv">19</span> <span class="dv">8</span> <span class="cn">NA</span> ...</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Solar.R<span class="sc">:</span> int  <span class="dv">190</span> <span class="dv">118</span> <span class="dv">149</span> <span class="dv">313</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="dv">299</span> <span class="dv">99</span> <span class="dv">19</span> <span class="dv">194</span> ...</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Wind   <span class="sc">:</span> num  <span class="fl">7.4</span> <span class="dv">8</span> <span class="fl">12.6</span> <span class="fl">11.5</span> <span class="fl">14.3</span> <span class="fl">14.9</span> <span class="fl">8.6</span> <span class="fl">13.8</span> <span class="fl">20.1</span> <span class="fl">8.6</span> ...</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Temp   <span class="sc">:</span> int  <span class="dv">67</span> <span class="dv">72</span> <span class="dv">74</span> <span class="dv">62</span> <span class="dv">56</span> <span class="dv">66</span> <span class="dv">65</span> <span class="dv">59</span> <span class="dv">61</span> <span class="dv">69</span> ...</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Month  <span class="sc">:</span> int  <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> ...</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> Day    <span class="sc">:</span> int  <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"># A matrix.</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(x, <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(m)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="sc">-</span><span class="fl">1.12</span> <span class="fl">8.97</span> <span class="fl">1.69</span> <span class="sc">-</span><span class="fl">1.9</span> <span class="fl">2.28</span> ...</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># A list (of data frames).</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">split</span>(airquality, airquality<span class="sc">$</span>Month)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(lst)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">5</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="dv">5</span><span class="sc">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">31</span> obs. of  <span class="dv">6</span> variables<span class="sc">:</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Ozone  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">41</span> <span class="dv">36</span> <span class="dv">12</span> <span class="dv">18</span> <span class="cn">NA</span> <span class="dv">28</span> <span class="dv">23</span> <span class="dv">19</span> <span class="dv">8</span> <span class="cn">NA</span> ...</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Solar.R<span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">190</span> <span class="dv">118</span> <span class="dv">149</span> <span class="dv">313</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="dv">299</span> <span class="dv">99</span> <span class="dv">19</span> <span class="dv">194</span> ...</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Wind   <span class="sc">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="fl">7.4</span> <span class="dv">8</span> <span class="fl">12.6</span> <span class="fl">11.5</span> <span class="fl">14.3</span> <span class="fl">14.9</span> <span class="fl">8.6</span> <span class="fl">13.8</span> <span class="fl">20.1</span> <span class="fl">8.6</span> ...</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Temp   <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">67</span> <span class="dv">72</span> <span class="dv">74</span> <span class="dv">62</span> <span class="dv">56</span> <span class="dv">66</span> <span class="dv">65</span> <span class="dv">59</span> <span class="dv">61</span> <span class="dv">69</span> ...</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Month  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> <span class="dv">5</span> ...</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day    <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="dv">6</span><span class="sc">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">30</span> obs. of  <span class="dv">6</span> variables<span class="sc">:</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Ozone  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="cn">NA</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="dv">29</span> <span class="cn">NA</span> <span class="dv">71</span> <span class="dv">39</span> ...</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Solar.R<span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">286</span> <span class="dv">287</span> <span class="dv">242</span> <span class="dv">186</span> <span class="dv">220</span> <span class="dv">264</span> <span class="dv">127</span> <span class="dv">273</span> <span class="dv">291</span> <span class="dv">323</span> ...</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Wind   <span class="sc">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="fl">8.6</span> <span class="fl">9.7</span> <span class="fl">16.1</span> <span class="fl">9.2</span> <span class="fl">8.6</span> <span class="fl">14.3</span> <span class="fl">9.7</span> <span class="fl">6.9</span> <span class="fl">13.8</span> <span class="fl">11.5</span> ...</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Temp   <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">78</span> <span class="dv">74</span> <span class="dv">67</span> <span class="dv">84</span> <span class="dv">85</span> <span class="dv">79</span> <span class="dv">82</span> <span class="dv">87</span> <span class="dv">90</span> <span class="dv">87</span> ...</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Month  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> <span class="dv">6</span> ...</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day    <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="dv">7</span><span class="sc">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">31</span> obs. of  <span class="dv">6</span> variables<span class="sc">:</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Ozone  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">135</span> <span class="dv">49</span> <span class="dv">32</span> <span class="cn">NA</span> <span class="dv">64</span> <span class="dv">40</span> <span class="dv">77</span> <span class="dv">97</span> <span class="dv">97</span> <span class="dv">85</span> ...</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Solar.R<span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">269</span> <span class="dv">248</span> <span class="dv">236</span> <span class="dv">101</span> <span class="dv">175</span> <span class="dv">314</span> <span class="dv">276</span> <span class="dv">267</span> <span class="dv">272</span> <span class="dv">175</span> ...</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Wind   <span class="sc">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="fl">4.1</span> <span class="fl">9.2</span> <span class="fl">9.2</span> <span class="fl">10.9</span> <span class="fl">4.6</span> <span class="fl">10.9</span> <span class="fl">5.1</span> <span class="fl">6.3</span> <span class="fl">5.7</span> <span class="fl">7.4</span> ...</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Temp   <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">84</span> <span class="dv">85</span> <span class="dv">81</span> <span class="dv">84</span> <span class="dv">83</span> <span class="dv">83</span> <span class="dv">88</span> <span class="dv">92</span> <span class="dv">92</span> <span class="dv">89</span> ...</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Month  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> <span class="dv">7</span> ...</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day    <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="dv">8</span><span class="sc">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">31</span> obs. of  <span class="dv">6</span> variables<span class="sc">:</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Ozone  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">39</span> <span class="dv">9</span> <span class="dv">16</span> <span class="dv">78</span> <span class="dv">35</span> <span class="dv">66</span> <span class="dv">122</span> <span class="dv">89</span> <span class="dv">110</span> <span class="cn">NA</span> ...</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Solar.R<span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">83</span> <span class="dv">24</span> <span class="dv">77</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="cn">NA</span> <span class="dv">255</span> <span class="dv">229</span> <span class="dv">207</span> <span class="dv">222</span> ...</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Wind   <span class="sc">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="fl">6.9</span> <span class="fl">13.8</span> <span class="fl">7.4</span> <span class="fl">6.9</span> <span class="fl">7.4</span> <span class="fl">4.6</span> <span class="dv">4</span> <span class="fl">10.3</span> <span class="dv">8</span> <span class="fl">8.6</span> ...</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Temp   <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">81</span> <span class="dv">81</span> <span class="dv">82</span> <span class="dv">86</span> <span class="dv">85</span> <span class="dv">87</span> <span class="dv">89</span> <span class="dv">90</span> <span class="dv">90</span> <span class="dv">92</span> ...</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Month  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> ...</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day    <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="dv">9</span><span class="sc">:</span><span class="st">&#39;data.frame&#39;</span><span class="sc">:</span>  <span class="dv">30</span> obs. of  <span class="dv">6</span> variables<span class="sc">:</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Ozone  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">96</span> <span class="dv">78</span> <span class="dv">73</span> <span class="dv">91</span> <span class="dv">47</span> <span class="dv">32</span> <span class="dv">20</span> <span class="dv">23</span> <span class="dv">21</span> <span class="dv">24</span> ...</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Solar.R<span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">167</span> <span class="dv">197</span> <span class="dv">183</span> <span class="dv">189</span> <span class="dv">95</span> <span class="dv">92</span> <span class="dv">252</span> <span class="dv">220</span> <span class="dv">230</span> <span class="dv">259</span> ...</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Wind   <span class="sc">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="fl">6.9</span> <span class="fl">5.1</span> <span class="fl">2.8</span> <span class="fl">4.6</span> <span class="fl">7.4</span> <span class="fl">15.5</span> <span class="fl">10.9</span> <span class="fl">10.3</span> <span class="fl">10.9</span> <span class="fl">9.7</span> ...</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Temp   <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">91</span> <span class="dv">92</span> <span class="dv">93</span> <span class="dv">93</span> <span class="dv">87</span> <span class="dv">84</span> <span class="dv">80</span> <span class="dv">78</span> <span class="dv">75</span> <span class="dv">73</span> ...</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Month  <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> <span class="dv">9</span> ...</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  ..<span class="sc">$</span> Day    <span class="sc">:</span> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span></code></pre></div>
+<hr />
+</div>
+<div id="simulation." class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Simulation.</h1>
+<div id="importance-of-randomness." class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Importance of
+randomness.</h2>
+<p><strong>Randomness</strong> is a basic assumption of the great
+majority of statistical studies.</p>
+<ul>
+<li><p>For example, sometimes we’ll need to introduce randomness to
+implement statistical procedures like <em>Markov chain Monte Carlo</em>,
+the <em>bootstrap</em>, <em>random forest</em>, <em>bagging</em>,
+etc.</p></li>
+<li><p>Sometimes, we’ll want to <em>simulate a system</em> and random
+number generators can be used to model random inputs.</p></li>
+</ul>
+</div>
+<div
+id="built-in-functions-for-simulating-randomness-r-d-p-and-q-functions."
+class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Built-in functions
+for simulating randomness: <code>r</code>, <code>d</code>,
+<code>p</code> and <code>q</code> functions.</h2>
+<p>For <strong>each probability distribution</strong> (Normal, Binomial,
+Poisson, etc.) there are tipically <strong>four functions
+available</strong> that start with an <code>r</code>, <code>d</code>,
+<code>p</code> and <code>q</code>:</p>
+<ul>
+<li><p><code>r</code> for <strong>random number generation</strong>.</p>
+<ul>
+<li>This is <em>the only one that actually</em> simulates random numbers
+from a distribution.<br />
+</li>
+<li>More precisely, it generates <strong>random values or
+observations</strong> of a <strong>variable</strong> having the
+<strong>specified distribution</strong>.</li>
+</ul></li>
+<li><p><code>d</code> for <strong>density</strong>, the <strong>density
+function</strong>.</p>
+<ul>
+<li>Only for <em>discrete</em> distributions (like Binomial), because it
+calculates the density at a point.</li>
+</ul></li>
+<li><p><code>p</code> for <strong>probability</strong>, the
+<strong>cumulative distribution function</strong>.</p></li>
+<li><p><code>q</code> for <strong>quantile</strong>, the
+<strong>quantile function</strong> (the inverse of cumulative
+distribution).</p></li>
+</ul>
+<p>If we are only interested in <strong>simulating random
+numbers</strong>, then we will likely only need the <code>r</code>
+functions and not the others.</p>
+<p>But if we intend to <strong>simulate</strong> from arbitrary
+probability distributions <strong>using something</strong> <strong>like
+rejection sampling</strong>, then we’ll need the other functions
+too.</p>
+<div id="table-of-probability-distributions-handled-by-r."
+class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Table of
+probability distributions handled by R.</h3>
+<table>
+<colgroup>
+<col width="42%" />
+<col width="57%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Distribution</th>
+<th align="center">Functions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Beta</td>
+<td align="center">pbeta qbeta dbeta rbeta</td>
+</tr>
+<tr class="even">
+<td align="center">Binomial</td>
+<td align="center">pbinom qbinom dbinom rbinom</td>
+</tr>
+<tr class="odd">
+<td align="center">Cauchy</td>
+<td align="center">pcauchy qcauchy dcauchy rcauchy</td>
+</tr>
+<tr class="even">
+<td align="center">Chi-Square</td>
+<td align="center">pchisq qchisq dchisq rchisq</td>
+</tr>
+<tr class="odd">
+<td align="center">Exponential</td>
+<td align="center">pexp qexp dexp rexp</td>
+</tr>
+<tr class="even">
+<td align="center">F</td>
+<td align="center">pf qf df rf</td>
+</tr>
+<tr class="odd">
+<td align="center">Gamma</td>
+<td align="center">pgamma qgamma dgamma rgamma</td>
+</tr>
+<tr class="even">
+<td align="center">Geometric</td>
+<td align="center">pgeom qgeom dgeom rgeom</td>
+</tr>
+<tr class="odd">
+<td align="center">Hypergeometric</td>
+<td align="center">phyper qhyper dhyper rhyper</td>
+</tr>
+<tr class="even">
+<td align="center">Logistic</td>
+<td align="center">plogis qlogis dlogis rlogis</td>
+</tr>
+<tr class="odd">
+<td align="center">Log Normal</td>
+<td align="center">plnorm qlnorm dlnorm rlnorm</td>
+</tr>
+<tr class="even">
+<td align="center">Negative Binomial</td>
+<td align="center">pnbinom qnbinom dnbinom rnbinom</td>
+</tr>
+<tr class="odd">
+<td align="center">Normal</td>
+<td align="center">pnorm qnorm dnorm rnorm</td>
+</tr>
+<tr class="even">
+<td align="center">Poisson</td>
+<td align="center">ppois qpois dpois rpois</td>
+</tr>
+<tr class="odd">
+<td align="center">Student t</td>
+<td align="center">pt qt dt rt</td>
+</tr>
+<tr class="even">
+<td align="center">Studentized Range</td>
+<td align="center">ptukey qtukey dtukey rtukey</td>
+</tr>
+<tr class="odd">
+<td align="center">Uniform</td>
+<td align="center">punif qunif dunif runif</td>
+</tr>
+<tr class="even">
+<td align="center">Weibull</td>
+<td align="center">pweibull qweibull dweibull rweibull</td>
+</tr>
+<tr class="odd">
+<td align="center">Wilcoxon Rank Sum Statistic</td>
+<td align="center">pwilcox qwilcox dwilcox rwilcox</td>
+</tr>
+<tr class="even">
+<td align="center">Wilcoxon Signed Rank Statistic</td>
+<td align="center">psignrank qsignrank dsignrank rsignrank</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div
+id="simulating-from-the-normal-distribution-rnorm-dnorm-pnorm-qnorm."
+class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Simulating from the
+Normal distribution: <code>rnorm</code>, <code>dnorm</code>,
+<code>pnorm</code>, <code>qnorm</code>.</h3>
+<p>Probably the most common probability distribution to work with is the
+Normal distribution.</p>
+<p>So let’s take a look at the four functions available to simulate
+randomness from this kind of distribution.</p>
+<ul>
+<li><p><code>rnorm</code> <strong>generates</strong> random
+<strong>Normal</strong> <strong><em>variates</em></strong> (values or
+observations of a Normal random variable) with a given <em>mean</em> and
+<em>standard deviation</em>.</p>
+<ul>
+<li>It’s <code>n</code> input is the <em>number of
+observations</em>.</li>
+<li>By default, it simulates a <strong>Standard Normal</strong>
+distribution (mean 0, sd 1).</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rnorm)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)  </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate Standard Normal random numbers.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>]  <span class="fl">0.96129056</span>  <span class="fl">0.29382666</span>  <span class="fl">0.08099936</span>  <span class="fl">0.18366184</span>  <span class="fl">0.16625504</span> <span class="sc">-</span><span class="fl">1.26959907</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>]  <span class="fl">2.34949332</span> <span class="sc">-</span><span class="fl">1.41200541</span> <span class="sc">-</span><span class="fl">0.01696149</span> <span class="sc">-</span><span class="fl">0.54431935</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">1.41201</span> <span class="sc">-</span><span class="fl">0.41248</span>  <span class="fl">0.12363</span>  <span class="fl">0.07926</span>  <span class="fl">0.26629</span>  <span class="fl">2.34949</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate Normal random numbers with mean 20 and sd 2.</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">2</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="fl">23.60022</span> <span class="fl">22.02288</span> <span class="fl">18.87257</span> <span class="fl">20.41084</span> <span class="fl">22.33092</span> <span class="fl">24.47265</span> <span class="fl">20.60453</span> <span class="fl">17.91499</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] <span class="fl">18.03292</span> <span class="fl">24.01144</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(x)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fl">17.91</span>   <span class="fl">19.26</span>   <span class="fl">21.31</span>   <span class="fl">21.23</span>   <span class="fl">23.28</span>   <span class="fl">24.47</span> </span></code></pre></div>
+<ul>
+<li><p><code>dnorm</code>: <strong>evaluates</strong> the
+<strong>Normal</strong> probability <strong><em>density</em></strong>
+(with a given <em>mean</em> and <em>standard deviation</em>)
+<strong><em>at a point</em></strong> (or <strong><em>vector of
+points</em></strong>).</p>
+<ul>
+<li>The <strong>Normal</strong> distribution is a
+<strong>contiuous</strong> distribution, so the density calculated by
+dnorm function <strong>can only be used</strong> to calculate
+probabilities <strong>via integrals</strong>.<br />
+</li>
+<li><strong><em>But R does not do integrals!!</em></strong></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dnorm)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (x, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">log =</span> <span class="cn">FALSE</span>)  </span></code></pre></div>
+<ul>
+<li><p><code>pnorm</code>: <strong>evaluates</strong> the
+<strong><em>cumulative distribution function</em></strong> for a
+<strong>Normal</strong> distribution [<span
+class="math inline">\(pnorm(q) = \Phi(q) = p\)</span>].</p>
+<ul>
+<li>It’s <code>q</code> input is a <em>vector of quantiles</em>.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pnorm)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (q, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>, <span class="at">log.p =</span> <span class="cn">FALSE</span>)  </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Probability of a random Standard Normal variable less than 2.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.9772499</span></span></code></pre></div>
+<ul>
+<li><p><code>qnorm</code>: given a probability <code>p</code>, retruns
+the <strong>p-th quantile</strong> of the Normal distribution [<span
+class="math inline">\(qnorm(p) = \Phi^{-1}(p) = q\)</span>].</p>
+<ul>
+<li>It’s <code>p</code> input is a <em>vector of
+probabilities</em>.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(qnorm)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (p, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>, <span class="at">log.p =</span> <span class="cn">FALSE</span>)  </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.7</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.5244005</span></span></code></pre></div>
+</div>
+<div id="simulating-from-the-poisson-distribution."
+class="section level3" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Simulating from the
+Poisson distribution.</h3>
+<p>Let’s simply do a couple of examples, remembering that the Poisson
+distribution has the <code>lambda</code> parameter, that is, the
+<em>rate</em> (that is also de <em>mean</em>) of the distribution.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rpois)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (n, lambda)  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ppois)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (q, lambda, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>, <span class="at">log.p =</span> <span class="cn">FALSE</span>)  </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rpois</span>(<span class="dv">10</span>, <span class="dv">1</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="dv">0</span> <span class="dv">2</span> <span class="dv">5</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">3</span> <span class="dv">0</span> <span class="dv">3</span> <span class="dv">1</span> <span class="dv">1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rpois</span>(<span class="dv">10</span>, <span class="dv">2</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="dv">3</span> <span class="dv">1</span> <span class="dv">2</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">3</span> <span class="dv">2</span> <span class="dv">0</span> <span class="dv">2</span> <span class="dv">3</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rpois</span>(<span class="dv">10</span>, <span class="dv">20</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="dv">22</span> <span class="dv">26</span> <span class="dv">17</span> <span class="dv">16</span> <span class="dv">26</span> <span class="dv">13</span> <span class="dv">23</span> <span class="dv">24</span> <span class="dv">16</span> <span class="dv">28</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ppois</span>(<span class="dv">2</span>, <span class="dv">2</span>)   <span class="co"># Pr(X &lt;= 2)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.6766764</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ppois</span>(<span class="dv">4</span>, <span class="dv">2</span>)   <span class="co"># Pr(X &lt;= 4)</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.947347</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ppois</span>(<span class="dv">6</span>, <span class="dv">2</span>)   <span class="co"># Pr(X &lt;= 6)</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.9954662</span></span></code></pre></div>
+</div>
+<div id="simulating-several-groups-of-random-numbers-with-replicate."
+class="section level3" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Simulating several
+<em>groups</em> of random numbers with <code>replicate()</code>.</h3>
+<p>For example, let’s simulate 100 <em>groups</em> of random numbers,
+each containing 5 values generated from a Poisson distribution with mean
+10.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>my_pois <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">100</span>, <span class="fu">rpois</span>(<span class="dv">5</span>, <span class="dv">10</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_pois)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>] <span class="dv">12</span> <span class="dv">5</span> <span class="dv">4</span> <span class="dv">10</span> <span class="dv">3</span> <span class="dv">11</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">8</span> <span class="dv">10</span> ...</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>my_pois</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">1</span>] [,<span class="dv">2</span>] [,<span class="dv">3</span>] [,<span class="dv">4</span>] [,<span class="dv">5</span>] [,<span class="dv">6</span>] [,<span class="dv">7</span>] [,<span class="dv">8</span>] [,<span class="dv">9</span>] [,<span class="dv">10</span>] [,<span class="dv">11</span>] [,<span class="dv">12</span>] [,<span class="dv">13</span>] [,<span class="dv">14</span>]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]   <span class="dv">12</span>   <span class="dv">11</span>   <span class="dv">10</span>   <span class="dv">10</span>    <span class="dv">7</span>    <span class="dv">7</span>    <span class="dv">7</span>    <span class="dv">8</span>   <span class="dv">12</span>    <span class="dv">14</span>    <span class="dv">17</span>    <span class="dv">13</span>     <span class="dv">2</span>     <span class="dv">7</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]    <span class="dv">5</span>    <span class="dv">8</span>   <span class="dv">12</span>   <span class="dv">10</span>    <span class="dv">7</span>   <span class="dv">14</span>    <span class="dv">5</span>    <span class="dv">7</span>   <span class="dv">10</span>    <span class="dv">12</span>    <span class="dv">11</span>    <span class="dv">16</span>    <span class="dv">10</span>    <span class="dv">12</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]    <span class="dv">4</span>    <span class="dv">8</span>   <span class="dv">11</span>   <span class="dv">11</span>    <span class="dv">7</span>   <span class="dv">11</span>   <span class="dv">10</span>   <span class="dv">10</span>   <span class="dv">10</span>     <span class="dv">9</span>     <span class="dv">6</span>    <span class="dv">11</span>    <span class="dv">10</span>     <span class="dv">8</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]   <span class="dv">10</span>    <span class="dv">8</span>    <span class="dv">8</span>    <span class="dv">9</span>    <span class="dv">9</span>   <span class="dv">10</span>    <span class="dv">9</span>   <span class="dv">12</span>    <span class="dv">9</span>    <span class="dv">10</span>     <span class="dv">7</span>     <span class="dv">4</span>    <span class="dv">12</span>     <span class="dv">7</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]    <span class="dv">3</span>   <span class="dv">10</span>    <span class="dv">7</span>    <span class="dv">9</span>   <span class="dv">14</span>    <span class="dv">9</span>   <span class="dv">15</span>    <span class="dv">7</span>   <span class="dv">11</span>     <span class="dv">5</span>     <span class="dv">6</span>     <span class="dv">9</span>     <span class="dv">7</span>     <span class="dv">7</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">15</span>] [,<span class="dv">16</span>] [,<span class="dv">17</span>] [,<span class="dv">18</span>] [,<span class="dv">19</span>] [,<span class="dv">20</span>] [,<span class="dv">21</span>] [,<span class="dv">22</span>] [,<span class="dv">23</span>] [,<span class="dv">24</span>] [,<span class="dv">25</span>] [,<span class="dv">26</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]     <span class="dv">9</span>     <span class="dv">9</span>    <span class="dv">13</span>     <span class="dv">9</span>    <span class="dv">12</span>    <span class="dv">11</span>     <span class="dv">8</span>     <span class="dv">9</span>    <span class="dv">10</span>     <span class="dv">9</span>    <span class="dv">10</span>     <span class="dv">9</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]     <span class="dv">6</span>    <span class="dv">11</span>    <span class="dv">11</span>    <span class="dv">10</span>     <span class="dv">6</span>    <span class="dv">16</span>    <span class="dv">12</span>    <span class="dv">13</span>    <span class="dv">13</span>    <span class="dv">15</span>     <span class="dv">9</span>     <span class="dv">5</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]     <span class="dv">8</span>    <span class="dv">10</span>     <span class="dv">8</span>    <span class="dv">15</span>    <span class="dv">14</span>    <span class="dv">10</span>    <span class="dv">11</span>    <span class="dv">11</span>     <span class="dv">6</span>     <span class="dv">9</span>    <span class="dv">18</span>    <span class="dv">10</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]    <span class="dv">11</span>     <span class="dv">9</span>    <span class="dv">14</span>     <span class="dv">5</span>     <span class="dv">7</span>    <span class="dv">11</span>    <span class="dv">10</span>     <span class="dv">8</span>     <span class="dv">8</span>    <span class="dv">15</span>     <span class="dv">9</span>    <span class="dv">12</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]    <span class="dv">13</span>    <span class="dv">10</span>    <span class="dv">12</span>    <span class="dv">11</span>    <span class="dv">11</span>    <span class="dv">10</span>     <span class="dv">7</span>     <span class="dv">9</span>     <span class="dv">5</span>     <span class="dv">4</span>    <span class="dv">22</span>     <span class="dv">5</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">27</span>] [,<span class="dv">28</span>] [,<span class="dv">29</span>] [,<span class="dv">30</span>] [,<span class="dv">31</span>] [,<span class="dv">32</span>] [,<span class="dv">33</span>] [,<span class="dv">34</span>] [,<span class="dv">35</span>] [,<span class="dv">36</span>] [,<span class="dv">37</span>] [,<span class="dv">38</span>]</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]     <span class="dv">8</span>     <span class="dv">2</span>    <span class="dv">11</span>    <span class="dv">11</span>     <span class="dv">6</span>     <span class="dv">7</span>    <span class="dv">12</span>     <span class="dv">9</span>    <span class="dv">19</span>    <span class="dv">12</span>    <span class="dv">12</span>     <span class="dv">9</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]    <span class="dv">10</span>     <span class="dv">9</span>    <span class="dv">10</span>    <span class="dv">16</span>     <span class="dv">8</span>     <span class="dv">8</span>    <span class="dv">12</span>     <span class="dv">6</span>     <span class="dv">9</span>     <span class="dv">8</span>    <span class="dv">10</span>     <span class="dv">9</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]    <span class="dv">18</span>    <span class="dv">12</span>     <span class="dv">6</span>    <span class="dv">10</span>    <span class="dv">11</span>     <span class="dv">2</span>    <span class="dv">12</span>     <span class="dv">9</span>     <span class="dv">9</span>     <span class="dv">6</span>    <span class="dv">15</span>     <span class="dv">3</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]    <span class="dv">10</span>    <span class="dv">15</span>    <span class="dv">10</span>    <span class="dv">10</span>     <span class="dv">9</span>     <span class="dv">4</span>     <span class="dv">8</span>    <span class="dv">10</span>    <span class="dv">15</span>    <span class="dv">13</span>    <span class="dv">12</span>    <span class="dv">13</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]    <span class="dv">10</span>     <span class="dv">9</span>    <span class="dv">10</span>    <span class="dv">10</span>    <span class="dv">12</span>     <span class="dv">7</span>    <span class="dv">15</span>    <span class="dv">15</span>     <span class="dv">8</span>     <span class="dv">8</span>     <span class="dv">8</span>     <span class="dv">6</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">39</span>] [,<span class="dv">40</span>] [,<span class="dv">41</span>] [,<span class="dv">42</span>] [,<span class="dv">43</span>] [,<span class="dv">44</span>] [,<span class="dv">45</span>] [,<span class="dv">46</span>] [,<span class="dv">47</span>] [,<span class="dv">48</span>] [,<span class="dv">49</span>] [,<span class="dv">50</span>]</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]    <span class="dv">11</span>     <span class="dv">6</span>    <span class="dv">12</span>     <span class="dv">8</span>     <span class="dv">8</span>    <span class="dv">14</span>    <span class="dv">11</span>     <span class="dv">3</span>    <span class="dv">10</span>     <span class="dv">8</span>     <span class="dv">9</span>     <span class="dv">4</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]    <span class="dv">10</span>     <span class="dv">6</span>    <span class="dv">11</span>     <span class="dv">9</span>    <span class="dv">12</span>     <span class="dv">9</span>     <span class="dv">6</span>    <span class="dv">13</span>     <span class="dv">9</span>    <span class="dv">13</span>     <span class="dv">9</span>    <span class="dv">19</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]     <span class="dv">6</span>    <span class="dv">11</span>    <span class="dv">11</span>     <span class="dv">4</span>    <span class="dv">12</span>     <span class="dv">7</span>    <span class="dv">14</span>    <span class="dv">12</span>    <span class="dv">14</span>    <span class="dv">12</span>    <span class="dv">11</span>     <span class="dv">6</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]     <span class="dv">9</span>     <span class="dv">7</span>     <span class="dv">5</span>     <span class="dv">4</span>     <span class="dv">7</span>     <span class="dv">5</span>     <span class="dv">7</span>     <span class="dv">8</span>    <span class="dv">13</span>     <span class="dv">8</span>    <span class="dv">12</span>    <span class="dv">11</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]     <span class="dv">8</span>    <span class="dv">10</span>     <span class="dv">6</span>     <span class="dv">7</span>     <span class="dv">7</span>    <span class="dv">15</span>    <span class="dv">14</span>     <span class="dv">7</span>    <span class="dv">11</span>     <span class="dv">8</span>    <span class="dv">10</span>     <span class="dv">9</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">51</span>] [,<span class="dv">52</span>] [,<span class="dv">53</span>] [,<span class="dv">54</span>] [,<span class="dv">55</span>] [,<span class="dv">56</span>] [,<span class="dv">57</span>] [,<span class="dv">58</span>] [,<span class="dv">59</span>] [,<span class="dv">60</span>] [,<span class="dv">61</span>] [,<span class="dv">62</span>]</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]    <span class="dv">15</span>    <span class="dv">13</span>     <span class="dv">9</span>     <span class="dv">9</span>    <span class="dv">13</span>    <span class="dv">17</span>    <span class="dv">14</span>     <span class="dv">8</span>    <span class="dv">14</span>     <span class="dv">6</span>    <span class="dv">12</span>     <span class="dv">4</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]    <span class="dv">13</span>     <span class="dv">7</span>     <span class="dv">8</span>    <span class="dv">16</span>     <span class="dv">6</span>     <span class="dv">2</span>     <span class="dv">4</span>    <span class="dv">11</span>     <span class="dv">8</span>     <span class="dv">7</span>    <span class="dv">11</span>     <span class="dv">9</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]    <span class="dv">12</span>     <span class="dv">9</span>    <span class="dv">12</span>     <span class="dv">7</span>     <span class="dv">9</span>     <span class="dv">9</span>    <span class="dv">11</span>     <span class="dv">8</span>     <span class="dv">9</span>     <span class="dv">8</span>     <span class="dv">8</span>     <span class="dv">4</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]    <span class="dv">12</span>    <span class="dv">16</span>    <span class="dv">16</span>    <span class="dv">11</span>    <span class="dv">10</span>     <span class="dv">9</span>    <span class="dv">10</span>    <span class="dv">14</span>    <span class="dv">12</span>    <span class="dv">12</span>     <span class="dv">6</span>     <span class="dv">8</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]    <span class="dv">13</span>     <span class="dv">9</span>    <span class="dv">11</span>    <span class="dv">11</span>     <span class="dv">8</span>    <span class="dv">12</span>    <span class="dv">10</span>    <span class="dv">10</span>    <span class="dv">13</span>     <span class="dv">7</span>     <span class="dv">8</span>     <span class="dv">4</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">63</span>] [,<span class="dv">64</span>] [,<span class="dv">65</span>] [,<span class="dv">66</span>] [,<span class="dv">67</span>] [,<span class="dv">68</span>] [,<span class="dv">69</span>] [,<span class="dv">70</span>] [,<span class="dv">71</span>] [,<span class="dv">72</span>] [,<span class="dv">73</span>] [,<span class="dv">74</span>]</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]     <span class="dv">6</span>     <span class="dv">5</span>    <span class="dv">10</span>     <span class="dv">8</span>     <span class="dv">7</span>     <span class="dv">6</span>     <span class="dv">9</span>     <span class="dv">9</span>    <span class="dv">13</span>     <span class="dv">9</span>     <span class="dv">7</span>     <span class="dv">5</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]    <span class="dv">11</span>     <span class="dv">5</span>    <span class="dv">15</span>    <span class="dv">11</span>     <span class="dv">7</span>     <span class="dv">6</span>     <span class="dv">5</span>    <span class="dv">10</span>     <span class="dv">9</span>     <span class="dv">7</span>     <span class="dv">6</span>    <span class="dv">11</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]     <span class="dv">7</span>    <span class="dv">17</span>     <span class="dv">6</span>    <span class="dv">14</span>     <span class="dv">8</span>    <span class="dv">10</span>     <span class="dv">6</span>    <span class="dv">13</span>    <span class="dv">11</span>    <span class="dv">12</span>    <span class="dv">10</span>     <span class="dv">8</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]     <span class="dv">9</span>    <span class="dv">14</span>     <span class="dv">5</span>    <span class="dv">14</span>     <span class="dv">6</span>    <span class="dv">11</span>    <span class="dv">16</span>    <span class="dv">14</span>    <span class="dv">13</span>     <span class="dv">8</span>     <span class="dv">6</span>    <span class="dv">14</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]     <span class="dv">9</span>     <span class="dv">7</span>     <span class="dv">9</span>    <span class="dv">10</span>    <span class="dv">15</span>    <span class="dv">10</span>    <span class="dv">10</span>    <span class="dv">11</span>    <span class="dv">21</span>    <span class="dv">11</span>     <span class="dv">7</span>    <span class="dv">10</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">75</span>] [,<span class="dv">76</span>] [,<span class="dv">77</span>] [,<span class="dv">78</span>] [,<span class="dv">79</span>] [,<span class="dv">80</span>] [,<span class="dv">81</span>] [,<span class="dv">82</span>] [,<span class="dv">83</span>] [,<span class="dv">84</span>] [,<span class="dv">85</span>] [,<span class="dv">86</span>]</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]    <span class="dv">10</span>     <span class="dv">5</span>     <span class="dv">7</span>    <span class="dv">13</span>     <span class="dv">7</span>     <span class="dv">6</span>    <span class="dv">10</span>     <span class="dv">7</span>     <span class="dv">7</span>    <span class="dv">12</span>     <span class="dv">9</span>    <span class="dv">13</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]     <span class="dv">9</span>    <span class="dv">13</span>    <span class="dv">13</span>    <span class="dv">12</span>     <span class="dv">9</span>    <span class="dv">13</span>     <span class="dv">9</span>    <span class="dv">16</span>     <span class="dv">9</span>    <span class="dv">12</span>    <span class="dv">12</span>    <span class="dv">12</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]     <span class="dv">9</span>     <span class="dv">7</span>     <span class="dv">7</span>    <span class="dv">15</span>    <span class="dv">17</span>     <span class="dv">8</span>    <span class="dv">13</span>     <span class="dv">7</span>     <span class="dv">8</span>    <span class="dv">13</span>     <span class="dv">9</span>    <span class="dv">13</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]     <span class="dv">9</span>     <span class="dv">9</span>    <span class="dv">13</span>    <span class="dv">13</span>     <span class="dv">7</span>    <span class="dv">13</span>     <span class="dv">8</span>    <span class="dv">14</span>    <span class="dv">10</span>    <span class="dv">10</span>     <span class="dv">7</span>     <span class="dv">7</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]    <span class="dv">13</span>     <span class="dv">5</span>     <span class="dv">7</span>    <span class="dv">10</span>    <span class="dv">13</span>    <span class="dv">10</span>     <span class="dv">7</span>    <span class="dv">10</span>     <span class="dv">9</span>    <span class="dv">13</span>     <span class="dv">9</span>     <span class="dv">6</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">87</span>] [,<span class="dv">88</span>] [,<span class="dv">89</span>] [,<span class="dv">90</span>] [,<span class="dv">91</span>] [,<span class="dv">92</span>] [,<span class="dv">93</span>] [,<span class="dv">94</span>] [,<span class="dv">95</span>] [,<span class="dv">96</span>] [,<span class="dv">97</span>] [,<span class="dv">98</span>]</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]     <span class="dv">6</span>     <span class="dv">6</span>     <span class="dv">6</span>     <span class="dv">6</span>     <span class="dv">9</span>    <span class="dv">13</span>     <span class="dv">9</span>     <span class="dv">9</span>    <span class="dv">16</span>    <span class="dv">16</span>    <span class="dv">15</span>     <span class="dv">8</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]    <span class="dv">12</span>    <span class="dv">10</span>     <span class="dv">7</span>    <span class="dv">10</span>    <span class="dv">10</span>    <span class="dv">11</span>     <span class="dv">6</span>     <span class="dv">7</span>     <span class="dv">9</span>    <span class="dv">17</span>     <span class="dv">6</span>    <span class="dv">10</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]    <span class="dv">12</span>    <span class="dv">13</span>     <span class="dv">6</span>     <span class="dv">8</span>    <span class="dv">13</span>    <span class="dv">15</span>    <span class="dv">10</span>    <span class="dv">13</span>    <span class="dv">14</span>     <span class="dv">9</span>    <span class="dv">10</span>    <span class="dv">14</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]     <span class="dv">7</span>     <span class="dv">9</span>    <span class="dv">11</span>    <span class="dv">12</span>    <span class="dv">14</span>    <span class="dv">16</span>     <span class="dv">8</span>    <span class="dv">12</span>    <span class="dv">14</span>    <span class="dv">10</span>    <span class="dv">10</span>    <span class="dv">12</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]    <span class="dv">10</span>    <span class="dv">10</span>    <span class="dv">11</span>     <span class="dv">8</span>    <span class="dv">14</span>    <span class="dv">14</span>     <span class="dv">9</span>    <span class="dv">10</span>    <span class="dv">10</span>    <span class="dv">14</span>    <span class="dv">10</span>    <span class="dv">14</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>     [,<span class="dv">99</span>] [,<span class="dv">100</span>]</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,]     <span class="dv">9</span>     <span class="dv">12</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>,]    <span class="dv">11</span>      <span class="dv">9</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>,]    <span class="dv">11</span>      <span class="dv">9</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>[<span class="dv">4</span>,]     <span class="dv">7</span>      <span class="dv">4</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>,]    <span class="dv">10</span>     <span class="dv">17</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s check out the mean of each group (each column of the matrix).</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>cm <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(my_pois)</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(cm)                  <span class="co"># They are normally distributed (Central Limit Theorem at work!!)</span></span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+<div id="setting-the-random-number-seed-set.seed."
+class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Setting the random
+number seed: <code>set.seed()</code>.</h2>
+<p>Setting the random number seed <strong>ensures
+reproducibility</strong> of the sequence of random numbers.</p>
+<ul>
+<li>So it is <strong>rather essential</strong> to set the random number
+seed <strong>when conducting any</strong> <strong>simulation</strong>,
+in order to be able to reconstruct the exact numbers produced in the
+analysis.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reproducible random data.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="sc">-</span><span class="fl">0.6264538</span>  <span class="fl">0.1836433</span> <span class="sc">-</span><span class="fl">0.8356286</span>  <span class="fl">1.5952808</span>  <span class="fl">0.3295078</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Another random sequence.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="sc">-</span><span class="fl">0.8204684</span>  <span class="fl">0.4874291</span>  <span class="fl">0.7383247</span>  <span class="fl">0.5757814</span> <span class="sc">-</span><span class="fl">0.3053884</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Reproducing the original set of random numbers.</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="sc">-</span><span class="fl">0.6264538</span>  <span class="fl">0.1836433</span> <span class="sc">-</span><span class="fl">0.8356286</span>  <span class="fl">1.5952808</span>  <span class="fl">0.3295078</span></span></code></pre></div>
+</div>
+<div id="simulating-from-a-linear-model." class="section level2"
+number="2.4">
+<h2><span class="header-section-number">2.4</span> Simulating from a
+Linear Model.</h2>
+<p>We’ll often want, not to just simulate random numbers, but
+<strong>simulate values that come</strong> <strong>from a
+specific</strong> <strong><em>model</em></strong>.</p>
+<p>In this case:</p>
+<ul>
+<li>First, we need to <strong>specify the model</strong>.<br />
+</li>
+<li>Then, <strong>simulate from it</strong> using the <strong>functions
+described above</strong>.</li>
+</ul>
+<p>So, let’s define a <strong>linear model</strong> which we want to
+simulate from:</p>
+<ul>
+<li><span class="math inline">\(Y = \beta_0 + \beta_1 X +
+\epsilon\)</span></li>
+</ul>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(\epsilon \sim N(0, 2^2)\)</span>
+<ul>
+<li>epsilon is the <strong>random error</strong> or random noise, that
+has a normal distribution with standard deviation 2.</li>
+</ul></li>
+</ul>
+<p>and assume:</p>
+<ul>
+<li><span class="math inline">\(X \sim N(0, 1^2)\)</span>
+<ul>
+<li><code>X</code> represents a <strong>predictor</strong> of the
+outcome <code>y</code>.<br />
+</li>
+</ul></li>
+<li><span class="math inline">\(\beta_0 = 0.5\)</span>
+<ul>
+<li>This is a <strong>regression coeficient</strong> that is the
+<em>intercept</em>.<br />
+</li>
+</ul></li>
+<li><span class="math inline">\(\beta_1 = 2\)</span>
+<ul>
+<li>This is another <strong>regression coeficient</strong> that is the
+<em>slope</em>.</li>
+</ul></li>
+</ul>
+<div id="simulating-a-normal-predictor-variable-x-for-our-linear-model."
+class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Simulating a Normal
+predictor variable <code>X</code> for our linear model.</h3>
+<p>Supposing that we want to simulate a predictor variable having a
+Standard Normal distribution, we proceed as follows.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Always set our seed!</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate a Standard Normal predictor variable.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>] <span class="fl">1.163</span> <span class="sc">-</span><span class="fl">0.586</span> <span class="fl">1.785</span> <span class="sc">-</span><span class="fl">1.333</span> <span class="sc">-</span><span class="fl">0.447</span> ...</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate the error term.</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the outcome via the model.</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> x <span class="sc">+</span> e</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">6.4084</span> <span class="sc">-</span><span class="fl">1.5402</span>  <span class="fl">0.6789</span>  <span class="fl">0.6893</span>  <span class="fl">2.9303</span>  <span class="fl">6.5052</span> </span></code></pre></div>
+<p>We can plot the results of the model simulation, and see the clear
+relationship.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div
+id="simulating-a-binomial-predictor-variable-x-for-our-linear-model."
+class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Simulating a
+Binomial predictor variable <code>X</code> for our linear model.</h3>
+<p>Let’s suppose now that, instead of being a normal random variable,
+<code>X</code> is a <strong>binary</strong> random variable.</p>
+<ul>
+<li>For example, <code>X</code> may represent <em>gender</em>, or some
+<em>treatment vs control</em>, etc.<br />
+</li>
+<li>So we are going to use <code>rbinom()</code> to generate values of a
+Binomial randon variable where we have to specify:
+<ul>
+<li>As always, <code>n</code>, the number of observations that we want
+to generate.<br />
+</li>
+<li><code>size</code>, the number of trials.<br />
+</li>
+<li>And <code>prob</code>, the probability of success.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rbinom)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (n, size, prob)  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">100</span>, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>] <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> ...</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> x <span class="sc">+</span> e</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">3.4936</span> <span class="sc">-</span><span class="fl">0.1409</span>  <span class="fl">1.5767</span>  <span class="fl">1.4322</span>  <span class="fl">2.8397</span>  <span class="fl">6.9410</span> </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s plot to see the linear relationship.</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+</div>
+<div
+id="simulating-from-a-generalized-linear-model-where-errors-are-not-longer-from-a-normal-distribution."
+class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Simulating from a
+generalized linear model (where errors are not longer from a Normal
+distribution).</h2>
+<p>Suppose we want to simulate from a slightly more complicated model, a
+<strong>generalized linear model</strong> perhaps with a
+<strong>Poisson</strong> distribution.</p>
+<ul>
+<li>For example, we might want to simulate some <strong>outcome
+data</strong> that is a <strong>count variable</strong> instead of
+<strong>continuous variable</strong>.</li>
+</ul>
+<p>The approach is slightly mor complicated because the <strong>error
+distribution</strong> is not going to be normal, it’s going to be a
+<strong>Poisson distribution</strong>.</p>
+<p>So, let’s assume that:</p>
+<ul>
+<li>The outcome <code>Y</code> has a <strong>Poisson
+distribution</strong> with <strong>rate/mean</strong> <span
+class="math inline">\(\mu\)</span> [<span class="math inline">\(Y \sim
+Poisson(\mu)\)</span>].<br />
+</li>
+<li>And that the <strong>log of the mean</strong> follows this linear
+model:
+<ul>
+<li><span class="math inline">\(log(\mu) = \beta_0 + \beta_1
+X\)</span><br />
+with:<br />
+</li>
+<li>intercept <span class="math inline">\(\beta_0 = 0.5\)</span><br />
+</li>
+<li>slope <span class="math inline">\(\beta_1 = 0.3\)</span><br />
+</li>
+<li><code>X</code> one of our preditors, taken as a Standard Normal
+predictor random variable.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate the predictor variariable as before.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the linear predictor: the &quot;log mean&quot; of the model.</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>log.mu <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> x</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, in order to get the &quot;mean&quot; (that is also the &quot;rate&quot;) for our Poisson</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># distribution, we need to exponentiate that log mean.</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100</span>, <span class="fu">exp</span>(log.mu))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(y)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>   <span class="fl">0.00</span>    <span class="fl">1.00</span>    <span class="fl">1.00</span>    <span class="fl">1.55</span>    <span class="fl">2.00</span>    <span class="fl">6.00</span> </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s plot to see the clear linear relationship between X and Y</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># (as X increases, the count for Y generally gets larger)</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="random-sampling-sample-function." class="section level2"
+number="2.6">
+<h2><span class="header-section-number">2.6</span> Random Sampling:
+<code>sample()</code> function.</h2>
+<p>The <code>sample()</code> function takes a sample of the specified
+size from an <code>x</code>set of scalar objects, using either with or
+without replacement.</p>
+<ul>
+<li>It allows us to sample from arbitrary distributions of
+numbers.<br />
+</li>
+<li>For more complex objects, as we’ll see, sample is made through index
+vectors.</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sample)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (x, size, <span class="at">replace =</span> <span class="cn">FALSE</span>, <span class="at">prob =</span> <span class="cn">NULL</span>)  </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">4</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">9</span> <span class="dv">4</span> <span class="dv">7</span> <span class="dv">1</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">4</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">2</span> <span class="dv">7</span> <span class="dv">3</span> <span class="dv">6</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Not necessarily numbers.</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(letters, <span class="dv">5</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;r&quot;</span> <span class="st">&quot;s&quot;</span> <span class="st">&quot;a&quot;</span> <span class="st">&quot;u&quot;</span> <span class="st">&quot;w&quot;</span></span></code></pre></div>
+<div id="random-permutations-re-arragenments." class="section level3"
+number="2.6.1">
+<h3><span class="header-section-number">2.6.1</span> Random permutations
+(re-arragenments).</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)    <span class="co"># identical to taking a sample of the size of the vector (10) without replacement.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="dv">10</span>  <span class="dv">6</span>  <span class="dv">9</span>  <span class="dv">2</span>  <span class="dv">1</span>  <span class="dv">5</span>  <span class="dv">8</span>  <span class="dv">4</span>  <span class="dv">3</span>  <span class="dv">7</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>]  <span class="dv">5</span> <span class="dv">10</span>  <span class="dv">2</span>  <span class="dv">8</span>  <span class="dv">6</span>  <span class="dv">1</span>  <span class="dv">4</span>  <span class="dv">3</span>  <span class="dv">9</span>  <span class="dv">7</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(LETTERS) <span class="co"># identical to taking a sample of the size of the vector (26) without replacement.</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">&quot;C&quot;</span> <span class="st">&quot;F&quot;</span> <span class="st">&quot;J&quot;</span> <span class="st">&quot;X&quot;</span> <span class="st">&quot;Y&quot;</span> <span class="st">&quot;O&quot;</span> <span class="st">&quot;T&quot;</span> <span class="st">&quot;L&quot;</span> <span class="st">&quot;V&quot;</span> <span class="st">&quot;H&quot;</span> <span class="st">&quot;S&quot;</span> <span class="st">&quot;I&quot;</span> <span class="st">&quot;G&quot;</span> <span class="st">&quot;Q&quot;</span> <span class="st">&quot;R&quot;</span> <span class="st">&quot;W&quot;</span> <span class="st">&quot;N&quot;</span> <span class="st">&quot;Z&quot;</span> <span class="st">&quot;B&quot;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">20</span>] <span class="st">&quot;P&quot;</span> <span class="st">&quot;K&quot;</span> <span class="st">&quot;M&quot;</span> <span class="st">&quot;A&quot;</span> <span class="st">&quot;E&quot;</span> <span class="st">&quot;U&quot;</span> <span class="st">&quot;D&quot;</span></span></code></pre></div>
+</div>
+<div id="sample-with-replacement." class="section level3"
+number="2.6.2">
+<h3><span class="header-section-number">2.6.2</span> Sample with
+replacement.</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] <span class="dv">6</span> <span class="dv">1</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">8</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">6</span> <span class="dv">8</span> <span class="dv">7</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s simulate rolling four six-sided dice.</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">3</span> <span class="dv">1</span> <span class="dv">4</span> <span class="dv">5</span></span></code></pre></div>
+</div>
+<div id="sample-with-replacement-and-probabilities."
+class="section level3" number="2.6.3">
+<h3><span class="header-section-number">2.6.3</span> Sample with
+replacement and probabilities.</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate 100 flips of an unfair two-sided coin. This particular coin # has a 0.3 probability of</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># landing &#39;tails&#39; and a 0.7 probability of # landing &#39;heads&#39;.</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A coin flip is a binary outcome: so let the vector c(0, 1) represent the outcomes, 0 for &#39;tails&#39;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and 1 for &#39;heads&#39;.</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>flips <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>flips</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a> [<span class="dv">38</span>] <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a> [<span class="dv">75</span>] <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Since we set the probability of landing heads on any given flip to be 0.7, we excpect</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># aproximately 70 of our coin flips to have the value 1.</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(flips)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">72</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Because a coin flip is a binary outcome and we are performing 100 independent trials, we can</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># rbinom() to simulate binomial random variable.</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># A binomial random variable represents the number of &#39;successes&#39; (heads) in a given number of</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co"># independent &#39;trials&#39; (coin flips).  So we can generate a random variable that represents the</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># number of heads in 100 flips of our unfair coin, like this:</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">prob =</span> <span class="fl">0.7</span>)          <span class="co"># specify only the &#39;success&#39; probability.</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">76</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Equivalently, if we want to see all of the 0s and 1s, we can request 100 observations, each</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="co"># of size 1.</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>flips2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">100</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.7</span>)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>flips2</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a> [<span class="dv">38</span>] <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a> [<span class="dv">75</span>] <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">1</span> <span class="dv">0</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(flips2)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">77</span></span></code></pre></div>
+</div>
+<div id="sampling-more-complex-objects." class="section level3"
+number="2.6.4">
+<h3><span class="header-section-number">2.6.4</span> Sampling more
+complex objects.</h3>
+<p>We can <code>sample</code> more complex objects, like data frames or
+lists, as long as there’s a <strong>way to index the sub-elements of the
+object</strong>.</p>
+<p>That is to say, the common strategy is to sample the indices into an
+object, rather than the elements of the object itself.</p>
+<div id="sampling-the-rows-from-a-data-frame." class="section level4"
+number="2.6.4.1">
+<h4><span class="header-section-number">2.6.4.1</span> Sampling the rows
+from a data frame.</h4>
+<p>So, as we said:</p>
+<ol style="list-style-type: decimal">
+<li>We need to create the index vector indexing the rows of the data
+frame.<br />
+</li>
+<li>Then sample directly from that index vector.</li>
+</ol>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airquality)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  Ozone Solar.R Wind Temp Month Day</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>    <span class="dv">41</span>     <span class="dv">190</span>  <span class="fl">7.4</span>   <span class="dv">67</span>     <span class="dv">5</span>   <span class="dv">1</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>    <span class="dv">36</span>     <span class="dv">118</span>  <span class="fl">8.0</span>   <span class="dv">72</span>     <span class="dv">5</span>   <span class="dv">2</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>    <span class="dv">12</span>     <span class="dv">149</span> <span class="fl">12.6</span>   <span class="dv">74</span>     <span class="dv">5</span>   <span class="dv">3</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>    <span class="dv">18</span>     <span class="dv">313</span> <span class="fl">11.5</span>   <span class="dv">62</span>     <span class="dv">5</span>   <span class="dv">4</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>    <span class="cn">NA</span>      <span class="cn">NA</span> <span class="fl">14.3</span>   <span class="dv">56</span>     <span class="dv">5</span>   <span class="dv">5</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>    <span class="dv">28</span>      <span class="cn">NA</span> <span class="fl">14.9</span>   <span class="dv">66</span>     <span class="dv">5</span>   <span class="dv">6</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create index vector.</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(airquality))</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(idx)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">153</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample from the index vector.</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(idx, <span class="dv">6</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(samp)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>] <span class="dv">107</span> <span class="dv">120</span> <span class="dv">130</span> <span class="dv">98</span> <span class="dv">29</span> <span class="dv">45</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>airquality[samp, ]</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    Ozone Solar.R Wind Temp Month Day</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="dv">107</span>    <span class="cn">NA</span>      <span class="dv">64</span> <span class="fl">11.5</span>   <span class="dv">79</span>     <span class="dv">8</span>  <span class="dv">15</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="dv">120</span>    <span class="dv">76</span>     <span class="dv">203</span>  <span class="fl">9.7</span>   <span class="dv">97</span>     <span class="dv">8</span>  <span class="dv">28</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="dv">130</span>    <span class="dv">20</span>     <span class="dv">252</span> <span class="fl">10.9</span>   <span class="dv">80</span>     <span class="dv">9</span>   <span class="dv">7</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="dv">98</span>     <span class="dv">66</span>      <span class="cn">NA</span>  <span class="fl">4.6</span>   <span class="dv">87</span>     <span class="dv">8</span>   <span class="dv">6</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>     <span class="dv">45</span>     <span class="dv">252</span> <span class="fl">14.9</span>   <span class="dv">81</span>     <span class="dv">5</span>  <span class="dv">29</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="dv">45</span>     <span class="cn">NA</span>     <span class="dv">332</span> <span class="fl">13.8</span>   <span class="dv">80</span>     <span class="dv">6</span>  <span class="dv">14</span></span></code></pre></div>
+</div>
+<div id="sampling-elements-of-a-list." class="section level4"
+number="2.6.4.2">
+<h4><span class="header-section-number">2.6.4.2</span> Sampling elements
+of a list.</h4>
+<p>We follow the same strategy.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, runif)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(lst)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">15</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num <span class="fl">0.758</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="fl">0.00193</span> <span class="fl">0.7428</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>] <span class="fl">0.192</span> <span class="fl">0.452</span> <span class="fl">0.322</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="fl">0.109</span> <span class="fl">0.289</span> <span class="fl">0.819</span> <span class="fl">0.492</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="fl">0.0303</span> <span class="fl">0.4402</span> <span class="fl">0.0773</span> <span class="fl">0.265</span> <span class="fl">0.0696</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>] <span class="fl">0.9071</span> <span class="fl">0.9923</span> <span class="fl">0.0641</span> <span class="fl">0.6751</span> <span class="fl">0.3309</span> ...</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>] <span class="fl">0.834</span> <span class="fl">0.186</span> <span class="fl">0.511</span> <span class="fl">0.475</span> <span class="fl">0.466</span> ...</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>] <span class="fl">0.2578</span> <span class="fl">0.5936</span> <span class="fl">0.0382</span> <span class="fl">0.4426</span> <span class="fl">0.4668</span> ...</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>] <span class="fl">0.749</span> <span class="fl">0.4044</span> <span class="fl">0.6579</span> <span class="fl">0.0705</span> <span class="fl">0.4844</span> ...</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="fl">0.00667</span> <span class="fl">0.46039</span> <span class="fl">0.26977</span> <span class="fl">0.02225</span> <span class="fl">0.41437</span> ...</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>] <span class="fl">0.8662</span> <span class="fl">0.5898</span> <span class="fl">0.1362</span> <span class="fl">0.5733</span> <span class="fl">0.0314</span> ...</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>] <span class="fl">0.493</span> <span class="fl">0.664</span> <span class="fl">0.27</span> <span class="fl">0.207</span> <span class="fl">0.896</span> ...</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>] <span class="fl">0.0512</span> <span class="fl">0.5073</span> <span class="fl">0.2953</span> <span class="fl">0.8111</span> <span class="fl">0.9709</span> ...</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>] <span class="fl">0.488</span> <span class="fl">0.997</span> <span class="fl">0.575</span> <span class="fl">0.671</span> <span class="fl">0.909</span> ...</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>] <span class="fl">0.207</span> <span class="fl">0.062</span> <span class="fl">0.64</span> <span class="fl">0.434</span> <span class="fl">0.523</span> ...</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create index vector.</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">seq_along</span>(lst)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(idx)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span> <span class="dv">9</span> <span class="dv">10</span> ...</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample form the index vector.</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(idx, <span class="dv">4</span>)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(samp)</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a> int [<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="dv">5</span> <span class="dv">6</span> <span class="dv">14</span> <span class="dv">8</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> samp) <span class="fu">str</span>(lst[[i]])</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="fl">0.0303</span> <span class="fl">0.4402</span> <span class="fl">0.0773</span> <span class="fl">0.265</span> <span class="fl">0.0696</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>] <span class="fl">0.9071</span> <span class="fl">0.9923</span> <span class="fl">0.0641</span> <span class="fl">0.6751</span> <span class="fl">0.3309</span> ...</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>] <span class="fl">0.488</span> <span class="fl">0.997</span> <span class="fl">0.575</span> <span class="fl">0.671</span> <span class="fl">0.909</span> ...</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a> num [<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>] <span class="fl">0.2578</span> <span class="fl">0.5936</span> <span class="fl">0.0382</span> <span class="fl">0.4426</span> <span class="fl">0.4668</span> ...</span></code></pre></div>
+<hr />
+</div>
+</div>
+</div>
+</div>
+<div id="profiling-r-code." class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Profiling R Code.</h1>
+<p>R comes with a profiler to help us optimize our code and improve its
+performance.</p>
+<p>The problem is that heavily optimized code tends to be obscure and
+difficult to read, making it harder to debug and revise.</p>
+<p>So, better write coherent and readable code to get all the bugs out
+first, then focus on optimizing.</p>
+<blockquote>
+<p>We should forget about small efficiencies, say about 97% of the time:
+premature optimization is the root of all evil —<em>Donald
+Knuth</em></p>
+</blockquote>
+<p>Clearly we should optimize the parts of our code that are running
+slowly.</p>
+<p>And <strong>profiling</strong> is just so: a systematic way to
+examine how much time is spent in different parts of a program.</p>
+<p>There are <strong>two tools</strong> that we can use for this
+task:</p>
+<ul>
+<li><p>If we <strong>already know where the problem might be</strong>,
+then we can use the <code>system.time()</code> function to test the
+execution time of a function or code block.</p></li>
+<li><p>But if we <strong>don’t know where to start</strong>, then we
+should use the <strong>R profiler</strong>. There are here two functions
+used together:</p>
+<ul>
+<li><p><code>Rprof()</code> to start the profiler.</p></li>
+<li><p><code>summaryRprof()</code> which summarizes the “not readable”
+output from <code>Rprof</code>.</p></li>
+</ul></li>
+<li><p><strong><em>Warning!</em></strong> We should NOT use
+<code>system.time</code> and <code>Rprof</code> together.</p></li>
+</ul>
+<div id="basic-principles-of-optimizing" class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> Basic principles of
+optimizing:</h2>
+<ul>
+<li><p>Design first, then optimize.</p></li>
+<li><p>Remember: premature optimization is the root of all
+evil.</p></li>
+<li><p>Measure (collect data by profiling), don’t guess.</p></li>
+</ul>
+</div>
+<div id="using-system.time." class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Using
+<code>system.time()</code>.</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(system.time)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (expr, <span class="at">gcFirst =</span> <span class="cn">TRUE</span>)  </span></code></pre></div>
+<p>This function:</p>
+<ul>
+<li><p>Takes an <strong>arbitrary R expression</strong> as input (can be
+wrapped in curly braces).</p></li>
+<li><p>Retruns the <strong>amount of time</strong> taken to evaluate the
+expression.</p>
+<ul>
+<li><p>Computes the time in <strong>seconds</strong>.</p></li>
+<li><p>If there’s an error, gives the time until the error
+occurred.</p></li>
+<li><p>Returns an <code>proc_time</code> class object, which contains
+<strong>two useful pieces of</strong> <strong>information</strong>:</p>
+<ul>
+<li><p><em>user time:</em> time charged to the CPU just for the
+expression.</p></li>
+<li><p><em>elapsed time:</em> aka “wall clock” time, the amount of time
+that passes for <em>us</em>, as we’re sitting in front of the
+machine.</p></li>
+</ul></li>
+</ul></li>
+<li><p>Usually, the <em>user time</em> and <em>elapsed time</em> are
+realtively close, for straight computing tasks.</p></li>
+<li><p>But the <em>elapsed time</em> may be <strong>greter than</strong>
+the <em>user time</em> if the <strong>CPU spends a lot</strong>
+<strong>of time waiting arround</strong>.</p>
+<ul>
+<li><p>This commonly happens when the R expression involves some
+<strong>input or output</strong>, which depends on the activity of the
+file system and the disk, or the Internet if we are using a network
+connection.</p></li>
+<li><p>Most of the time of the following expression is spent waiting for
+the connection to the web server and waiting for the data to travel back
+to our computer. This doesn’t involve the CPU and so the CPU simply
+waits around for things to get done. Hence the user time is
+smaller.</p></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Elapsed time &gt; user time.</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">readLines</span>(<span class="st">&quot;http://www.jhsph.edu&quot;</span>))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>   user  system elapsed </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.036</span>   <span class="fl">0.009</span>   <span class="fl">2.996</span> </span></code></pre></div>
+<ul>
+<li><p>Also the <em>elapsed time</em> may be <strong>smaller
+than</strong> the <em>user time</em> if our machine has <strong>multiple
+cores/processors</strong>.</p>
+<ul>
+<li><p>For example, <strong>multi-threaded BLAS libraries</strong>
+(vecLib/Accelerate, ATLAS, ACML, MKL) can greatly speed up
+<strong>linear algebra calculations</strong>.</p></li>
+<li><p>Or parallel processing done via the <code>parallel</code>
+package.</p></li>
+<li><p>In the following example, we ran a singular value decomposition
+on the matrix in <code>x</code>, which is a common linear algebra
+procedure. If our computer <strong>is able</strong> to split the work
+across <strong>multiple processors</strong> (this happens if we use a
+multi-threaded BLAS library), the elapsed time should be about half the
+user time.</p></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Elapsed time &lt; user time.</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>hilbert <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>n</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">/</span> <span class="fu">outer</span>(i <span class="sc">-</span> <span class="dv">1</span>, i, <span class="st">&quot;+&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">hilbert</span>(<span class="dv">1000</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">svd</span>(x))           <span class="co"># Singular value decomposition over a matrix.</span></span></code></pre></div>
+</div>
+<div id="timing-longer-expressions." class="section level2"
+number="3.3">
+<h2><span class="header-section-number">3.3</span> Timing longer
+expressions.</h2>
+<p>We can time longer expressions by wrapping them in curly braces
+within the call to <code>system.time()</code>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        r[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>   user  system elapsed </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.058</span>   <span class="fl">0.000</span>   <span class="fl">0.058</span> </span></code></pre></div>
+<p>The problem is that if the expression is too long, we won’t be able
+to identify which part of the code is causing the bottleneck.</p>
+</div>
+<div id="the-r-profiler-rprof-and-summaryrprof." class="section level2"
+number="3.4">
+<h2><span class="header-section-number">3.4</span> The R Profiler:
+<code>Rprof()</code> and <code>summaryRprof()</code>.</h2>
+<p>As we said, we use the R profiles when we don’t know where to
+start.</p>
+<p>And we use here two functions in conunjuntion:</p>
+<ul>
+<li><code>Rprof()</code> to start and stop the profiler.
+<ul>
+<li>Just <code>Rprof()</code> without arguments to <strong>turn
+on</strong> the profiler.<br />
+</li>
+<li>And <code>Rprof(NULL)</code> to <strong>turn off</strong> the
+profiler.<br />
+</li>
+</ul></li>
+<li><code>summaryRprof()</code> which summarizes the “not readable”
+output from <code>Rprof</code>.</li>
+</ul>
+<p><strong><code>Rprof()</code> function</strong>.</p>
+<ul>
+<li>It <strong>keeps track</strong> of the <strong>function call
+stack</strong> at regularly <strong>sampled intervals</strong> and
+<strong>tabulates</strong> how much <strong>time</strong> is spent
+inside <strong>each function</strong>.<br />
+</li>
+<li>By default, the profiler samples the function call stack
+<strong>every 0.02 seconds</strong>.
+<ul>
+<li>This means that if our code runs very quickly (under 0.02 seconds),
+the profiler is not useful.<br />
+</li>
+</ul></li>
+<li>By default it will write its output to a file called
+<strong><code>Rprof.out</code></strong>.
+<ul>
+<li>At each line of it’s output, the profiler writes out the function
+call stack.<br />
+</li>
+</ul></li>
+<li>Once we call the <code>Rprof()</code> function,
+<strong>everything</strong> that we do from then on
+<strong>will</strong> <strong>be measured</strong> by the profiler.
+<ul>
+<li>Therefore, we usually only want to run a <strong>single R function
+or expression</strong> once we turn on the profiler and then immediately
+turn it off.<br />
+</li>
+<li>The reason is that if we mix too many function calls together when
+running the profiler, all of the results will be mixed together and we
+won’t be able to sort out where the bottlenecks are.<br />
+</li>
+</ul></li>
+<li><strong>Notice</strong>: C or Fortran code is not profiled.
+<ul>
+<li>If our R code call C or Fortran code, this pieces of code are going
+to be like a “black box” becouse they are not going to be profiled, we
+won’t see any information about that code, all we’ll know is that some
+time is spent there, but without any details about that.</li>
+</ul></li>
+</ul>
+<p><strong><code>summaryRprof()</code> function</strong>.</p>
+<ul>
+<li>It <strong>tabulates</strong> the R profiler output and
+<strong>calculates</strong> how much time is spent in which function.
+<ul>
+<li>Infact, if each line that <code>Rprof()</code> prints out has the
+function call stack sampled or separated out at a frequency of 0.02
+seconds, it is possible to calculate how many seconds are spent in each
+of the functions called during execution time.<br />
+</li>
+</ul></li>
+<li>And this calculation is done following <strong>two methods</strong>
+for <em>normalizing</em> the data.
+<ul>
+<li><code>by.total</code> divides the time spent in each function by the
+total run time.
+<ul>
+<li>Normalizing by the total amount of time spent in a function gives
+us, basically, how many times a function appeared in the calls.<br />
+</li>
+<li>Supposing that we are testing the <code>lm()</code> function, then
+it happens that a 100% of the time is going to be spent in this
+function, because it is the top-level function.<br />
+</li>
+<li>But the reality is that often top level functions don’t really do
+anything that is kind of important, all they do is call helper functions
+that do the real work.<br />
+</li>
+<li>So chances are if our function is spending a lot of time doing
+something, it’s spending a lot of time in those helper functions which
+is just being called by this top function to do all the work.<br />
+</li>
+<li>Therefore, often it’s not very interesting to know how much is time
+is spent in these top level functions, because that’s not where the real
+work occurs.<br />
+</li>
+</ul></li>
+<li><code>by.self</code> does the same as <code>by.total</code> but
+first subtracts out time spent in functions above (lower level) the
+current function (higher level) in the call stack.
+<ul>
+<li>Most of the time we’ll notice that when we subtract out all the
+lower level functions are called, there’s very little time spent in the
+top level function.<br />
+</li>
+<li>And because all the work and all the computations is being done at
+the lower level function, that’s where we want to focus our
+efforts.<br />
+</li>
+<li>So, the <code>buy.self</code> format is the <strong>most
+interesting</strong> format to use because it tells us how much time is
+being spent in a given function, but after subtracting out all of the
+other time spent in lower level functions that are called. So it gives
+us a more accurate picture of which functions are really taking up the
+most amount of time and which functions that we might want to target for
+optimization.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn on the profiler.</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Rprof</span>()</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Code to be profiled.</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200000</span>))</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>Call<span class="sc">:</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(<span class="at">formula =</span> y <span class="sc">~</span> x)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>Coefficients<span class="sc">:</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>(Intercept)            x  </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fl">9.996e-11</span>    <span class="fl">2.000e+00</span>  </span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn off the profiler.</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="fu">Rprof</span>(<span class="cn">NULL</span>)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the results.</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summaryRprof</span>()</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>by.self</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>                        self.time self.pct total.time total.pct</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;anyDuplicated.default&quot;</span>      <span class="fl">0.02</span>      <span class="dv">100</span>       <span class="fl">0.02</span>       <span class="dv">100</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>by.total</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>                          total.time total.pct self.time self.pct</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;anyDuplicated.default&quot;</span>         <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.02</span>      <span class="dv">100</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;.External2&quot;</span>                    <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;[.data.frame&quot;</span>                  <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;[&quot;</span>                             <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;anyDuplicated&quot;</span>                 <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;block_exec&quot;</span>                    <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;call_block&quot;</span>                    <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;eng_r&quot;</span>                         <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;eval_with_user_handlers&quot;</span>       <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;eval&quot;</span>                          <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;evaluate_call&quot;</span>                 <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;evaluate::evaluate&quot;</span>            <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;evaluate&quot;</span>                      <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;FUN&quot;</span>                           <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;generator$render&quot;</span>              <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;handle&quot;</span>                        <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;in_dir&quot;</span>                        <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;in_input_dir&quot;</span>                  <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;knitr::knit&quot;</span>                   <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;lapply&quot;</span>                        <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;lm&quot;</span>                            <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;model.frame.default&quot;</span>           <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;na.omit.data.frame&quot;</span>            <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;na.omit&quot;</span>                       <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;process_file&quot;</span>                  <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;process_group.block&quot;</span>           <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;process_group&quot;</span>                 <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;render_one&quot;</span>                    <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;rmarkdown::render_site&quot;</span>        <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;rmarkdown::render&quot;</span>             <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;sapply&quot;</span>                        <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;stats::model.frame&quot;</span>            <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;suppressMessages&quot;</span>              <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;timing_fn&quot;</span>                     <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;withCallingHandlers&quot;</span>           <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;withVisible&quot;</span>                   <span class="fl">0.02</span>       <span class="dv">100</span>      <span class="fl">0.00</span>        <span class="dv">0</span></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>sample.interval</span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.02</span></span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span>sampling.time</span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">0.02</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="base-graphics-in-r." class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Base graphics in
+R.</h1>
+<p>This is about only base graphics in R.</p>
+<ul>
+<li><p>We won’t cover advanced portions of graphics in R (like
+<em>lattice</em>, <em>ggplot2</em> and <em>ggvis</em>).</p></li>
+<li><p>There’s a school of thought that this approach is backwards, that
+we should learn ggplot2 **first* (See <a
+href="http://varianceexplained.org/r/teach_ggplot2_to_beginners"
+class="uri">http://varianceexplained.org/r/teach_ggplot2_to_beginners</a>).</p></li>
+<li><p>It is, however, useful to have an introduction to base graphics
+because many of the idioms in lattice and ggplot2 are modeled on
+them.</p></li>
+</ul>
+<div id="plot-function." class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> <code>plot()</code>
+function.</h2>
+<p>This is a generic function for X-Y plotting of R objects.</p>
+<ul>
+<li><code>plot</code> is short for scatterplot.</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(plot)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span> (x, y, ...)  </span></code></pre></div>
+<p>R tries very hard to give us something sensible given the information
+that we provide.</p>
+<p>So, if we give to <code>plot()</code> as input a data frame that has
+just two columns (the built-in data frame <code>cars</code> has only the
+<code>speed</code> and <code>dist</code>-distance taken to stop-):</p>
+<ul>
+<li><p>First, R <strong>assumes that we want to plot one column versus
+the other</strong>.</p></li>
+<li><p>Second, since we do not provide <em>labels</em>, R <em>uses the
+names of the columns</em>.</p></li>
+<li><p>Third, it creates <em>axis tick marks</em> at round numbers and
+labels them accordingly.</p></li>
+<li><p>Fourth, it uses the other defaults supplied in
+<code>plot</code>.</p></li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>If we provide now the <strong>x and y coordinates</strong> but
+nothing else, R is not sure what we want to use as the
+<strong>labels</strong> on the axes, so it just <strong>uses the
+arguments which you pass in,</strong> <strong>data frame name and dollar
+signs</strong> included.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> cars<span class="sc">$</span>speed, <span class="at">y =</span> cars<span class="sc">$</span>dist)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>Labeling axes.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> cars<span class="sc">$</span>speed, <span class="at">y=</span> cars<span class="sc">$</span>dist, <span class="at">xlab =</span> <span class="st">&quot;Speed&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Stopping Distance&quot;</span>)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>But because R is smart enough, we can save on typing.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">xlab =</span> <span class="st">&quot;Speed&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Stopping Distance&quot;</span>)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>Applying the other arguments of the function.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">xlab =</span> <span class="st">&quot;Speed&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Stopping Distance&quot;</span>,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;My Plot&quot;</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">sub =</span> <span class="st">&quot;My Plot Subtitle&quot;</span>)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>The plot help page <code>?plot</code> only <strong>covers a small
+number</strong> of the many arguments that can be passed in to
+<code>plot()</code> and to other graphical functions.</p>
+<p>To beging exploring the many other options, we can look at
+<code>?par</code>.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">col =</span> <span class="dv">2</span>,                    <span class="co"># plotted points of color red.</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">15</span>))                 <span class="co"># limit the x-axis to 10 through 15.</span></span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>We can continue exploring <code>?points</code> to <strong>change the
+shape of the symbols</strong> in the plot.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars, <span class="at">pch =</span> <span class="dv">2</span>)                    <span class="co"># plot using triangles.</span></span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+<div id="boxplot-function-the-formula-interface." class="section level2"
+number="4.2">
+<h2><span class="header-section-number">4.2</span>
+<code>boxplot()</code> function, the <code>formula</code>
+interface.</h2>
+<p><code>boxplot</code>, like many R functions (including
+<code>plot</code>), also takes a <strong>formula</strong> argument,
+generally <strong>an expression with a tilde (“y ~ x”)</strong> which
+indicates the <strong>relationship</strong> <strong>between the input
+variables</strong>.</p>
+<ul>
+<li>This allows us to enter something like <code>mpg ~ cyl</code> to
+plot the relationship between <code>cyl</code> (the number of cylinders)
+on the x-axis and <code>mpg</code> (miles per gallon) on the
+y-axis.</li>
+</ul>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="at">formula =</span> mpg <span class="sc">~</span> cyl, <span class="at">data =</span> mtcars)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+</div>
+<div id="hist-function." class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> <code>hist()</code>
+function.</h2>
+<p>When looking at a <strong>single variable</strong>, histograms are a
+useful tool.</p>
+<p>Like <code>plot()</code>, <code>hist()</code> is <strong>best used by
+just passing in a single vector</strong>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mtcars<span class="sc">$</span>mpg)</span></code></pre></div>
+<p><img src="2_R_Module4_Resumen_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+<div id="session-info." class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Session Info.</h1>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">3</span>.<span class="fl">6.3</span> (<span class="dv">2020-02-29</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">18</span>.<span class="fl">04.6</span> LTS</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">7.1</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NUMERIC<span class="ot">=</span>C              </span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>        LC_COLLATE<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    </span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>    LC_MESSAGES<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>   </span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span>       LC_NAME<span class="ot">=</span>C                 </span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>C               LC_TELEPHONE<span class="ot">=</span>C            </span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>es_AR.UTF<span class="dv">-8</span> LC_IDENTIFICATION<span class="ot">=</span>C       </span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] plyr_1.<span class="fl">8.6</span></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] Rcpp_1.<span class="fl">0.7</span>       highr_0<span class="fl">.9</span>        formatR_1<span class="fl">.14</span>     pillar_1.<span class="fl">7.0</span>    </span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] compiler_3.<span class="fl">6.3</span>   bslib_0.<span class="fl">3.0</span>      jquerylib_0.<span class="fl">1.4</span>  tools_3.<span class="fl">6.3</span>     </span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] digest_0.<span class="fl">6.29</span>    jsonlite_1.<span class="fl">7.2</span>   evaluate_0<span class="fl">.19</span>    lifecycle_1.<span class="fl">0.3</span> </span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] tibble_3.<span class="fl">1.8</span>     gtable_0.<span class="fl">3.0</span>     lattice_0<span class="fl">.20</span><span class="dv">-45</span>  pkgconfig_2.<span class="fl">0.3</span> </span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] rlang_1.<span class="fl">0.6</span>      DBI_1.<span class="fl">1.1</span>        cli_3.<span class="fl">6.0</span>        rstudioapi_0<span class="fl">.13</span> </span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] yaml_2.<span class="fl">2.1</span>       xfun_0<span class="fl">.36</span>        fastmap_1.<span class="fl">1.0</span>    withr_2.<span class="fl">5.0</span>     </span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] stringr_1.<span class="fl">4.0</span>    httr_1.<span class="fl">4.2</span>       knitr_1<span class="fl">.41</span>       hms_1.<span class="fl">1.0</span>       </span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] sass_0.<span class="fl">4.0</span>       generics_0.<span class="fl">1.2</span>   vctrs_0.<span class="fl">5.2</span>      grid_3.<span class="fl">6.3</span>      </span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] tidyselect_1.<span class="fl">2.0</span> glue_1.<span class="fl">6.2</span>       R6_2.<span class="fl">5.1</span>         fansi_1.<span class="fl">0.2</span>     </span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] rmarkdown_2<span class="fl">.11</span>   tzdb_0.<span class="fl">3.0</span>       magrittr_2.<span class="fl">0.2</span>   scales_1.<span class="fl">1.1</span>    </span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] ellipsis_0.<span class="fl">3.2</span>   htmltools_0.<span class="fl">5.2</span>  assertthat_0.<span class="fl">2.1</span> colorspace_2<span class="fl">.0</span><span class="dv">-3</span></span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">45</span>] utf8_1.<span class="fl">2.2</span>       stringi_1.<span class="fl">7.6</span>    munsell_0.<span class="fl">5.0</span>    crayon_1.<span class="fl">5.0</span>    </span></code></pre></div>
+<hr />
+</div>
+
+<div style="width: 100%; padding: 10px; box-sizing: border-box; text-align: justify; border: 1px solid gray;">
+  <p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+
+
+<!--
+<p style="font-family: 'Playfair Display', serif; font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+</style>
+-->
+
+
+<!--
+<p style="font-style: italic;">Copyright &copy; 2020 por <b>Christian A. Karanicolas</b>.  Todos los derechos reservados.  La elaboración de este sitio ha tenido como fuente principal de información el curso de <b>Especialización en Ciencias de Datos</b> brindado por la <b>Johns Hopkins University</b> a través de <b>Coursera</b>.</p>
+-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
